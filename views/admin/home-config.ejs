@@ -1,0 +1,34 @@
+
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <main>
+    <h1>Home Page - Image upload</h1>
+    <form
+      class="form add-img"
+      action="/admin/home-config"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      
+      <input type="file" name="image" id="image" accept=".jpg,.jpeg"  class="form__element input" />
+      <button type="submit" class="form__element form__btn">ADD</button>
+    </form>
+    <section class="cont"> 
+    <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
+        <article class="vignette">
+          <img src="/<%= img.image %>" alt="film image" />
+          <input type="hidden" value="<%= img._id %>" name="imgId">
+          <button class="form__btn" type="button" onclick="deleteHomeImg
+(this)" >DELETE</button>
+        </article>
+        
+        
+        <% } %> <% } %>
+      </section>
+    </main>
+  <script src="/js/admin.js"></script>
+  </body>
+</html>

@@ -6,5 +6,6 @@ const router = express.Router();
 //
 router.get("/home-config", adminController.getHomeConfig);
 router.post("/home-config", adminController.postHomeConfig);
+router.delete("/home-config/:imgId", adminController.deleteHomeImg);
 
 module.exports = router;

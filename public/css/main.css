@@ -1,0 +1,50 @@
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  background-color: rgb(19, 0, 26);
+  overflow: hidden;
+
+  background-color: #000002;
+  background-image: radial-gradient(at 47% 33%, rgb(0, 0, 0) 0, transparent 79%),
+    radial-gradient(at 92% 95%, rgb(0, 0, 0) 0, transparent 95%);
+}
+h1 {
+  padding: 1rem;
+  margin-top: 2rem;
+}
+h2 {
+  font-family: "Spartan", serif;
+  font-weight: 70;
+  font-size: 2.3rem;
+}
+
+.lienHome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 20vh;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+h1 a i,
+p {
+  font-size: smaller;
+  margin-left: 1.2rem;
+}
+
+a {
+  text-decoration: none;
+  font-family: "Poiret One", cursive;
+  font-size: 2rem;
+  font-weight: 250;
+  margin: 1rem;
+  color: #fffcf4;
+}

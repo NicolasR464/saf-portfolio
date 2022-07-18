@@ -31,7 +31,7 @@ const fileFilter = (req, file, cb) => {
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 ); //
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/admin", adminRoutes);
@@ -42,7 +42,8 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(3000);
+    console.log("connected");
+    app.listen(process.env.PORT || 5500);
   })
   .catch((err) => {
     console.log(err);
