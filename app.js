@@ -16,7 +16,15 @@ const portfolioRoutes = require("./routes/portfolio");
 //
 const fileStorage = multer.diskStorage({
   destination: (req, res, cb) => {
-    cb(null, "images");
+    if (req.body.event == "home") {
+      cb(null, "images/home");
+    } else if (req.body.event == "about") {
+      cb(null, "images/about");
+    } else if (req.body.event == "portfolio") {
+      cb(null, "images/portfolio");
+    } else {
+      cb(null, "images");
+    }
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);

@@ -9,5 +9,6 @@ router.post("/home-config", adminController.postHomeConfig);
 router.delete("/home-config/:imgId", adminController.deleteHomeImg);
 
 router.get("/about-config", adminController.getAboutConfig);
+router.post("/about-config", adminController.postAboutConfig);
 
 module.exports = router;
