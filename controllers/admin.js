@@ -1,11 +1,9 @@
 const HomeImg = require("../models/home-imgs");
-const AboutInfo = require("../models/about-info");
 const fileHelper = require("../util/file");
 
 exports.getHomeConfig = (req, res, next) => {
   HomeImg.find()
     .then((allImgs) => {
-      console.log({ allImgs });
       res.render("admin/home-config", {
         pageTitle: "Home | Image upload",
         path: "/admin/home-config",
@@ -16,8 +14,6 @@ exports.getHomeConfig = (req, res, next) => {
 };
 
 exports.postHomeConfig = (req, res, next) => {
-  const event = req.body.event;
-  console.log({ event });
   const image = req.file;
   const imageUrl = image.path;
   const img = new HomeImg({
@@ -48,43 +44,15 @@ exports.deleteHomeImg = (req, res, next) => {
     })
     .then(() => {
       console.log("img deleted");
-      res.status(200).json({ message: "delete successs!" });
+      res.status(200).json({ message: "successs!" });
     });
 };
 
 //About
 
 exports.getAboutConfig = (req, res, next) => {
-  AboutInfo.find()
-    .then((info) => {
-      console.log({ info });
-      res.render("admin/about-config", {
-        pageTitle: "About | test & image set up",
-        path: "/admin/about-config",
-      });
-    })
-    .catch((err) => console.log(err));
-};
-exports.postAboutConfig = (req, res, next) => {
-  console.log("post");
-  const bio = req.body.bio;
-  const event = req.body.event;
-  console.log(event);
-  console.log("event: ", bio);
-  const img = req.file;
-  const imgPath = img.path;
-
-  const aboutInfo = new AboutInfo({
-    bio: bio,
-    image: imgPath,
+  res.render("admin/about-config", {
+    pageTitle: "About | test & image set up",
+    path: "/admin/about-config",
   });
-  aboutInfo
-    .save()
-    .then(() => {
-      console.log("bio added!");
-      res.status(201).redirect("/admin/about-config");
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
 };

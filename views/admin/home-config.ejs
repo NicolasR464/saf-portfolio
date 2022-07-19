@@ -14,7 +14,7 @@
       method="POST"
       enctype="multipart/form-data"
     >
-      <input type="hidden" name="event" value="home">
+      
       <input type="file" name="image" id="image" accept=".jpg,.jpeg"  class="form__element input" />
       <button type="submit" class="form__element form__btn">ADD</button>
     </form>
@@ -25,8 +25,9 @@
           <input type="hidden" value="<%= img._id %>" name="imgId">
           <button class="form__btn delBtn" type="button">DELETE</button>
         </article>
-        <% } %>
-    <% } else { %> <h3>No image uploaded yet !</h3> <% } %>
+        
+        
+        <% } %> <% } %>
       </section>
     </main>
   <script src="/js/admin.js"></script>
