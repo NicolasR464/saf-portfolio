@@ -1,0 +1,76 @@
+<%- include('../includes/head.ejs')%>
+<link rel="stylesheet" href="/css/index.css" />
+</head>
+
+<body>
+    <div class="container">
+      <div class="lien-home">
+        <h1>
+          <a href="./index.html">Safran Lecuivre <i>cinematographer</i></a>
+        </h1>
+      </div>
+
+      <nav>
+        <ul class="lien gradient">
+          <div class="dropdown">
+            <div class="dropdown-content">
+              <a
+                class="dropdown-link"
+                id="mv"
+                data-section="mv"
+                href="./portfolio.html"
+                >Music video</a
+              >
+              <a
+                class="dropdown-link"
+                id="narrative"
+                data-section="narrative"
+                href="./portfolio.html"
+                >Narrative</a
+              >
+              <a
+                class="dropdown-link"
+                id="commercial"
+                data-section="commercial"
+                href="./portfolio.html"
+                >Commercial</a
+              >
+              <a
+                class="dropdown-link"
+                id="reel"
+                data-section="reel"
+                href="./portfolio.html"
+                >Reel</a
+              >
+            </div>
+            <li class="dropbtn">
+              <a id="port" href="./portfolio.html">portfolio</a>
+            </li>
+          </div>
+
+          <li><a href="./about.html">about</a></li>
+          <li><a href="./contact.html">contact</a></li>
+          <li id="insta">
+            <a href="https://www.instagram.com/safwan_lekwibre/" target="_blank"
+              ><img src="./icons/insta/insta.png" alt="insta logo"
+            /></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <section class="imgs">
+     <% if (imgs.length > 0) { %>
+      
+        <% imgs.forEach((img, i ) =>{ %>
+            <img class="img i<%= i %>" src="/<%= img.image %>" alt="cinema still" />
+       <% }) %>
+     <% } %>
+    </section>
+
+    <div class="phone">
+      <img class="phone-img" src=""></img>
+    </div>
+  
+    <script src="/js/index.js"></script>
+  </body>
+  </html>

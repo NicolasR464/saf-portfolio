@@ -4,8 +4,10 @@
     <link rel="stylesheet" href="/css/admin.css" />
   </head>
   <body>
+    <%- include('../includes/navigation.ejs') %>
     <main>
-    <h1>Home Page - Image upload</h1>
+    <%- include('../includes/admin-nav.ejs')%>
+    <h3 class="uploadTxt">Image upload</h3>
     <form
       class="form add-img"
       action="/admin/home-config"
@@ -21,8 +23,7 @@
         <article class="vignette">
           <img src="/<%= img.image %>" alt="film image" />
           <input type="hidden" value="<%= img._id %>" name="imgId">
-          <button class="form__btn" type="button" onclick="deleteHomeImg
-(this)" >DELETE</button>
+          <button class="form__btn delBtn" type="button">DELETE</button>
         </article>
         
         

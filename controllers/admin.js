@@ -44,6 +44,15 @@ exports.deleteHomeImg = (req, res, next) => {
     })
     .then(() => {
       console.log("img deleted");
-      res.status(200).redirect("/admin/home-config");
+      res.status(200).json({ message: "successs!" });
     });
+};
+
+//About
+
+exports.getAboutConfig = (req, res, next) => {
+  res.render("admin/about-config", {
+    pageTitle: "About | test & image set up",
+    path: "/admin/about-config",
+  });
 };

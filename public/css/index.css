@@ -1,0 +1,224 @@
+/* MEDIA QUERY*/
+.msge-smartp {
+  display: none;
+}
+@media screen and (max-width: 900px) {
+  .container,
+  .imgs {
+    display: none;
+  }
+  .msge-smartp {
+    display: block;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 0.5rem;
+    font-size: 1.5rem;
+    background-color: black;
+    z-index: 3;
+  }
+  .msge-smartp p {
+    color: #fffcf4;
+  }
+
+  .phone-img {
+    background-size: cover;
+    max-height: 100vh;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: auto;
+    height: 100vh;
+  }
+  .lien-home {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .lien {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .gradient {
+    background-image: rgba(255, 0, 0, 0);
+  }
+}
+
+/* QUERY END*/
+
+h1 {
+  font-family: "Poiret One", cursive;
+  font-weight: 200;
+  padding: 1rem;
+  /* margin-top: 2rem; */
+}
+h2 {
+  font-family: "Poiret One", cursive;
+  font-weight: 20;
+  font-size: 1.5rem;
+}
+
+.container {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  color: #fffcf4;
+}
+.lien-home {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: flex-end;
+  height: 89vh;
+}
+li {
+  padding: 1rem;
+}
+#insta {
+  transform: translateY(13%);
+}
+a {
+  text-decoration: none;
+  font-size: 1.7rem;
+  font-weight: 250;
+
+  margin: 1rem;
+  color: #fffcf4;
+}
+h1 a i {
+  font-size: smaller;
+}
+/* GRADIENT BOTTOM */
+/* .gradient {
+    background-image: linear-gradient(rgb(0, 0, 0, 0) 82%, #2b2b3079 100%);
+    width: 100vw;
+    position: absolute;
+  } */
+/* Dropdown menu */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  /* margin-top: -19%; */
+  margin-top: -12rem;
+  /* background-color: #acacac66; */
+  min-width: 160px;
+  /* box-shadow: 0px 8px 36px 0px rgba(38, 38, 38, 0.412); */
+  border-radius: 30%;
+  z-index: 1;
+  /* animation: fadeOutDrop 1s ease-in-out forwards; */
+  opacity: 0;
+  transition: transform 2s;
+}
+.dropdown-content a {
+  font-size: 1.2rem;
+  font-weight: 450;
+
+  color: rgb(237, 237, 237);
+  padding: 5px 16px;
+  text-decoration: none;
+  display: block;
+  animation: fadeDrop 1s ease-in-out forwards;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+}
+
+.dropdown:hover .dropbtn {
+  color: #3e8e41;
+}
+
+@keyframes fadeDrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-5%);
+  }
+}
+@keyframes fadeOutDrop {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* IMG background */
+section img {
+  display: block;
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  z-index: -2;
+  max-width: 100vw;
+  max-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.active {
+  display: block;
+  /* animation-name: fade;
+    animation-duration: 0.3s; */
+}
+.fade {
+  z-index: -1;
+  opacity: 1;
+}
+.fadeOut {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+  animation-delay: 2s;
+  animation-duration: 0.5s;
+}
+
+/* fade in and out Background stills */
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* fadeOUT */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .dropdown:hover .dropdown-content {
+    display: none;
+  }
+}

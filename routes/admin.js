@@ -8,4 +8,6 @@ router.get("/home-config", adminController.getHomeConfig);
 router.post("/home-config", adminController.postHomeConfig);
 router.delete("/home-config/:imgId", adminController.deleteHomeImg);
 
+router.get("/about-config", adminController.getAboutConfig);
+
 module.exports = router;

@@ -13,9 +13,32 @@ html {
   background-image: radial-gradient(at 47% 33%, rgb(0, 0, 0) 0, transparent 79%),
     radial-gradient(at 92% 95%, rgb(0, 0, 0) 0, transparent 95%);
 }
-h1 {
+
+.link-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.menu--line {
+  margin: 0 auto;
+  width: 30%;
+  border: 0;
+  min-height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    #fffcf4,
+    rgba(255, 255, 255, 0)
+  );
+}
+h1,
+h3 {
   padding: 1rem;
   margin-top: 2rem;
+  font-family: "Poiret One", cursive;
+  padding: 1rem;
+  margin-top: 2rem;
+  color: aliceblue;
 }
 h2 {
   font-family: "Spartan", serif;
@@ -29,11 +52,7 @@ h2 {
   align-items: center;
   height: 20vh;
 }
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
+
 h1 a i,
 p {
   font-size: smaller;
@@ -47,4 +66,93 @@ a {
   font-weight: 250;
   margin: 1rem;
   color: #fffcf4;
+}
+
+.link {
+  padding-top: 2rem;
+  font-size: 1.22rem;
+}
+
+/* anim buttons */
+
+.btns-g,
+.btns-main {
+  position: relative;
+}
+
+.btns-g::before,
+.btns-main::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 40%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease-in;
+  background-color: currentColor;
+  box-shadow: 0 0 0.5em currentColor, 0 0 0.7em currentColor;
+}
+
+.btns-g:hover::before,
+.btns-main:hover::before {
+  transform: scaleX(0.6);
+}
+
+.btns-g::after,
+.btns-main::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 40%;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 250ms ease-in;
+  background-color: currentColor;
+  box-shadow: 0 0 0.5em currentColor, 0 0 0.7em currentColor;
+}
+
+.btns-g:hover::after,
+.btns-main:hover::after {
+  transform: scaleX(0.5);
+}
+/* ONCE CLICKED*/
+
+.clicked--btn {
+  text-shadow: 0 0 0.5em currentColor, 0 0 0.7em currentColor;
+}
+
+.clicked--btn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 40%;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 250ms ease-in;
+  background-color: currentColor;
+  box-shadow: 0 0 0.5em currentColor, 0 0 0.7em currentColor;
+}
+
+.clicked--btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 40%;
+  transform: scaleX(1);
+  transform-origin: right;
+  transition: transform 250ms ease-in;
+  background-color: currentColor;
+  box-shadow: 0 0 0.5em currentColor, 0 0 0.7em currentColor;
 }

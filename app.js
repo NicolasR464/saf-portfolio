@@ -12,6 +12,7 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 //
 const adminRoutes = require("./routes/admin");
+const portfolioRoutes = require("./routes/portfolio");
 //
 const fileStorage = multer.diskStorage({
   destination: (req, res, cb) => {
@@ -35,7 +36,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/admin", adminRoutes);
-
+app.use(portfolioRoutes);
+//
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,

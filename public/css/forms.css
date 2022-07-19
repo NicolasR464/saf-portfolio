@@ -5,13 +5,14 @@
   height: 80%;
   width: 80%;
   max-width: 700px;
+  padding-top: 1rem;
 }
 .form__element {
   margin-bottom: 3em;
 }
 .input__txt {
-  min-width: 100%;
-  max-width: 100%;
+  width: 100vw;
+  max-width: 600px;
   /* scroll bar*/
 }
 
@@ -76,7 +77,8 @@ button:focus {
   font-family: "Cairo", sans-serif;
 }
 
-.form__btn {
+.form__btn,
+.form-txt {
   font-family: "Poiret One", cursive;
   font-weight: 800;
   font-size: 1rem;
@@ -105,4 +107,7 @@ button:focus {
     #fff8df,
     rgba(255, 255, 255, 0)
   );
+}
+.uploadTxt {
+  text-align: center;
 }
