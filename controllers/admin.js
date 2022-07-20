@@ -5,7 +5,6 @@ const fileHelper = require("../util/file");
 exports.getHomeConfig = (req, res, next) => {
   HomeImg.find()
     .then((allImgs) => {
-      console.log({ allImgs });
       res.render("admin/home-config", {
         pageTitle: "Home | Image upload",
         path: "/admin/home-config",
@@ -17,7 +16,6 @@ exports.getHomeConfig = (req, res, next) => {
 
 exports.postHomeConfig = (req, res, next) => {
   const event = req.body.event;
-  console.log({ event });
   const image = req.file;
   const imageUrl = image.path;
   const img = new HomeImg({
@@ -36,8 +34,6 @@ exports.postHomeConfig = (req, res, next) => {
 
 exports.deleteHomeImg = (req, res, next) => {
   const imgId = req.params.imgId;
-  console.log("delete btn");
-  console.log(imgId);
   HomeImg.findById(imgId)
     .then((img) => {
       if (!img) {
@@ -55,36 +51,29 @@ exports.deleteHomeImg = (req, res, next) => {
 //About
 
 exports.getAboutConfig = (req, res, next) => {
-  AboutInfo.find()
+  AboutInfo.findOne()
     .then((info) => {
-      console.log({ info });
       res.render("admin/about-config", {
         pageTitle: "About | test & image set up",
         path: "/admin/about-config",
+        bio: info,
       });
     })
     .catch((err) => console.log(err));
 };
 exports.postAboutConfig = (req, res, next) => {
-  console.log("post");
-  const bio = req.body.bio;
-  const event = req.body.event;
-  console.log(event);
-  console.log("event: ", bio);
-  const img = req.file;
-  const imgPath = img.path;
+  const bioUpdate = req.body.bio;
+  const imgUpdate = req.file;
 
-  const aboutInfo = new AboutInfo({
-    bio: bio,
-    image: imgPath,
-  });
-  aboutInfo
-    .save()
-    .then(() => {
-      console.log("bio added!");
-      res.status(201).redirect("/admin/about-config");
-    })
-    .catch((err) => {
-      throw new Error(err);
+  AboutInfo.findOne().then((content) => {
+    content.bio = bioUpdate;
+    if (imgUpdate) {
+      fileHelper.deleteFile(content.image);
+      content.image = imgUpdate.path;
+    }
+    return content.save().then(() => {
+      console.log("bio updated");
+      res.redirect("/admin/about-config");
     });
+  });
 };

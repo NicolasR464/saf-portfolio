@@ -63,3 +63,16 @@ html {
 .vignette button:hover {
   box-shadow: 0 0 1.5em 0 #fffcf482;
 }
+.input {
+  margin-bottom: 1rem;
+}
+.input__txt {
+  cursor: text;
+}
+
+.profil-vignette {
+  height: 100px;
+  width: auto;
+  display: inline;
+  margin: 1rem;
+}

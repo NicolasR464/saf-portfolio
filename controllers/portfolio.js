@@ -1,4 +1,5 @@
 const HomeImg = require("../models/home-imgs");
+const AboutInfo = require("../models/about-info");
 
 exports.getIndex = (req, res, next) => {
   let totalImgs;
@@ -18,4 +19,18 @@ exports.getIndex = (req, res, next) => {
       });
     })
     .catch((err) => console.log(err));
+};
+
+exports.getAbout = (req, res, next) => {
+  AboutInfo.findOne()
+    .then((info) => {
+      res.render("portfolio/about", {
+        pageTitle: "About",
+        path: "/about",
+        info: info,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
