@@ -1,0 +1,93 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+    <body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+    <%- include('../includes/admin-nav.ejs')%>
+
+        <form  class="form add-bio" action="/admin/portfolio-config" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="event" value="portfolio"> 
+            <!-- <input type="hidden" name="infoId" value="<%= vidsInfo._id %>"> -->
+            <input type="text" name="title" placeholder="add the video title here" class="form__element input input-port" />
+            <input type="text" name="vidId" placeholder="add the video url here" class="form__element input input-port" />
+         
+                <select name="category" id="" class="form__element input select" />
+                    <option value="mv">music video</option>
+                    <option value="commercial">commercial</option>
+                    <option value="narrative">narrative</option>
+                    <option value="reel">reel</option>
+                </select>
+                
+          
+            <p class="form-txt">Select a video thumbnail: </p>
+            <input  type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" >
+            <button class="form__element form__btn" type="submit" >ADD</button>
+        </form>
+        <hr class="menu--line" />
+        <section class="cont"> 
+            <% if(vidsInfo.length > 0) { %>
+
+                <h3>Mucic Video</h3>
+
+                <% for (let vidMv of vidsInfo) { %>
+
+                    <% if(vidMv.category === "mv"){ %>
+                  
+                    <article class="vignette">
+                        <img src="/<%= vidMv.image %>" alt="film image" />
+                        <h3><%= vidMv.title %></h3>
+                        <p class="video-id-p"><%= vidMv.vidId %></p>
+                        <input type="hidden" value="<%= vidMv._id %>" name="vidId">
+                        <button class="form__btn delBtn" type="button">DELETE</button>
+                      </article>
+                    <% } %>  
+                <% } %>
+                <h3>Commercial</h3>    
+                <% for (let vidCom of vidsInfo) { %>
+
+                    <% if(vidCom.category === "commercial"){ %>
+                  
+                    <article class="vignette">
+                        <img src="/<%= vidCom.image %>" alt="film image" />
+                        <h3><%= vidCom.title %></h3>
+                        <p class="video-id-p"><%= vidCom.vidId %></p>
+                        <input type="hidden" value="<%= vidCom._id %>" name="vidId">
+                        <button class="form__btn delBtn" type="button">DELETE</button>
+                      </article>
+                    <% } %>  
+                <% } %>    
+                <h3>Narrative</h3>
+                <% for (let vidNar of vidsInfo) { %>
+
+                    <% if(vidNar.category === "narrative"){ %>
+                  
+                    <article class="vignette">
+                        <img src="/<%= vidNar.image %>" alt="film image" />
+                        <h3><%= vidNar.title %></h3>
+                        <p class="video-id-p"><%= vidNar.vidId %></p>
+                        <input type="hidden" value="<%= vidNar._id %>" name="vidId">
+                        <button class="form__btn delBtn" type="button">DELETE</button>
+                      </article>
+                    <% } %>  
+                <% } %>    
+                <h3>Reel</h3>
+                <% for (let vidReel of vidsInfo) { %>
+
+                    <% if(vidReel.category === "reel"){ %>
+                  
+                    <article class="vignette">
+                        <img src="/<%= vidReel.image %>" alt="film image" />
+                        <h3><%= vidReel.title %></h3>
+                        <p class="video-id-p"><%= vidReel.vidId %></p>
+                        <input type="hidden" value="<%= vidReel._id %>" name="vidId">
+                        <button class="form__btn delBtn" type="button">DELETE</button>
+                      </article>
+                    <% } %>  
+                    <% } %>  
+             
+            <% } else { %> <h3>No Video uploaded yet !</h3> <% } %>
+              </section>
+    </main>
+   <%- include('../includes/footer.ejs')%>>

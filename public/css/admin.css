@@ -8,6 +8,9 @@ html {
   flex-direction: column;
   align-items: center;
 }
+.admin-link {
+  display: flex;
+}
 .admin-title {
   color: #fffcf4;
   font-size: 2rem;
@@ -20,10 +23,6 @@ html {
   align-items: flex-start;
   min-width: 100%;
 }
-.add-bio {
-  align-items: center;
-  min-width: 100vw;
-}
 
 .form__btn {
   margin: 0.2em;
@@ -31,8 +30,8 @@ html {
 
 .cont {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  /* flex-direction: row; */
+  flex-wrap: wrap-reverse;
   justify-content: center;
 }
 .vignette {
@@ -63,16 +62,14 @@ html {
 .vignette button:hover {
   box-shadow: 0 0 1.5em 0 #fffcf482;
 }
-.input {
-  margin-bottom: 1rem;
-}
-.input__txt {
-  cursor: text;
-}
 
 .profil-vignette {
   height: 100px;
   width: auto;
   display: inline;
   margin: 1rem;
+}
+
+.video-id-p {
+  color: white;
 }

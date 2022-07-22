@@ -7,7 +7,7 @@
     <main>
     <%- include('../includes/admin-nav.ejs')%>
 
-        <form  class="form add-bio" action="/admin/about-config" method="POST" enctype="multipart/form-data">
+        <form  class="form" action="/admin/about-config" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="event" value="about"> 
             <input type="hidden" name="bioId" value="<%= bio._id %>">
             <textarea  class="form__element input__txt" name="bio" id="bio" cols="30" rows="20"  placeholder="Write your bio here"

@@ -1,18 +1,35 @@
 .form {
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
+  flex-wrap: wrap;
   height: 80%;
   width: 80%;
   max-width: 700px;
   padding-top: 1rem;
+  align-items: center;
+  min-width: 100vw;
 }
 .form__element {
   margin-bottom: 3em;
+  max-width: 90vw;
+  border-top: 1px solid #fff8df;
+  border-bottom: 1px solid #fff8df;
+  padding: 1em;
+  cursor: pointer;
+  border-radius: 1rem;
+  background-color: black;
+  color: #fffdf7;
+  font-family: "Cairo", sans-serif;
+  transition: all 0.3s ease-in-out;
+}
+.input {
+  margin-bottom: 1rem;
+  font-size: 1rem;
 }
 .input__txt {
   width: 100vw;
   max-width: 600px;
+  cursor: text;
   /* scroll bar*/
 }
 
@@ -40,10 +57,6 @@
   border-radius: 10px;
 }
 
-.input {
-  font-size: 1rem;
-}
-
 input:focus,
 select:focus,
 textarea:focus,
@@ -51,17 +64,8 @@ button:focus {
   outline: none;
 }
 
-.form__element {
-  border-top: 1px solid #fff8df;
-  border-bottom: 1px solid #fff8df;
-  padding: 1em;
-  cursor: pointer;
-
-  border-radius: 1rem;
-  background-color: black;
-  color: #fffdf7;
-  font-family: "Cairo", sans-serif;
-  transition: all 0.3s ease-in-out;
+.input-port {
+  cursor: text;
 }
 .form__element:focus {
   color: #fffcf4;
@@ -110,4 +114,17 @@ button:focus {
 }
 .uploadTxt {
   text-align: center;
+}
+
+/* portfolio */
+.input-port {
+  width: 300px;
+  min-width: 25vw;
+}
+.select {
+  height: 3.2rem;
+}
+/* about */
+.input__txt {
+  font-size: 1rem;
 }
