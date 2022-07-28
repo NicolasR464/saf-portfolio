@@ -34,6 +34,11 @@ html {
   flex-wrap: wrap-reverse;
   justify-content: center;
 }
+.cont-port {
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
 .vignette {
   border: 1px groove white;
   padding: 1rem;
@@ -48,6 +53,7 @@ html {
 }
 .vignette img {
   max-width: 300px;
+  max-height: 100%;
 }
 .vignette button {
   border-radius: 3rem;
@@ -72,4 +78,59 @@ html {
 
 .video-id-p {
   color: white;
+}
+
+.vignette-port {
+  padding: 0.5rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 610px;
+  min-height: 100px;
+  justify-content: center;
+}
+
+.title-port {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0;
+}
+.title-port:hover:after {
+  content: attr(data-text);
+  overflow: visible;
+  text-overflow: inherit;
+  background: rgba(22, 22, 22, 0.797);
+  position: absolute;
+  left: auto;
+  top: auto;
+  width: auto;
+  max-width: 20rem;
+  border: 1px solid #eaebec;
+  border-radius: 1rem;
+  padding: 0 0.5rem;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.28);
+  white-space: normal;
+  word-wrap: break-word;
+  display: block;
+  color: rgb(255, 255, 255);
+  margin-top: -1.25rem;
+}
+
+.arrow-ud {
+  display: none;
+  color: white;
+  font-size: 3rem;
+  font-family: sans-serif;
+  padding-right: 0.2rem;
+  cursor: grab;
+}
+
+@media (min-width: 992px) {
+  .arrow-ud {
+    display: block;
+  }
+  .vignette-port {
+    height: 100px;
+  }
 }

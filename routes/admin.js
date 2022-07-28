@@ -13,5 +13,7 @@ router.post("/about-config", adminController.postAboutConfig);
 
 router.get("/portfolio-config", adminController.getPortfolioConfig);
 router.post("/portfolio-config", adminController.postPortfolioConfig);
+router.delete("/portfolio-config/:vidId", adminController.deletePortfolioVid);
+router.post("/portfolio-config/:newOrder", adminController.updatePortfolioVid);
 
 module.exports = router;

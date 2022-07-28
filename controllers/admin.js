@@ -3,6 +3,7 @@ const AboutInfo = require("../models/about-info");
 const PortfolioVid = require("../models/portfolio-vids");
 const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
+const { count } = require("../models/home-imgs");
 
 exports.getHomeConfig = (req, res, next) => {
   HomeImg.find()
@@ -56,7 +57,7 @@ exports.getAboutConfig = (req, res, next) => {
   AboutInfo.findOne()
     .then((info) => {
       res.render("admin/about-config", {
-        pageTitle: "About | test & image set up",
+        pageTitle: "About | Bio & profile pic",
         path: "/admin/about-config",
         bio: info,
       });
@@ -85,6 +86,7 @@ exports.postAboutConfig = (req, res, next) => {
 // Portfolio
 exports.getPortfolioConfig = (req, res, next) => {
   PortfolioVid.find()
+    .sort({ order: 1 })
     .then((vidsInfo) => {
       // console.log(vidsInfo);
       res.render("admin/portfolio-config", {
@@ -103,25 +105,91 @@ exports.postPortfolioConfig = (req, res, next) => {
   const videoUrl = req.body.vidId;
   const videoCategory = req.body.category;
   const videoImage = req.file.path;
+  console.log(videoUrl);
 
-  const videoPlr = new VideoPlr(videoUrl);
-  const extractId = videoPlr.idExtractor();
-  const vidPlr = videoPlr.category;
+  let order = 0;
+  let number = 0;
 
-  const videoNew = new PortfolioVid({
-    title: videoTitle,
-    vidId: extractId,
-    player: vidPlr,
-    category: videoCategory,
-    image: videoImage,
-  });
-  videoNew
-    .save()
+  PortfolioVid.find({ category: videoCategory })
+    .count()
+    .then((num) => {
+      number = num;
+      order = num++;
+    })
     .then(() => {
-      console.log("New video saved in portfolio 🔥");
-      res.status(201).redirect("/admin/portfolio-config");
+      const videoPlr = new VideoPlr(videoUrl);
+      const extractId = videoPlr.idExtractor();
+      console.log(videoPlr.category);
+      const vidPlr = videoPlr.category;
+      //
+      const videoNew = new PortfolioVid({
+        title: videoTitle,
+        vidId: extractId,
+        player: vidPlr,
+        category: videoCategory,
+        image: videoImage,
+        order: order,
+        number: number,
+      });
+      videoNew
+        .save()
+        .then(() => {
+          number++;
+          console.log("New video saved in portfolio 🔥");
+          res.status(201).redirect("/admin/portfolio-config");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
     .catch((err) => {
       console.log(err);
     });
+};
+
+exports.deletePortfolioVid = (req, res, next) => {
+  const vidId = req.params.vidId;
+  //!!! UPDATE THE 'NUMBER' FIELD + 'ORDER' FIELD
+  PortfolioVid.findById(vidId)
+    .then((vid) => {
+      if (!vid) {
+        return next(new Error("vid not found."));
+      }
+      fileHelper.deleteFile(vid.image);
+      return PortfolioVid.deleteOne({ _id: vidId });
+    })
+    .then(() => {
+      console.log("video port deleted");
+      res.status(200).json({ message: "delete successs!" });
+    });
+};
+
+exports.updatePortfolioVid = (req, res, next) => {
+  const newOrder = req.params.newOrder;
+  const category = newOrder.split("-")[0];
+  const order = newOrder.split("-")[1].split("");
+  console.log({ order });
+  let changeCount = 0;
+  PortfolioVid.find({ category: category })
+    // .sort({ order: 1 })
+
+    .then((docs) => {
+      docs.forEach((doc, item) => {
+        doc.order = order[item];
+        doc
+          .save()
+          .then(() => {
+            console.log("done");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    })
+    .then(() => {
+      console.log("update done ");
+      // console.log("update done: " + changeCount++);
+      res.status(200);
+    })
+    .catch((err) => console.log(err));
 };

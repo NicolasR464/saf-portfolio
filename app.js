@@ -21,7 +21,17 @@ const fileStorage = multer.diskStorage({
     } else if (req.body.event == "about") {
       cb(null, "images/about");
     } else if (req.body.event == "portfolio") {
-      cb(null, "images/portfolio");
+      switch (req.body.category) {
+        case "mv":
+          cb(null, "images/portfolio/mv");
+          break;
+        case "narrative":
+          cb(null, "images/portfolio/narrative");
+        case "reel":
+          cb(null, "images/portfolio/reel");
+        case "commercial":
+          cb(null, "images/portfolio/commercial");
+      }
     } else {
       cb(null, "images");
     }
