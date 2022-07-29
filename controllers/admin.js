@@ -144,22 +144,45 @@ exports.postPortfolioConfig = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
+      res.status(200);
     });
 };
 
 exports.deletePortfolioVid = (req, res, next) => {
   const vidId = req.params.vidId;
-  //!!! UPDATE THE 'NUMBER' FIELD + 'ORDER' FIELD
   PortfolioVid.findById(vidId)
     .then((vid) => {
       if (!vid) {
         return next(new Error("vid not found."));
       }
+
+      //
+      //UPDATE THE 'NUMBER' FIELD + 'ORDER' FIELD
+      PortfolioVid.find({ category: vid.category })
+        .updateMany(
+          { number: { $gt: vid.number } },
+          { $inc: { number: -1, order: -1 } }
+        )
+        .then((update) => {
+          console.log({ update });
+        });
+
+      //alt
+      // PortfolioVid.find({ number: { $gt: vid.number } }).then((vids) => {
+      //   if (vids) {
+      //     vids.forEach((vid) => {
+      //       vid.number = vid.number--;
+      //       vid.order = vid.order--;
+      //       vid.save();
+      //     });
+      //   }
+      // });
+
       fileHelper.deleteFile(vid.image);
       return PortfolioVid.deleteOne({ _id: vidId });
     })
-    .then(() => {
-      console.log("video port deleted");
+    .then((info) => {
+      console.log(info);
       res.status(200).json({ message: "delete successs!" });
     });
 };
