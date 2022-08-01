@@ -70,7 +70,8 @@ function dragDrop() {
     method: "POST",
   })
     .then((data) => {
-      console.log(data);
+      // console.log(data);
+      data.json();
     })
     .catch((err) => {
       console.log(err);
@@ -86,9 +87,9 @@ function changeOrder(fromIndex, toIndex) {
   }
   const vignetChildren = contVignettes[sectionIndex].children;
   Array.from(vignetChildren).forEach((article, newI) => {
+    article.children[0].value = newI;
     newOrder += article.children[1].value;
     console.log(newOrder);
-    article.children[0].value = newI;
   });
 }
 

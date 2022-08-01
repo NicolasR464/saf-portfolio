@@ -101,8 +101,8 @@ exports.getPortfolioConfig = (req, res, next) => {
 };
 
 exports.postPortfolioConfig = (req, res, next) => {
-  const videoTitle = req.body.title;
-  const videoUrl = req.body.vidId;
+  const videoTitle = req.body.title.trim();
+  const videoUrl = req.body.vidId.trim();
   const videoCategory = req.body.category;
   const videoImage = req.file.path;
   console.log(videoUrl);
@@ -140,16 +140,17 @@ exports.postPortfolioConfig = (req, res, next) => {
         })
         .catch((err) => {
           console.log(err);
+          res.status(200).redirect("/admin/portfolio-config");
         });
     })
     .catch((err) => {
       console.log(err);
-      res.status(200);
+      res.status(200).redirect("/admin/portfolio-config");
     });
 };
 
 exports.deletePortfolioVid = (req, res, next) => {
-  const vidId = req.params.vidId;
+  const vidId = req.params.vidId.trim();
   PortfolioVid.findById(vidId)
     .then((vid) => {
       if (!vid) {
@@ -194,22 +195,26 @@ exports.updatePortfolioVid = (req, res, next) => {
   console.log({ order });
   let changeCount = 0;
   PortfolioVid.find({ category: category })
-    // .sort({ order: 1 })
 
     .then((docs) => {
-      docs.forEach((doc, item) => {
-        doc.order = order[item];
+      docs.forEach((doc) => {
+        // console.log("before: ", doc);
+        let index = order.indexOf(doc.number.toString());
+        // console.log({ index });
+        doc.order = index;
+        // console.log("after: ", doc);
         doc
           .save()
-          .then(() => {
-            console.log("done");
+          .then((result) => {
+            // console.log(result);
           })
           .catch((err) => {
             console.log(err);
           });
       });
     })
-    .then(() => {
+    .then((result) => {
+      // console.log(result);
       console.log("update done ");
       // console.log("update done: " + changeCount++);
       res.status(200);

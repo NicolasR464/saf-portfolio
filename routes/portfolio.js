@@ -6,5 +6,6 @@ const portfolioContr = require("../controllers/portfolio");
 
 router.get("/", portfolioContr.getIndex);
 router.get("/about", portfolioContr.getAbout);
+router.get("/portfolio", portfolioContr.getPortfolio);
 
 module.exports = router;

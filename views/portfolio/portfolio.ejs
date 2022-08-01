@@ -1,0 +1,196 @@
+<%- include('../includes/head.ejs')%>
+<link rel="stylesheet" href="/css/portfolio.css" />
+</head>
+    <body>
+        <%- include("../includes/navigation.ejs")%>
+        <main>
+            
+               
+               
+                <!--MENU BTNS-->
+                <div class="menu--container">
+                  <hr class="menu--line" />
+                  <div class="menu--content">
+                    <button data-index="2" 
+                    data-section = "mv" class="btns-main btn-menu2 active">
+                      music video
+                    </button>
+                    <button data-index="3"
+                    data-section = "narrative" class="btns-main btn-menu3">narrative</button>
+                    <button class="btns-main"
+                    data-section = "commercial"          btn-menu1">commercial</button>
+            
+                    <!-- <button data-index="4" class="btns-main btn-menu4">miscellaneous</button> -->
+                    <button 
+                    data-section = "reel" class="btns-main btn-menu5">reel</button>
+                  </div>
+                  <hr class="menu--line" />
+                </div>
+            
+                <!-- LAPTOP VIDEO PLAYER -->
+            
+                <div class="video-plr">
+                  <!-- VIDEO BUTTONS
+                  -->
+                  <div class="videos-container">
+                   
+
+                    <% vidInfo.forEach(vid =>{ %>
+                        <% if(vid.category == "mv"){ %>
+                            <button 
+                    data-section = "mv"
+                    data-id ="<%= vid.vidId%>"
+                    data-player = "<%= vid.player %>"
+                    data-img = "<%= vid.image %>"
+                    data-index = "<%= vid.order %>"
+                    class="btns-g btns2">
+                      <%= vid.title %>
+                    </button>
+                        <% } %>
+                        <% if(vid.category == "narrative"){ %>
+                            <button 
+                    data-section = "narrative"
+                    data-id ="<%= vid.vidId%>"
+                    data-player = "<%= vid.player %>"
+                    data-img = "<%= vid.image %>"
+                    data-index = "<%= vid.order %>"
+                    class="btns-g btns3">
+                      <%= vid.title %>
+                    </button>
+                        <% } %>
+                        <% if(vid.category == "commercial"){ %>
+                            <button 
+                    data-section = "commercial"
+                    data-id ="<%= vid.vidId%>"
+                    data-player = "<%= vid.player %>"
+                    data-img = "<%= vid.image %>"
+                    data-index = "<%= vid.order %>"
+                    class="btns-g btns">
+                      <%= vid.title %>
+                    </button>
+                        <% } %>
+                        <% if(vid.category == "reel"){ %>
+                            <button 
+                    data-section = "reel"
+                    data-id ="<%= vid.vidId%>"
+                    data-player = "<%= vid.player %>"
+                    data-img = "<%= vid.image %>"
+                    data-index = "<%= vid.order %>"
+                    class="btns-g btns5">
+                      <%= vid.title %>
+                    </button>
+                        <% } %>          
+                    <% }) %>    
+                   
+                  </div>
+            
+                  <!--VIDEO WINDOW LAPTOP-->
+                  <div class="visual--window">
+                    <div class="toggle-vid">
+                      <iframe
+                        class="img-vid iframe"
+                        src=""
+                        allowfullscreen
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        frameborder="0"
+                      >
+                      </iframe>
+                    </div>
+            
+                    <!-- THUMBNAILS -->
+                     <img class="tbnl img-vid fade" src="" alt="thumbnail" width="1920" height="1080" />
+                   
+                  </div>
+                </div>
+            
+                      <!-- SMARTPHONE VIDEO PLAYER-->
+                <div class="swiper-container">
+                  <p class="flip-msg"></p>
+                  <div class="swiper-btns">
+                    <div class="swiper-button-prev"></div>
+                    <div class="led">
+                      <h2 class="title"></h2>
+                    </div>
+            
+                    <div class="swiper-button-next"></div>
+                  </div>
+                  
+                    <div class="big-wrapper">
+                      <!--  VIDEO API  -->
+                      <p class="err-msg"></p>
+                     <div class="player-container">
+                      <button class="play-icon fade-sm">
+                        <!-- <img src="./icons/playnew.png" alt="playbutton" /> -->
+                        <svg
+                          width="130"
+                          height="130"
+                          viewBox="0 0 100 100"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g id="Frame 1">
+                            <path
+                              id="play1"
+                              d="M57.4759 50.322L42.7087 58.2388C41.7095 58.7745 40.5 58.0506 40.5 56.9168V41.0832C40.5 39.9494 41.7095 39.2255 42.7087 39.7612L57.4759 47.678C58.5309 48.2436 58.5309 49.7564 57.4759 50.322Z"
+                              stroke="#fffcf4"
+                            />
+                            <path
+                              id="play2"
+                              d="M57.4759 50.322L42.7087 58.2388C41.7095 58.7745 40.5 58.0506 40.5 56.9168V41.0832C40.5 39.9494 41.7095 39.2255 42.7087 39.7612L57.4759 47.678C58.5309 48.2436 58.5309 49.7564 57.4759 50.322Z"
+                              stroke="#fffcf4"
+                            />
+            
+                            <path
+                              id="play4"
+                              d="M57.4759 50.322L42.7087 58.2388C41.7095 58.7745 40.5 58.0506 40.5 56.9168V41.0832C40.5 39.9494 41.7095 39.2255 42.7087 39.7612L57.4759 47.678C58.5309 48.2436 58.5309 49.7564 57.4759 50.322Z"
+                              stroke="#fffcf4"
+                            />
+                          </g>
+                        </svg>
+                      </button>
+                      <!--loading icon-->
+                      <div class="load-wrapp">
+                        <div class="load-9">
+                          <div class="spinner">
+                            <div class="bubble-1"></div>
+                            <div class="bubble-2"></div>
+                          </div>
+                        </div>
+                      </div>
+            
+                      <div class="video-position">
+                        <div class="yt-container">
+                          <div id="video-placeholder"></div>
+                        </div>
+                        <div class="vimeo-container">
+                          <div
+                            class="vimeo-v"
+                            id="vimeoVideo"
+                            data-vimeo-title="false"
+                            data-vimeo-portrait="false"
+                            data-vimeo-byline="false"
+                            data-vimeo-color="#ffffff"
+                            data-vimeo-loop="true"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="swiper mySwiper">
+                      <!-- Additional required wrapper -->
+                      <div class="swiper-wrapper"></div>
+                    </div>
+                  
+                  </div>
+                  <div class="swiper-pagination"></div>
+                 
+                  
+                </div>
+             
+                <!--script-->
+                <script src="https://player.vimeo.com/api/player.js"></script>
+                <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+                <script src="/js/portfolio.js"></script>
+            </main>
+        </body>
+        
+    </html>

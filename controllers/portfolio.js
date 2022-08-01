@@ -1,5 +1,6 @@
 const HomeImg = require("../models/home-imgs");
 const AboutInfo = require("../models/about-info");
+const PortfolioInfo = require("../models/portfolio-vids");
 
 exports.getIndex = (req, res, next) => {
   let totalImgs;
@@ -30,5 +31,16 @@ exports.getAbout = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+};
+
+exports.getPortfolio = (req, res, next) => {
+  PortfolioInfo.find()
+    .sort({ order: 1 })
+    .then((vidInfo) => {
+      res.render("portfolio/portfolio", {
+        pageTitle: "Portfolio",
+        vidInfo: vidInfo,
+      });
     });
 };
