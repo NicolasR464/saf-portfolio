@@ -1,5 +1,3 @@
-console.log("hi portfolio.js");
-
 // INDEX page BTNS
 //BTNS general
 const mainBtns = document.querySelectorAll(".btns-main");
@@ -12,6 +10,10 @@ const html = document.querySelector("html");
 const tbnl = document.querySelector(".tbnl");
 //
 //
+
+//
+//
+
 // console.log(document.cookie);
 
 /* ELEMENT ON CLICK */
@@ -46,52 +48,18 @@ class VideoPlr {
     this.id = id;
   }
 
-  idExtractor() {
-    let extracted;
-    if (this.id.includes("?v=")) {
-      // on a un url de yt
-      extracted = this.id.split("?v=")[1];
-      console.log(extracted);
-      if (extracted.includes("&")) {
-        let extraction = extracted.split("&");
-        console.log(extraction);
-        extracted = extraction[0];
-        console.log(extracted);
-      }
-      return extracted;
-    } else if (this.id.includes("/")) {
-      extracted = this.id.split("/")[3];
-      console.log(extracted);
-      return extracted;
-    } else {
-      return this.id;
-    }
-  }
-
   vidLaptopPlr() {
-    //if id has only numbers, then it is a vimeo id
-    let processedId = this.idExtractor();
-
-    if (isNaN(processedId) || processedId.includes("/")) {
-      console.log("this is a yt id");
-      return `https://www.youtube.com/embed/${processedId}?modestbranding=1&rel=0&iv_load_policy=3&theme=light&color=white&autoplay=1&loop=1`;
+    if (this.id.includes("/") || this.id.includes("?h=") || !isNaN(this.id)) {
+      console.log("this is a vimeo id");
+      return `https://player.vimeo.com/video/${this.id}?amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
     } else {
-      return `https://player.vimeo.com/video/${processedId}?amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
+      console.log("this is a yt id");
+      return `https://www.youtube.com/embed/${this.id}?modestbranding=1&rel=0&iv_load_policy=3&theme=light&color=white&autoplay=1&loop=1`;
     }
   }
 }
 //
-// TESTS
-const testExtractor = new VideoPlr("493691362");
-// testExtractor.idExtractor();
-testExtractor.vidLaptopPlr();
 
-//https://www.youtube.com/watch?v=Oe-P6zbunLs
-//https://vimeo.com/493691362
-//
-//
-//******VIDEO IDS
-// !! note: you can rearrange dynamically the order of the arrays with sort()
 const videoInfo = {
   mv: [
     {
@@ -212,8 +180,10 @@ const plrContent = () => {
   //console
 
   //
-  tbnlContent = `./images/portfolio/${dataSection}/0.jpg`;
-  tbnl.src = tbnlContent;
+  //   tbnlContent = `./images/portfolio/${dataSection}/0.jpg`;
+  //   tbnl.src = tbnlContent;
+  let indexArr = [];
+  let minIndex;
   btnsG.forEach((button) => {
     //remove activeBTN
     if (button.classList.contains("activeBTN")) {
@@ -222,8 +192,11 @@ const plrContent = () => {
     //
 
     if (dataSection === button.getAttribute("data-section")) {
-      // console.log(button.getAttribute("data-index"));
-      if (button.getAttribute("data-index") === "0") {
+      indexArr.push(parseInt(button.getAttribute("data-index")));
+      minIndex = Math.min(...indexArr);
+
+      if (button.getAttribute("data-index") === minIndex.toString()) {
+        tbnl.src = button.getAttribute("data-img");
         button.classList.add("activeBTN");
       }
 
@@ -450,6 +423,8 @@ const videoVim = new Vimeo.Player("vimeoVideo", optionsVim);
 
 // *** SLIDE MAKER***
 let swiper = new Swiper(".swiper", {
+  slidesPerView: 1,
+  direction: "horizontal",
   pagination: {
     el: ".swiper-pagination",
     type: "bullets",
@@ -478,30 +453,31 @@ const slideMaker = () => {
 
   while (swiperWrapper.firstChild) {
     console.log("el removed");
-
     swiperWrapper.firstChild.remove();
   }
 
   function appendBuild() {
-    videoInfo[dataSection].forEach((video, i) => {
-      const div = document.createElement("div");
-      div.classList.add("swiper-slide");
-      const img = document.createElement("img");
-      img.src = `./stills_portfolio/${dataSection}/${i}.jpg`;
-      img.title = video.title;
-      img.alt = video.title;
-      img.dataset.id = video.id;
-      img.width = "1920";
-      img.height = "1080";
-      isNaN(video.id)
-        ? (img.dataset.vidSource = "yt")
-        : (img.dataset.vidSource = "vimeo");
+    let index = 0;
+    btnsG.forEach((button) => {
+      if (dataSection === button.getAttribute("data-section")) {
+        const div = document.createElement("div");
+        div.classList.add("swiper-slide");
+        const img = document.createElement("img");
+        img.src = button.getAttribute("data-img");
+        img.title = button.getAttribute("data-title");
+        img.alt = button.getAttribute("data-title");
+        img.dataset.id = button.getAttribute("data-id");
+        img.width = "1920";
+        img.height = "1080";
+        img.dataset.vidSource = button.getAttribute("data-player");
 
-      img.dataset.index = i;
-      img.classList.add("slide");
+        img.dataset.index = index;
+        img.classList.add("slide");
 
-      swiperWrapper.appendChild(div);
-      div.appendChild(img);
+        swiperWrapper.appendChild(div);
+        div.appendChild(img);
+        index++;
+      }
     });
   }
   if (!swiperWrapper.firstChild) {
@@ -547,8 +523,9 @@ const loadVid = () => {
   } catch (error) {}
 
   //
+  let imgIndex;
   carouselImages.forEach((img) => {
-    let imgIndex = img.getAttribute("data-index");
+    imgIndex = img.getAttribute("data-index");
 
     //
     // img.style.display = "block";
@@ -620,7 +597,7 @@ const loadVid = () => {
           // console.log(err);
         }
         // console.log(player.playerInfo.videoData.title);
-        console.log(player.playerInfo);
+        // console.log(player.playerInfo);
 
         //  YT API EVENT
         player.addEventListener("onStateChange", (e) => {

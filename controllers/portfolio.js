@@ -1,6 +1,7 @@
 const HomeImg = require("../models/home-imgs");
 const AboutInfo = require("../models/about-info");
 const PortfolioInfo = require("../models/portfolio-vids");
+const path = require("path");
 
 exports.getIndex = (req, res, next) => {
   let totalImgs;

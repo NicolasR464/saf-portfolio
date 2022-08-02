@@ -604,7 +604,7 @@ s */
   .swiper-button-prev {
     /* border: 1px solid red; */
 
-    background-image: url(/icons/newarrow/arrow-left.svg);
+    background-image: url(../icons/newarrow/arrow-left.svg);
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;

@@ -19,15 +19,23 @@ class VideoPlr {
       }
       return extracted;
     } else if (this.id.includes("/")) {
-      this.category = "vimeo";
+      if (this.id.includes("youtu.be")) {
+        this.category = "yt";
+      } else {
+        this.category = "vimeo";
+      }
       extracted =
         this.id.split("/")[4] === undefined
           ? this.id.split("/")[3]
           : this.id.split("/")[3] + "/" + this.id.split("/")[4];
-      console.log(extracted);
+
+      if (extracted.includes("video")) {
+        extracted = extracted.split("/")[1];
+      }
+
       return extracted;
     } else {
-      return this.id;
+      //MESSAGE: URL INCORRECT
     }
   }
 

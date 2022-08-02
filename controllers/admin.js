@@ -4,6 +4,7 @@ const PortfolioVid = require("../models/portfolio-vids");
 const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
 const { count } = require("../models/home-imgs");
+const path = require("path");
 
 exports.getHomeConfig = (req, res, next) => {
   HomeImg.find()
@@ -160,24 +161,10 @@ exports.deletePortfolioVid = (req, res, next) => {
       //
       //UPDATE THE 'NUMBER' FIELD + 'ORDER' FIELD
       PortfolioVid.find({ category: vid.category })
-        .updateMany(
-          { number: { $gt: vid.number } },
-          { $inc: { number: -1, order: -1 } }
-        )
+        .updateMany({ number: { $gt: vid.number } }, { $inc: { number: -1 } })
         .then((update) => {
           console.log({ update });
         });
-
-      //alt
-      // PortfolioVid.find({ number: { $gt: vid.number } }).then((vids) => {
-      //   if (vids) {
-      //     vids.forEach((vid) => {
-      //       vid.number = vid.number--;
-      //       vid.order = vid.order--;
-      //       vid.save();
-      //     });
-      //   }
-      // });
 
       fileHelper.deleteFile(vid.image);
       return PortfolioVid.deleteOne({ _id: vidId });
