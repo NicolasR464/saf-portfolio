@@ -265,7 +265,9 @@ mainBtns.forEach((btn) => {
     btn.classList.add("clicked--btn");
   }
 });
-plrContent();
+if (screen.width > 1181) {
+  plrContent();
+}
 
 //
 //UPDATE CONTENT AFTER MAIN CATEGORY BTN CLICKED
@@ -299,9 +301,11 @@ mainBtns.forEach((mainBtn) => {
     dataSection = mainBtn.getAttribute("data-section");
     console.log(dataSection);
     tbnl.classList.add("fade");
-    plrContent();
+    if (screen.width > 1181) {
+      plrContent();
+    }
     //SMARTPHONE V
-    if (screen.width < 1050) {
+    if (screen.width < 1181) {
       //Update light on main btn
       document
         .querySelector(".btns-main.clicked--btn")
@@ -381,14 +385,30 @@ const letterCount = (txt) => {
 };
 // letterCount("hey");
 //
+let firstIdYt;
+let firstIdVim;
+let ids = [];
+btnsG.forEach((btn) => {
+  if (btn.getAttribute("data-section") == "mv") {
+    ids.push(btn);
 
+    if (ids[0].getAttribute("data-player") == "yt") {
+      firstIdYt = ids[0].attributes[2].nodeValue;
+      firstIdVim = "222151246";
+    } else {
+      firstIdVim = ids[0].attributes[2].nodeValue;
+    }
+  }
+});
+
+// YOUTUBE API
 function onYouTubeIframeAPIReady() {
   player = new YT.Player("video-placeholder", {
     width: "100%",
     height: "100%",
     autoplay: 0,
     iv_load_policy: 3,
-    videoId: videoInfo.mv[0].id,
+    videoId: firstIdYt, //change id source
     playerVars: {
       color: "white",
       rel: 0,
@@ -401,15 +421,12 @@ function onYouTubeIframeAPIReady() {
     // },
   });
 }
-//
-// onYouTubeIframeAPIReady();
-//
 
 //
 //  VIMEO API
-let dataIdVim = "562089134";
+
 let optionsVim = {
-  url: dataIdVim,
+  url: firstIdVim,
   width: screen.width,
   responsive: true,
   autoplay: false,
@@ -418,8 +435,6 @@ let optionsVim = {
 };
 const videoVim = new Vimeo.Player("vimeoVideo", optionsVim);
 //
-
-//initiate swiper
 
 // *** SLIDE MAKER***
 let swiper = new Swiper(".swiper", {
@@ -487,6 +502,9 @@ const slideMaker = () => {
 };
 if (screen.width < 1050) {
   slideMaker();
+  const slide = document.querySelectorAll(".slide")[0];
+  const wrapper = document.querySelector(".swiper-wrapper");
+  wrapper.style.height = `${slide.height}px`;
 }
 
 // **** VIDEO LOADER
@@ -700,6 +718,9 @@ function getOrientation() {
   console.log("new fn: ", orientation);
 
   if (orientation == "Landscape") {
+    const wrapper = document.querySelector(".swiper-wrapper");
+    wrapper.style.height = "100%";
+
     window.scrollTo(0, goTop);
   }
   return orientation;

@@ -156,3 +156,9 @@ a {
   background-color: currentColor;
   box-shadow: 0 0 0.5em currentColor, 0 0 0.7em currentColor;
 }
+
+@media only screen and (max-width: 1181px) and (orientation: landscape) {
+  .header {
+    margin-top: 0px;
+  }
+}

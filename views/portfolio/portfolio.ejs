@@ -1,4 +1,8 @@
 <%- include('../includes/head.ejs')%>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+/>
 <link rel="stylesheet" href="/css/portfolio.css" />
 </head>
     <body>
@@ -9,7 +13,7 @@
                
                 <!--MENU BTNS-->
                 <div class="menu--container">
-                  <hr class="menu--line" />
+              
                   <div class="menu--content">
                     <button data-index="2" 
                     data-section = "mv" class="btns-main btn-menu2 active">
@@ -151,6 +155,13 @@
                             />
                           </g>
                         </svg>
+                        <svg id="circle-play" width="50" height="50" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="Ellipse 1">
+                            <circle cx="70" cy="70" r="69.3" stroke="white" stroke-width="2.5"/>
+                            <circle cx="70" cy="70" r="69.3" stroke="black" stroke-opacity="0.2" stroke-width="2.5"/>
+                            </g>
+                            </svg>
+                            
                       </button>
                       <!--loading icon-->
                       <div class="load-wrapp">
@@ -186,13 +197,16 @@
                   
                   </div>
                   <div class="swiper-pagination"></div>
-                 
+                  
                   
                 </div>
              
                 <!--script-->
                 <script src="https://player.vimeo.com/api/player.js"></script>
-                <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+                <!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
+                
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
                 <script src="/js/portfolio.js"></script>
             </main>
         </body>

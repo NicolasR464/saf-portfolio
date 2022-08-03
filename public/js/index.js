@@ -5,7 +5,7 @@ class Slide {
   constructor() {
     this.img = document.querySelectorAll(".img");
     this.startDiapo = document.querySelector(
-      `.i${Math.floor(Math.random() * this.img.length + 1)}`
+      `.i${Math.floor(Math.random() * this.img.length)}`
     );
 
     this.isPlaying = null;
@@ -13,6 +13,7 @@ class Slide {
 
   //1st RANDOM IMAGE
   firstImg() {
+    console.log(this.startDiapo);
     this.startDiapo.style.opacity = 1;
   }
 
