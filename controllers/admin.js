@@ -5,6 +5,21 @@ const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
 const { count } = require("../models/home-imgs");
 const path = require("path");
+require("dotenv/config");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const streamifier = require("streamifier");
+
+//
+const fileUpload = multer();
+//
+// app.post("/upload", fileUpload.single("image"), function (req, res, next) {
+//cut
+// });
+
+//
+
+//
 
 exports.getHomeConfig = (req, res, next) => {
   HomeImg.find()
@@ -20,20 +35,45 @@ exports.getHomeConfig = (req, res, next) => {
 
 exports.postHomeConfig = (req, res, next) => {
   const event = req.body.event;
-  const image = req.file;
-  const imageUrl = image.path;
-  const img = new HomeImg({
-    image: imageUrl,
-  });
-  img
-    .save()
-    .then(() => {
-      console.log("image added!");
-      res.status(201).redirect("/admin/home-config");
-    })
-    .catch((err) => {
-      throw new Error(err);
+  // const image = req.file;
+
+  let streamUpload = (req) => {
+    return new Promise((resolve, reject) => {
+      let stream = cloudinary.uploader.upload_stream((error, result) => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      });
+
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
     });
+  };
+
+  async function upload(req) {
+    let result = await streamUpload(req);
+    console.log(result);
+    return result;
+  }
+
+  upload(req).then((info) => {
+    console.log("cloudinary uploaded 🥳");
+    console.log({ info });
+    const imageUrl = info.url;
+    const img = new HomeImg({
+      image: imageUrl,
+    });
+    img
+      .save()
+      .then(() => {
+        console.log("image url path added to mongo!");
+        res.status(201).redirect("/admin/home-config");
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  });
 };
 
 exports.deleteHomeImg = (req, res, next) => {

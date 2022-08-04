@@ -1,11 +1,15 @@
 const express = require("express");
 const adminController = require("../controllers/admin");
-
+const multer = require("multer");
+const fileUpload = multer();
 const router = express.Router();
-
 //
 router.get("/home-config", adminController.getHomeConfig);
-router.post("/home-config", adminController.postHomeConfig);
+router.post(
+  "/home-config",
+  fileUpload.single("image"),
+  adminController.postHomeConfig
+);
 router.delete("/home-config/:imgId", adminController.deleteHomeImg);
 
 router.get("/about-config", adminController.getAboutConfig);

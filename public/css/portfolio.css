@@ -341,6 +341,9 @@ s */
     width: 100%;
     text-align: center;
     z-index: 5;
+    color: white;
+    font-family: sans-serif;
+    font-size: 1rem;
   }
 
   .yt-container,
