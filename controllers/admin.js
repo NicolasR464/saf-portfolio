@@ -1,94 +1,76 @@
-const HomeImg = require("../models/home-imgs");
 const AboutInfo = require("../models/about-info");
 const PortfolioVid = require("../models/portfolio-vids");
 const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
-const { count } = require("../models/home-imgs");
+const imgHandler = require("../util/img-handler");
+
 const path = require("path");
 require("dotenv/config");
-const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
-const streamifier = require("streamifier");
-
-//
-const fileUpload = multer();
-//
-// app.post("/upload", fileUpload.single("image"), function (req, res, next) {
-//cut
-// });
-
-//
-
+// const streamifier = require("streamifier");
 //
 
 exports.getHomeConfig = (req, res, next) => {
-  HomeImg.find()
-    .then((allImgs) => {
+  const orientation = req.params.orientation;
+  console.log(orientation);
+  cloudinary.api
+    .resources({ type: "upload", prefix: "saf_portfolio/index" })
+    .then((imgs) => {
+      // console.log(imgs);
+
+      let URLs = [];
+
+      imgs.resources.forEach((img) => {
+        URLs.push(
+          cloudinary.url(img.public_id, {
+            secure: true,
+            transformation: {
+              aspect_ratio: "16:9",
+              crop: "fill",
+              fetch_format: "auto",
+              quality: "auto",
+            },
+          })
+        );
+      });
+      console.log({ URLs });
+
       res.render("admin/home-config", {
         pageTitle: "Home | Image upload",
         path: "/admin/home-config",
-        imgs: allImgs,
+        imgs: URLs,
       });
     })
     .catch((err) => console.log(err));
 };
 
 exports.postHomeConfig = (req, res, next) => {
-  const event = req.body.event;
-  // const image = req.file;
+  const folder = req.body.folder;
+  const file = req.file.buffer;
 
-  let streamUpload = (req) => {
-    return new Promise((resolve, reject) => {
-      let stream = cloudinary.uploader.upload_stream((error, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      });
-
-      streamifier.createReadStream(req.file.buffer).pipe(stream);
-    });
-  };
-
-  async function upload(req) {
-    let result = await streamUpload(req);
-    console.log(result);
-    return result;
-  }
-
-  upload(req).then((info) => {
+  imgHandler(req, folder, file).then((info) => {
+    res.status(201).redirect("/admin/home-config");
     console.log("cloudinary uploaded 🥳");
     console.log({ info });
-    const imageUrl = info.url;
-    const img = new HomeImg({
-      image: imageUrl,
-    });
-    img
-      .save()
-      .then(() => {
-        console.log("image url path added to mongo!");
-        res.status(201).redirect("/admin/home-config");
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
   });
 };
 
 exports.deleteHomeImg = (req, res, next) => {
-  const imgId = req.params.imgId;
-  HomeImg.findById(imgId)
-    .then((img) => {
-      if (!img) {
-        return next(new Error("Img not found."));
-      }
-      fileHelper.deleteFile(img.image);
-      return HomeImg.deleteOne({ _id: imgId });
-    })
-    .then(() => {
-      console.log("img deleted");
+  const imgId = req.params.imgId.replaceAll("-", "/");
+  console.log(imgId);
+
+  if (!imgId) {
+    return next(new Error("Img not found."));
+  }
+
+  cloudinary.uploader
+    .destroy(imgId, { invalidate: true })
+    .then((result) => {
+      console.log(result);
       res.status(200).json({ message: "delete successs!" });
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 

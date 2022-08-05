@@ -14,7 +14,7 @@
       method="POST"
       enctype="multipart/form-data"
     >
-      <input type="hidden" name="event" value="home">
+      <input type="hidden" name="folder" value="index">
       <input type="file" name="image" id="image" accept=".jpg,.jpeg"  class="form__element input" />
       <button type="submit" class="form__element form__btn">ADD</button>
     </form>
@@ -22,13 +22,13 @@
     <section class="cont"> 
     <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
         <article class="vignette">
-          <img src="/<%= img.image %>" alt="film image" />
-          <input type="hidden" value="<%= img._id %>" name="imgId">
+          <img src="<%= img%>" alt="film image" />
+          <input type="hidden" value="<%= img %>" name="imgId">
           <button class="form__btn delBtn" type="button">DELETE</button>
         </article>
         <% } %>
     <% } else { %> <h3>No image uploaded yet !</h3> <% } %>
       </section>
     </main>
-  <script src="/js/delete-content.js"></script>
+  <script src="/js/home-admin.js"></script>
   <%- include('../includes/footer.ejs') %>

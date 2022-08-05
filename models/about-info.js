@@ -7,7 +7,16 @@ const aboutInfo = new Schema({
     type: String,
     required: true,
   },
-  image: { type: String },
+  image: {
+    url: {
+      type: String,
+      required: true,
+    },
+    public_id: {
+      type: String,
+      required: true,
+    },
+  },
 });
 
 module.exports = mongoose.model("AboutInfo", aboutInfo);

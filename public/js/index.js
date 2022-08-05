@@ -46,8 +46,11 @@ class Slide {
 }
 // CALL
 const slide = new Slide();
-slide.firstImg();
-slide.start();
+if (screen.width > 1180) {
+  slide.firstImg();
+  slide.start();
+}
+
 //END DIAPO
 
 //Pass info to open sub section in Portfolio page
@@ -74,3 +77,28 @@ console.log(n);
 const phoneImg = document.querySelector(".phone-img");
 
 phoneImg.src = `./stills/phoneVs/${n}.jpg`;
+
+//
+//
+
+console.log(navigator.userAgent);
+
+function getOrientation() {
+  let orientation =
+    window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+  console.log("changed to: ", orientation);
+
+  fetch("/home/" + orientation, {
+    method: "GET",
+  })
+    .then((data) => {
+      console.log(data);
+      data.json();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return orientation;
+}
+getOrientation();
+window.onresize = getOrientation;
