@@ -16,18 +16,6 @@ html {
   font-size: 2rem;
 }
 
-.add-img {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  min-width: 100%;
-}
-
-.form__btn {
-  margin: 0.2em;
-}
-
 .cont {
   display: flex;
   /* flex-direction: row; */

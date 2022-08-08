@@ -4,8 +4,11 @@ const path = require("path");
 const cloudinary = require("cloudinary").v2;
 
 exports.getIndex = (req, res, next) => {
+  const device = req.device.type;
+  console.log({ device });
   const orientation = req.params.orientation;
   console.log(orientation);
+
   cloudinary.api
     .resources({ type: "upload", prefix: "saf_portfolio/index" })
     .then((imgs) => {

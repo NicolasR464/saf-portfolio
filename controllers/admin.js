@@ -11,8 +11,6 @@ const cloudinary = require("cloudinary").v2;
 //
 
 exports.getHomeConfig = (req, res, next) => {
-  const orientation = req.params.orientation;
-  console.log(orientation);
   cloudinary.api
     .resources({ type: "upload", prefix: "saf_portfolio/index" })
     .then((imgs) => {
@@ -33,7 +31,7 @@ exports.getHomeConfig = (req, res, next) => {
           })
         );
       });
-      console.log({ URLs });
+      // console.log({ URLs });
 
       res.render("admin/home-config", {
         pageTitle: "Home | Image upload",
@@ -47,6 +45,10 @@ exports.getHomeConfig = (req, res, next) => {
 exports.postHomeConfig = (req, res, next) => {
   const folder = req.body.folder;
   const file = req.file.buffer;
+  const cropX = req.body.cropX;
+  const cropY = req.body.cropY;
+  const cropWidth = req.body.cropWidth;
+  const cropHeight = req.body.cropHeight;
 
   imgHandler(req, folder, file).then((info) => {
     res.status(201).redirect("/admin/home-config");

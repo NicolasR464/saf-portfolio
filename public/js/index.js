@@ -22,7 +22,7 @@ class Slide {
     this.startDiapo.style.opacity = 0;
     let step = Math.floor(Math.random() * this.img.length);
     const activeImg = document.querySelector(`.i${step}`);
-    console.log(activeImg);
+    // console.log(activeImg);
     //
     if (this.startDiapo.classList[1] === activeImg.classList[1]) {
       this.startDiapo.style.opacity = 1;
@@ -32,7 +32,7 @@ class Slide {
   start() {
     if (this.isPlaying) {
       clearInterval(this.isPlaying);
-      console.log(this.isPlaying);
+      // console.log(this.isPlaying);
       this.isPlaying = null;
     } else {
       this.isPlaying = setInterval(() => {
@@ -69,7 +69,7 @@ links.forEach((link) => {
 
 const randomNum = (n) => {
   let num = Math.floor(Math.random() * n);
-  console.log(num);
+  // console.log(num);
   return num;
 };
 const n = randomNum(2);

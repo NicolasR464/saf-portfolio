@@ -5,62 +5,24 @@ const multer = require("multer");
 require("dotenv/config");
 const app = express();
 const path = require("path");
+const device = require("express-device");
 
 app.set("view engine", "ejs");
 app.set("views", "views");
 //
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(device.capture());
 //
 const adminRoutes = require("./routes/admin");
 const portfolioRoutes = require("./routes/portfolio");
 //
-// const fileStorage = multer.diskStorage({
-//   destination: (req, res, cb) => {
-//     if (req.body.event == "home") {
-//       cb(null, "images/home");
-//     } else if (req.body.event == "about") {
-//       cb(null, "images/about");
-//     } else if (req.body.event == "portfolio") {
-//       switch (req.body.category) {
-//         case "mv":
-//           cb(null, "images/portfolio/mv");
-//           break;
-//         case "narrative":
-//           cb(null, "images/portfolio/narrative");
-//         case "reel":
-//           cb(null, "images/portfolio/reel");
-//         case "commercial":
-//           cb(null, "images/portfolio/commercial");
-//       }
-//     } else {
-//       cb(null, "images");
-//     }
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, new Date().toISOString() + "-" + file.originalname);
-//   },
-// });
-// const fileFilter = (req, file, cb) => {
-//   if (file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
-//     cb(null, true);
-//   }
-//   cb(null, false);
-// };
-// //
-// app.use(
-//   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
-// );
-//
-//
-// CLOUDINARY + MULTER
 
-//
-//
 //
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/admin", adminRoutes);
+
 app.use(portfolioRoutes);
 //
 mongoose
