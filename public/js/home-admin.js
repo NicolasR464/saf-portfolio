@@ -36,6 +36,10 @@ image.onchange = () => {
       cropY = Math.floor(event.detail.y);
       cropWidth = Math.floor(event.detail.width);
       cropHeight = Math.floor(event.detail.height);
+      console.log({ cropX });
+      console.log({ cropY });
+      console.log({ cropWidth });
+      console.log({ cropHeight });
     },
   };
 
@@ -62,6 +66,16 @@ cropBtn.addEventListener("click", () => {
   document.querySelector("[name=cropY]").value = cropY;
   document.querySelector("[name=cropWidth]").value = cropWidth;
   document.querySelector("[name=cropHeight]").value = cropHeight;
+  console.log(
+    " cropX: ",
+    cropX,
+    " cropY: ",
+    cropY,
+    " cropWidth: ",
+    cropWidth,
+    " cropHeight: ",
+    cropHeight
+  );
 });
 
 // const cropper = new Cropper(image_workspace, {

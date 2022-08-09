@@ -49,8 +49,24 @@ exports.postHomeConfig = (req, res, next) => {
   const cropY = req.body.cropY;
   const cropWidth = req.body.cropWidth;
   const cropHeight = req.body.cropHeight;
+  let tags;
+  let metadata;
+  if (cropX) {
+    console.log("phone");
+    tags = "phone-option";
+    // metadata = `hello_id=${cropWidth}❘hi_id=${cropY}`;
+    metadata = {
+      cropX: cropX,
+      cropY: cropY,
+      cropWidth: cropWidth,
+      cropHeight: cropHeight,
+    };
+  } else {
+    tags = null;
+    metadata = null;
+  }
 
-  imgHandler(req, folder, file).then((info) => {
+  imgHandler(req, folder, file, tags, metadata).then((info) => {
     res.status(201).redirect("/admin/home-config");
     console.log("cloudinary uploaded 🥳");
     console.log({ info });

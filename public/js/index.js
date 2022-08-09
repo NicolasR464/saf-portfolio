@@ -74,31 +74,39 @@ const randomNum = (n) => {
 };
 const n = randomNum(2);
 console.log(n);
-const phoneImg = document.querySelector(".phone-img");
-
-phoneImg.src = `./stills/phoneVs/${n}.jpg`;
+const phoneImg = document.querySelectorAll(".img");
+console.log(phoneImg);
 
 //
 //
 
-console.log(navigator.userAgent);
+// console.log(navigator.userAgent);
 
+let landscapeLoaded = false;
 function getOrientation() {
   let orientation =
     window.innerWidth > window.innerHeight ? "landscape" : "portrait";
-  console.log("changed to: ", orientation);
+  console.log("Orientation is on: ", orientation);
 
-  fetch("/home/" + orientation, {
-    method: "GET",
-  })
-    .then((data) => {
-      console.log(data);
-      data.json();
+  if (landscapeLoaded || orientation == "landscape") {
+    landscapeLoaded = true;
+    console.log({ landscapeLoaded });
+    fetch("/home/" + orientation, {
+      method: "GET",
     })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((data) => {
+        console.log(data);
+
+        data.json();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  console.log("after if block: ", { landscapeLoaded });
   return orientation;
 }
-getOrientation();
+if (screen.width <= 1180) {
+  getOrientation();
+}
 window.onresize = getOrientation;
