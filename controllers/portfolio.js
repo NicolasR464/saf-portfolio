@@ -5,13 +5,13 @@ const cloudinary = require("cloudinary").v2;
 
 exports.getIndex = (req, res, next) => {
   const device = req.device.type;
-  console.log({ device });
   const orientation = req.params.orientation;
+  let URLs = [];
+  console.log({ device });
   console.log({ orientation });
 
-  let URLs = [];
-
   if (orientation == "landscape" || device == "desktop") {
+    // URLs = [];
     console.log("laptop or landscape version");
     cloudinary.api
       .resources({ type: "upload", prefix: "saf_portfolio/index" })
@@ -29,15 +29,24 @@ exports.getIndex = (req, res, next) => {
             })
           );
         });
+        console.log({ URLs });
 
-        res.render("portfolio/index", {
-          pageTitle: "Home",
-          path: "/",
-          imgs: URLs,
-        });
+        if (!orientation) {
+          res.render("portfolio/index", {
+            pageTitle: "Home",
+            path: "/",
+            imgs: URLs,
+          });
+        } else {
+          res.status(200).json({
+            message: "new URLs",
+            URLs: URLs,
+          });
+        }
       })
       .catch((err) => console.log(err));
   } else {
+    // URLs = [];
     console.log("portrait mode");
 
     cloudinary.api
@@ -62,12 +71,20 @@ exports.getIndex = (req, res, next) => {
             })
           );
         });
-        console.log(URLs);
-        res.render("portfolio/index", {
-          pageTitle: "Home",
-          path: "/",
-          imgs: URLs,
-        });
+        console.log("Phone V URLs: : ", URLs);
+        if (!orientation) {
+          res.render("portfolio/index", {
+            pageTitle: "Home",
+            path: "/",
+            imgs: URLs,
+          });
+        } else {
+          //json
+          res.status(200).json({
+            message: "new URLs",
+            URLs: URLs,
+          });
+        }
       });
   }
 };

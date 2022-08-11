@@ -11,7 +11,16 @@ const portfolioVid = new Schema({
   vidId: { type: String, required: true },
   player: { type: String, required: true },
   category: { type: String, required: true },
-  image: { type: String, required: true },
+  image: {
+    url: {
+      type: String,
+      required: true,
+    },
+    public_id: {
+      type: String,
+      required: true,
+    },
+  },
   order: { type: Number },
   number: { type: Number },
 });

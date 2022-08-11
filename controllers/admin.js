@@ -8,6 +8,8 @@ const path = require("path");
 require("dotenv/config");
 const cloudinary = require("cloudinary").v2;
 // const streamifier = require("streamifier");
+let metadata = null;
+let tags = null;
 //
 
 exports.getHomeConfig = (req, res, next) => {
@@ -49,8 +51,7 @@ exports.postHomeConfig = (req, res, next) => {
   const cropY = req.body.cropY;
   const cropWidth = req.body.cropWidth;
   const cropHeight = req.body.cropHeight;
-  let tags;
-  let metadata;
+
   if (cropX) {
     console.log("phone");
     tags = "phone-option";
@@ -61,9 +62,6 @@ exports.postHomeConfig = (req, res, next) => {
       cropWidth: cropWidth,
       cropHeight: cropHeight,
     };
-  } else {
-    tags = null;
-    metadata = null;
   }
 
   imgHandler(req, folder, file, tags, metadata).then((info) => {
@@ -106,20 +104,48 @@ exports.getAboutConfig = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 exports.postAboutConfig = (req, res, next) => {
+  const folder = req.body.folder;
   const bioUpdate = req.body.bio;
-  const imgUpdate = req.file;
+  let imgUpdate = undefined;
+  try {
+    imgUpdate = req.file.buffer;
+  } catch (err) {
+    console.log(err);
+  }
+
+  const save = (content) => {
+    content
+      .save()
+      .then(() => {
+        res.redirect("/admin/about-config");
+      })
+      .catch((err) => console.log(err));
+  };
 
   AboutInfo.findOne()
     .then((content) => {
       content.bio = bioUpdate;
       if (imgUpdate) {
-        fileHelper.deleteFile(content.image);
-        content.image = imgUpdate.path;
+        if (content.image) {
+          cloudinary.uploader
+            .destroy(content.image.public_id, { invalidate: true })
+            .then()
+            .catch((err) => console.log(err));
+        }
+
+        imgHandler(req, folder, imgUpdate, tags, metadata)
+          .then((newImg) => {
+            console.log(newImg.secure_url);
+            //add image url to Mongodb
+            content.image.url = newImg.secure_url;
+            content.image.public_id = newImg.public_id;
+            console.log(content.image.url);
+            save(content);
+          })
+          .catch((err) => console.log(err));
+      } else {
+        save(content);
       }
-      return content.save().then(() => {
-        console.log("bio updated");
-        res.redirect("/admin/about-config");
-      });
     })
     .catch((err) => console.log(err));
 };
@@ -129,7 +155,7 @@ exports.getPortfolioConfig = (req, res, next) => {
   PortfolioVid.find()
     .sort({ order: 1 })
     .then((vidsInfo) => {
-      // console.log(vidsInfo);
+      console.log(vidsInfo);
       res.render("admin/portfolio-config", {
         pageTitle: "Portfolio | add video ",
         path: "/admin/portfolio-config",
@@ -144,8 +170,9 @@ exports.getPortfolioConfig = (req, res, next) => {
 exports.postPortfolioConfig = (req, res, next) => {
   const videoTitle = req.body.title.trim();
   const videoUrl = req.body.vidId.trim();
+  const videoFolder = req.body.folder;
   const videoCategory = req.body.category;
-  const videoImage = req.file.path;
+  const videoImage = req.file.buffer;
   console.log(videoUrl);
 
   let order = 0;
@@ -160,29 +187,46 @@ exports.postPortfolioConfig = (req, res, next) => {
     .then(() => {
       const videoPlr = new VideoPlr(videoUrl);
       const extractId = videoPlr.idExtractor();
-      console.log(videoPlr.category);
-      const vidPlr = videoPlr.category;
+      console.log(videoPlr.type);
+      const vidPlr = videoPlr.type;
       //
-      const videoNew = new PortfolioVid({
-        title: videoTitle,
-        vidId: extractId,
-        player: vidPlr,
-        category: videoCategory,
-        image: videoImage,
-        order: order,
-        number: number,
-      });
-      videoNew
-        .save()
-        .then(() => {
-          number++;
-          console.log("New video saved in portfolio 🔥");
-          res.status(201).redirect("/admin/portfolio-config");
+      imgHandler(
+        req,
+        `${videoFolder}/${videoCategory}`,
+        videoImage,
+        tags,
+        metadata
+      )
+        .then((newImg) => {
+          console.log(newImg);
+
+          const videoNew = new PortfolioVid({
+            title: videoTitle,
+            vidId: extractId,
+            player: vidPlr,
+            category: videoCategory,
+            image: {
+              url: newImg.secure_url,
+              public_id: newImg.public_id,
+            },
+            order: order,
+            number: number,
+          });
+          videoNew
+            .save()
+            .then(() => {
+              number++;
+              console.log("New video saved in portfolio 🔥");
+              res.status(201).redirect("/admin/portfolio-config");
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(200).redirect("/admin/portfolio-config");
+            });
         })
-        .catch((err) => {
-          console.log(err);
-          res.status(200).redirect("/admin/portfolio-config");
-        });
+        .catch((err) => console.log(err));
+
+      //
     })
     .catch((err) => {
       console.log(err);
@@ -206,7 +250,11 @@ exports.deletePortfolioVid = (req, res, next) => {
           console.log({ update });
         });
 
-      fileHelper.deleteFile(vid.image);
+      // fileHelper.deleteFile(vid.image);
+      cloudinary.uploader
+        .destroy(vid.image.public_id, { invalidate: true })
+        .then((result) => console.log(result))
+        .catch((err) => console.log(err));
       return PortfolioVid.deleteOne({ _id: vidId });
     })
     .then((info) => {

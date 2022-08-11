@@ -7,7 +7,6 @@ class Slide {
     this.startDiapo = document.querySelector(
       `.i${Math.floor(Math.random() * this.img.length)}`
     );
-
     this.isPlaying = null;
   }
 
@@ -67,22 +66,19 @@ links.forEach((link) => {
 //
 // FOR PHONE AND TABLET
 
+const imgsNum = document.querySelectorAll(".img").length;
 const randomNum = (n) => {
   let num = Math.floor(Math.random() * n);
-  // console.log(num);
   return num;
 };
-const n = randomNum(2);
-console.log(n);
-const phoneImg = document.querySelectorAll(".img");
-console.log(phoneImg);
-
+const n = randomNum(imgsNum);
+const phoneImg = document.querySelector(`.i${n}`);
+phoneImg.classList.add("display");
 //
-//
-
-// console.log(navigator.userAgent);
-
+// Orientation
 let landscapeLoaded = false;
+let imgsCont = document.querySelector(".imgs");
+console.log(imgsCont);
 function getOrientation() {
   let orientation =
     window.innerWidth > window.innerHeight ? "landscape" : "portrait";
@@ -91,22 +87,42 @@ function getOrientation() {
   if (landscapeLoaded || orientation == "landscape") {
     landscapeLoaded = true;
     console.log({ landscapeLoaded });
-    fetch("/home/" + orientation, {
-      method: "GET",
-    })
-      .then((data) => {
-        console.log(data);
+    fetch("/home/" + orientation)
+      .then(() => {
+        fetch("/home/" + orientation)
+          .then((res) => {
+            return res.json();
+          })
+          .then((result) => {
+            console.log({ result });
+            // update images section
+            while (imgsCont.firstChild) {
+              imgsCont.firstChild.remove();
+            }
+            let index = 0;
+            result.URLs.forEach((url, i) => {
+              const img = document.createElement("img");
+              img.classList.add("img");
+              img.classList.add(`i${i}`);
+              img.alt = "cinema still";
+              img.src = url;
+              imgsCont.appendChild(img);
+              index++;
+            });
 
-        data.json();
+            const randomIndex = Math.floor(Math.random() * index);
+            console.log(randomIndex);
+            const newImg = document.querySelector(`.i${randomIndex}`);
+            newImg.classList.add("display");
+            console.log(newImg);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  console.log("after if block: ", { landscapeLoaded });
-  return orientation;
 }
 if (screen.width <= 1180) {
-  getOrientation();
+  // getOrientation();
 }
 window.onresize = getOrientation;

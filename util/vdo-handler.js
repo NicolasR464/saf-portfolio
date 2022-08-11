@@ -1,14 +1,14 @@
 class VideoPlr {
   constructor(id) {
     this.id = id;
-    this.category;
+    this.type;
   }
 
   idExtractor() {
     let extracted;
     if (this.id.includes("?v=")) {
       // YOUTUBE URL
-      this.category = "yt";
+      this.type = "yt";
       extracted = this.id.split("?v=")[1];
       console.log(extracted);
       if (extracted.includes("&")) {
@@ -20,9 +20,9 @@ class VideoPlr {
       return extracted;
     } else if (this.id.includes("/")) {
       if (this.id.includes("youtu.be")) {
-        this.category = "yt";
+        this.type = "yt";
       } else {
-        this.category = "vimeo";
+        this.type = "vimeo";
       }
       extracted =
         this.id.split("/")[4] === undefined
