@@ -2,6 +2,10 @@ const AboutInfo = require("../models/about-info");
 const PortfolioInfo = require("../models/portfolio-vids");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
+const sgMail = require("@sendgrid/mail");
+require("dotenv").config();
+//
+//
 
 exports.getIndex = (req, res, next) => {
   const device = req.device.type;
@@ -111,5 +115,43 @@ exports.getPortfolio = (req, res, next) => {
         pageTitle: "Portfolio",
         vidInfo: vidInfo,
       });
+    });
+};
+
+//contact
+exports.getContact = (req, res, next) => {
+  res.render("portfolio/contact", {
+    pageTitle: "Contact",
+  });
+  //mail
+
+  // using Twilio SendGrid's v3 Node.js Library
+  // https://github.com/sendgrid/sendgrid-nodejs
+
+  //
+};
+
+exports.postContact = (req, res, next) => {
+  const email = req.body.email;
+  const subject = req.body.subject;
+  const message = req.body.message;
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  console.log("sendgrid api: ", process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: "nicolas.rocagel@gmail.com", // Change to your recipient
+    from: email, // Change to your verified sender
+    subject: subject,
+    text: message,
+  };
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent");
+      res.redirect("/contact");
+    })
+    .catch((error) => {
+      console.error(error);
+      res.redirect("/contact");
     });
 };

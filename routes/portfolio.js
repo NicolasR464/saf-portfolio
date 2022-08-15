@@ -8,5 +8,7 @@ router.get("/", portfolioContr.getIndex);
 router.get("/home/:orientation", portfolioContr.getIndex);
 router.get("/about", portfolioContr.getAbout);
 router.get("/portfolio", portfolioContr.getPortfolio);
+router.get("/contact", portfolioContr.getContact);
+router.post("/contact", portfolioContr.postContact);
 
 module.exports = router;

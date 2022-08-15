@@ -11,8 +11,8 @@
     <form class="form add-bio" action="/admin/portfolio-config" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="folder" value="portfolio">
       <!-- <input type="hidden" name="infoId" value="<%= vidsInfo._id %>"> -->
-      <input type="text" name="title" placeholder="add the video title here" class="form__element input input-port" />
-      <input type="text" name="vidId" placeholder="add the URL here" class="form__element input input-port" />
+      <input type="text" name="title" placeholder="add the video title here" class="form__element input input-port" required />
+      <input type="text" name="vidId" placeholder="add the URL here" class="form__element input input-port" required />
 
       <select name="category" id="" class="form__element input select" />
       <option value="mv">music video</option>
@@ -23,7 +23,7 @@
 
 
       <p class="form-txt">Select a video thumbnail: </p>
-      <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input">
+      <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required>
       <button class="form__element form__btn" type="submit">ADD</button>
     </form>
     <hr class="menu--line" />
