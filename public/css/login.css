@@ -1,0 +1,8 @@
+.form {
+  height: 100vh;
+  justify-content: center;
+}
+.input {
+  width: 100vw;
+  max-width: 300px;
+}

@@ -1,5 +1,6 @@
 const AboutInfo = require("../models/about-info");
 const PortfolioVid = require("../models/portfolio-vids");
+const SafInfo = require("../models/saf-model");
 const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
 const imgHandler = require("../util/img-handler");
@@ -295,4 +296,28 @@ exports.updatePortfolioVid = (req, res, next) => {
       res.status(200);
     })
     .catch((err) => console.log(err));
+};
+
+exports.getlogin = (req, res, next) => {
+  res.render("admin/login", {
+    pageTitle: "login",
+  });
+};
+exports.postlogin = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const user = new SafInfo({
+    email: email,
+    password: password,
+  });
+  user.save().then(() => {
+    console.log("logged in");
+    res.redirect("/admin/login");
+  });
+  // SafInfo.findOne({ email: email })
+  //   .then((info) => console.log(info))
+  //   .catchf((err) => console.log(err));
+
+  // res.render("/admin/login");
 };

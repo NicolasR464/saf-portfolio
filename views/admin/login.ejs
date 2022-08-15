@@ -1,0 +1,17 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css" />
+<link rel="stylesheet" href="/css/login.css" />
+
+</head>
+
+<body>
+  <form class="form" action="/admin/login"" method="POST">
+
+    <input placeholder=" email" type="text" name="email" class="form__element input" required>
+    <input placeholder="password" name="password" class="form__element input" type="password" required>
+
+    <button class="form__element form__btn" type="submit">LOG IN</button>
+  </form>
+</body>
+
+</html>

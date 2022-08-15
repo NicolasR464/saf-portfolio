@@ -30,4 +30,7 @@ router.post(
 router.delete("/portfolio-config/:vidId", adminController.deletePortfolioVid);
 router.post("/portfolio-config/:newOrder", adminController.updatePortfolioVid);
 
+router.get("/login", adminController.getlogin);
+router.post("/login", adminController.postlogin);
+
 module.exports = router;
