@@ -3,10 +3,16 @@ html {
 }
 
 .admin-nav {
-  margin-top: 3rem;
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.logout {
+  margin-bottom: 1rem;
+  padding: 0.5em;
+  border-radius: 20%;
+  /* font-size: 1rem; */
 }
 .admin-link {
   display: flex;

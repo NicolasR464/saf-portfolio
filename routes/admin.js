@@ -33,4 +33,6 @@ router.post("/portfolio-config/:newOrder", adminController.updatePortfolioVid);
 router.get("/login", adminController.getlogin);
 router.post("/login", adminController.postlogin);
 
+router.post("/logout", adminController.postLogout);
+
 module.exports = router;

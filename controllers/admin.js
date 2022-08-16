@@ -4,8 +4,10 @@ const SafInfo = require("../models/saf-model");
 const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
 const imgHandler = require("../util/img-handler");
+const bcrypt = require("bcryptjs");
 
 const path = require("path");
+const session = require("express-session");
 require("dotenv/config");
 const cloudinary = require("cloudinary").v2;
 // const streamifier = require("streamifier");
@@ -14,6 +16,10 @@ let tags = null;
 //
 
 exports.getHomeConfig = (req, res, next) => {
+  console.log(req.session.isLoggedIn);
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/admin/login");
+  }
   cloudinary.api
     .resources({ type: "upload", prefix: "saf_portfolio/index" })
     .then((imgs) => {
@@ -94,6 +100,9 @@ exports.deleteHomeImg = (req, res, next) => {
 //About
 
 exports.getAboutConfig = (req, res, next) => {
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/admin/login");
+  }
   AboutInfo.findOne()
     .then((info) => {
       res.render("admin/about-config", {
@@ -153,6 +162,9 @@ exports.postAboutConfig = (req, res, next) => {
 
 // Portfolio
 exports.getPortfolioConfig = (req, res, next) => {
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/admin/login");
+  }
   PortfolioVid.find()
     .sort({ order: 1 })
     .then((vidsInfo) => {
@@ -298,26 +310,72 @@ exports.updatePortfolioVid = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
+//LOGIN
 exports.getlogin = (req, res, next) => {
-  res.render("admin/login", {
-    pageTitle: "login",
-  });
+  let innerText;
+  console.log(req.session.isLoggedIn);
+  SafInfo.findOne()
+    .then((info) => {
+      if (!info) {
+        return (innerText = "Create password");
+      } else {
+        return (innerText = "LOG IN");
+      }
+    })
+    .then((text) => {
+      res.render("admin/login", {
+        pageTitle: "login",
+        buttonTxt: text,
+      });
+    })
+    .catch((err) => console.log(err));
 };
 exports.postlogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  const user = new SafInfo({
-    email: email,
-    password: password,
-  });
-  user.save().then(() => {
-    console.log("logged in");
+  SafInfo.findOne()
+    .then((info) => {
+      if (info) {
+        bcrypt
+          .compare(password, info.password)
+          .then((doMatch) => {
+            if (doMatch) {
+              req.session.isLoggedIn = true;
+              req.session.save(() => {
+                res.redirect("/admin/home-config");
+              });
+            } else {
+              console.log("wrong pwd");
+              res.redirect("/admin/login");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            res.redirect("/admin/login");
+          });
+      } else {
+        bcrypt
+          .hash(password, 12)
+          .then((hashedPassword) => {
+            const user = new SafInfo({
+              email: email,
+              password: hashedPassword,
+            });
+            return user.save();
+          })
+          .then(() => {
+            console.log("log created");
+            //send an email to Saf with password info
+            res.redirect("/admin/login");
+          });
+      }
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.postLogout = (req, res, next) => {
+  req.session.destroy(() => {
     res.redirect("/admin/login");
   });
-  // SafInfo.findOne({ email: email })
-  //   .then((info) => console.log(info))
-  //   .catchf((err) => console.log(err));
-
-  // res.render("/admin/login");
 };
