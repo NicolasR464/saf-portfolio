@@ -9,6 +9,9 @@
     <%- include('../includes/admin-nav.ejs')%>
 
     <form class="form add-bio" action="/admin/portfolio-config" method="POST" enctype="multipart/form-data">
+      <% if (flashMsg) { %>
+        <div><p class="user-message"><%= flashMsg  %></p></div>
+      <% } %>
       <input type="hidden" name="folder" value="portfolio">
       <!-- <input type="hidden" name="infoId" value="<%= vidsInfo._id %>"> -->
       <input type="text" name="title" placeholder="add the video title here" class="form__element input input-port" required />

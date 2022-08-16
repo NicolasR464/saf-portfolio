@@ -16,6 +16,10 @@
       <h3 class="uploadTxt">Image upload</h3>
       <div class="upload">
         <form class="form add-img" action="/admin/home-config" method="POST" enctype="multipart/form-data">
+          
+          <% if (flashMsg) { %>
+            <div><p class="user-message"><%= flashMsg  %></p></div>
+          <% } %>
           <input type="hidden" name="folder" value="index">
           <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required />
           <div class="phone-upload-v">

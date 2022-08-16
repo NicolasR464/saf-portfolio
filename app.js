@@ -12,6 +12,8 @@ const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
   collection: "sessions",
 });
+const flash = require("connect-flash");
+//
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -30,6 +32,8 @@ app.use(
     store: store,
   })
 );
+
+app.use(flash());
 //
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images")));

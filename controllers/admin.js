@@ -16,6 +16,12 @@ let tags = null;
 //
 
 exports.getHomeConfig = (req, res, next) => {
+  let message = req.flash("valid");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   console.log(req.session.isLoggedIn);
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
@@ -46,6 +52,7 @@ exports.getHomeConfig = (req, res, next) => {
         pageTitle: "Home | Image upload",
         path: "/admin/home-config",
         imgs: URLs,
+        flashMsg: message,
       });
     })
     .catch((err) => console.log(err));
@@ -62,7 +69,7 @@ exports.postHomeConfig = (req, res, next) => {
   if (cropX) {
     console.log("phone");
     tags = "phone-option";
-    // metadata = `hello_id=${cropWidth}❘hi_id=${cropY}`;
+
     metadata = {
       cropX: cropX,
       cropY: cropY,
@@ -72,6 +79,7 @@ exports.postHomeConfig = (req, res, next) => {
   }
 
   imgHandler(req, folder, file, tags, metadata).then((info) => {
+    req.flash("valid", "new home page still uploaded 🔥");
     res.status(201).redirect("/admin/home-config");
     console.log("cloudinary uploaded 🥳");
     console.log({ info });
@@ -103,12 +111,21 @@ exports.getAboutConfig = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
+
+  let message = req.flash("valid");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+
   AboutInfo.findOne()
     .then((info) => {
       res.render("admin/about-config", {
         pageTitle: "About | Bio & profile pic",
         path: "/admin/about-config",
         bio: info,
+        flashMsg: message,
       });
     })
     .catch((err) => console.log(err));
@@ -120,13 +137,15 @@ exports.postAboutConfig = (req, res, next) => {
   try {
     imgUpdate = req.file.buffer;
   } catch (err) {
-    console.log(err);
+    console.log({ err });
   }
 
   const save = (content) => {
     content
       .save()
       .then(() => {
+        req.flash("valid", "Updated 👌");
+        console.log("bio updated");
         res.redirect("/admin/about-config");
       })
       .catch((err) => console.log(err));
@@ -165,6 +184,13 @@ exports.getPortfolioConfig = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
+
+  let message = req.flash("valid");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   PortfolioVid.find()
     .sort({ order: 1 })
     .then((vidsInfo) => {
@@ -173,6 +199,7 @@ exports.getPortfolioConfig = (req, res, next) => {
         pageTitle: "Portfolio | add video ",
         path: "/admin/portfolio-config",
         vidsInfo: vidsInfo,
+        flashMsg: message,
       });
     })
     .catch((err) => {
@@ -230,6 +257,7 @@ exports.postPortfolioConfig = (req, res, next) => {
             .then(() => {
               number++;
               console.log("New video saved in portfolio 🔥");
+              req.flash("valid", "new project uploaded 🤩");
               res.status(201).redirect("/admin/portfolio-config");
             })
             .catch((err) => {
@@ -313,6 +341,13 @@ exports.updatePortfolioVid = (req, res, next) => {
 //LOGIN
 exports.getlogin = (req, res, next) => {
   let innerText;
+  let message = req.flash("error");
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
+
   console.log(req.session.isLoggedIn);
   SafInfo.findOne()
     .then((info) => {
@@ -326,6 +361,7 @@ exports.getlogin = (req, res, next) => {
       res.render("admin/login", {
         pageTitle: "login",
         buttonTxt: text,
+        errorMessage: message,
       });
     })
     .catch((err) => console.log(err));
@@ -346,7 +382,7 @@ exports.postlogin = (req, res, next) => {
                 res.redirect("/admin/home-config");
               });
             } else {
-              console.log("wrong pwd");
+              req.flash("error", "Invalid email or password");
               res.redirect("/admin/login");
             }
           })

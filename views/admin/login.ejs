@@ -5,13 +5,20 @@
 </head>
 
 <body>
-  <form class="form" action="/admin/login"" method="POST">
 
-    <input placeholder=" email" type="text" name="email" class="form__element input" required>
+ 
+  <form class="form" action="/admin/login"" method="POST">
+    <% if (errorMessage) { %>
+      <div><p class="user-message user-message--error"><%= errorMessage  %></p></div>
+    <% } %>
+    <input placeholder="email" type="text" name="email" class="form__element input" required>
     <input placeholder="password" name="password" class="form__element input" type="password" required>
 
     <button class="form__element form__btn" type="submit"><%= buttonTxt  %></button>
   </form>
+
+ 
+ 
 </body>
 
 </html>

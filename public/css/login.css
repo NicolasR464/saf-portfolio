@@ -1,6 +1,8 @@
 .form {
   height: 100vh;
+  flex-flow: column;
   justify-content: center;
+  align-items: center;
 }
 .input {
   width: 100vw;

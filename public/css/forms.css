@@ -235,8 +235,6 @@ button:focus {
 
 .preview-container {
   margin-top: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.239);
-
   width: 263px;
   min-height: 150px;
   display: flex;
@@ -260,9 +258,25 @@ button:focus {
   font-size: 1rem;
 }
 
+.user-message {
+  color: rgb(121, 255, 121);
+  border: 1px solid rgb(121, 255, 121);
+  padding: 0.5rem;
+  border-radius: 7px;
+  margin: 0.5rem auto;
+  text-align: center;
+  width: 90vw;
+  max-width: 300px;
+}
+.user-message--error {
+  color: rgb(255, 80, 80);
+  border: 1px solid rgb(255, 80, 80);
+}
+
 @media screen and (max-width: 820px) {
   .modal-container {
     width: 90vw;
     left: 5%;
+    top: 30%;
   }
 }

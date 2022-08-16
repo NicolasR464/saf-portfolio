@@ -18,10 +18,21 @@ let cropHeight;
 //
 
 image.onchange = () => {
+  image_workspace.src = "";
+
+  console.log(image);
   file = image.files[0];
   url = window.URL.createObjectURL(new Blob([file], { type: "image/jpg" }));
   console.log(url);
+  console.log(image_workspace.src);
   image_workspace.src = url;
+  console.log(image_workspace.src);
+  try {
+    cropper.replace(url, { hasSameSize: true });
+    console.log("cropper is launched");
+  } catch {
+    console.log("cropper not launched yet");
+  }
 
   //
   options = {
