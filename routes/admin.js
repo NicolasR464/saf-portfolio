@@ -1,6 +1,7 @@
 const express = require("express");
 const adminController = require("../controllers/admin");
 const multer = require("multer");
+const { body } = require("express-validator");
 
 const fileUpload = multer();
 //{ storage: memoryStorage(), dest: "./tmp" }
@@ -31,7 +32,22 @@ router.delete("/portfolio-config/:vidId", adminController.deletePortfolioVid);
 router.post("/portfolio-config/:newOrder", adminController.updatePortfolioVid);
 
 router.get("/login", adminController.getlogin);
-router.post("/login", adminController.postlogin);
+router.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("Please enter a valid email."),
+    body(
+      "password",
+      "The password must be 5 characters long and contain a number."
+    )
+      .not()
+      .isIn(["123", "password", "god"])
+      .withMessage("Do not use a common word as the password")
+      .isLength({ min: 5 })
+      .matches(/\d/),
+  ],
+  adminController.postlogin
+);
 
 router.post("/logout", adminController.postLogout);
 

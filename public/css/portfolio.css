@@ -337,8 +337,10 @@ s */
   /* VIDEO APIs */
 
   .err-msg {
+    margin-left: 0;
     position: absolute;
     width: 100%;
+    top: 25%;
     text-align: center;
     z-index: 5;
     color: white;

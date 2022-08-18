@@ -5,6 +5,15 @@ const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
 const imgHandler = require("../util/img-handler");
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
+const axios = require("axios");
+
+let Vimeo = require("vimeo").Vimeo;
+let vimeoAPI = new Vimeo(
+  process.env.VIMEO_CLIENT_IDENTIFIER,
+  process.env.VIMEO_CLIENT_SECRET,
+  process.env.VIMEO_ACCESS_TOKEN
+);
 
 const path = require("path");
 const session = require("express-session");
@@ -13,6 +22,7 @@ const cloudinary = require("cloudinary").v2;
 // const streamifier = require("streamifier");
 let metadata = null;
 let tags = null;
+let buttonTxt;
 //
 
 exports.getHomeConfig = (req, res, next) => {
@@ -184,6 +194,12 @@ exports.getPortfolioConfig = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
+  let errorMsg = req.flash("error");
+  if (errorMsg.length > 0) {
+    errorMsg[0];
+  } else {
+    errorMsg = null;
+  }
 
   let message = req.flash("valid");
   if (message.length > 0) {
@@ -194,12 +210,13 @@ exports.getPortfolioConfig = (req, res, next) => {
   PortfolioVid.find()
     .sort({ order: 1 })
     .then((vidsInfo) => {
-      console.log(vidsInfo);
+      // console.log(vidsInfo);
       res.render("admin/portfolio-config", {
         pageTitle: "Portfolio | add video ",
         path: "/admin/portfolio-config",
         vidsInfo: vidsInfo,
         flashMsg: message,
+        errorMsg: errorMsg,
       });
     })
     .catch((err) => {
@@ -213,66 +230,139 @@ exports.postPortfolioConfig = (req, res, next) => {
   const videoFolder = req.body.folder;
   const videoCategory = req.body.category;
   const videoImage = req.file.buffer;
-  console.log(videoUrl);
-
+  let isPublicRated = true;
+  console.log({ videoUrl });
+  //
   let order = 0;
   let number = 0;
+  //
+  const videoPlr = new VideoPlr(videoUrl);
+  const extractId = videoPlr.idExtractor();
+  console.log(videoPlr.type);
+  const vidPlr = videoPlr.type;
+  console.log({ extractId });
 
-  PortfolioVid.find({ category: videoCategory })
-    .count()
-    .then((num) => {
-      number = num;
-      order = num++;
-    })
-    .then(() => {
-      const videoPlr = new VideoPlr(videoUrl);
-      const extractId = videoPlr.idExtractor();
-      console.log(videoPlr.type);
-      const vidPlr = videoPlr.type;
-      //
-      imgHandler(
-        req,
-        `${videoFolder}/${videoCategory}`,
-        videoImage,
-        tags,
-        metadata
-      )
-        .then((newImg) => {
-          console.log(newImg);
+  //FUNCTIONS
+  const saveVideo = () => {
+    PortfolioVid.find({ category: videoCategory })
+      .count()
+      .then((num) => {
+        number = num;
+        order = num++;
+      })
+      .then(() => {
+        //
+        imgHandler(
+          req,
+          `${videoFolder}/${videoCategory}`,
+          videoImage,
+          tags,
+          metadata
+        )
+          .then((newImg) => {
+            // console.log(newImg);
 
-          const videoNew = new PortfolioVid({
-            title: videoTitle,
-            vidId: extractId,
-            player: vidPlr,
-            category: videoCategory,
-            image: {
-              url: newImg.secure_url,
-              public_id: newImg.public_id,
-            },
-            order: order,
-            number: number,
-          });
-          videoNew
-            .save()
-            .then(() => {
-              number++;
-              console.log("New video saved in portfolio 🔥");
-              req.flash("valid", "new project uploaded 🤩");
-              res.status(201).redirect("/admin/portfolio-config");
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(200).redirect("/admin/portfolio-config");
+            const videoNew = new PortfolioVid({
+              title: videoTitle,
+              vidId: extractId,
+              player: vidPlr,
+              category: videoCategory,
+              image: {
+                url: newImg.secure_url,
+                public_id: newImg.public_id,
+              },
+              order: order,
+              number: number,
+              isPublicRated: isPublicRated,
             });
-        })
-        .catch((err) => console.log(err));
+            videoNew
+              .save()
+              .then(() => {
+                number++;
+                console.log("New video saved in portfolio 🔥");
+                req.flash("valid", "new project uploaded 🤩");
+                res.status(201).redirect("/admin/portfolio-config");
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(200).redirect("/admin/portfolio-config");
+              });
+          })
+          .catch((err) => console.log(err));
 
-      //
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(200).redirect("/admin/portfolio-config");
-    });
+        //
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(200).redirect("/admin/portfolio-config");
+      });
+  };
+
+  const errorHandling = () => {
+    console.log("url off");
+    req.flash(
+      "error",
+      "Mh...there must be something off with the URL, please check it and try again."
+    );
+    res.redirect("/admin/portfolio-config");
+  };
+  ////YT API - to check if the extracted id is real
+  if (vidPlr == "yt") {
+    const baseUri = "https://www.googleapis.com/youtube/v3/videos?";
+    const ytKey = "key=" + process.env.YT_KEY;
+    const parameter = "&part=contentDetails&";
+    const ytURL = baseUri + ytKey + parameter + "id=" + extractId;
+    console.log(ytURL);
+    axios
+      .get(ytURL)
+      .then((info) => {
+        console.log(info.data.items);
+        console.log(info.data.items[0].contentDetails.contentRating.ytRating);
+        console.log(info.data.pageInfo);
+        console.log(info.data.pageInfo.totalResults);
+
+        info.data.items[0].contentDetails.contentRating.ytRating ==
+        "ytAgeRestricted"
+          ? (isPublicRated = false)
+          : isPublicRated;
+        const idExists = info.data.pageInfo.totalResults;
+        if (idExists == 1) {
+          saveVideo();
+          return;
+        } else {
+          errorHandling();
+        }
+      })
+      .catch((err) => console.log(err));
+  } else if (vidPlr == "vimeo") {
+    //VIMEO API
+    let idCheck = extractId;
+    extractId.includes("/") ? (idCheck = idCheck.replace("/", ":")) : idCheck;
+    console.log("new extract: ", extractId);
+    vimeoAPI.request(
+      {
+        method: "GET",
+        path: `videos/${idCheck}?fields=uri,name,content_rating`,
+      },
+      function (error, body, status_code, headers) {
+        if (error) {
+          console.log(error);
+          errorHandling();
+          return;
+        }
+        console.log(body);
+        isPublicRated;
+        body.content_rating[0] != "safe"
+          ? (isPublicRated = false)
+          : isPublicRated;
+        saveVideo();
+      }
+    );
+  } else {
+    errorHandling();
+  }
+
+  //
 };
 
 exports.deletePortfolioVid = (req, res, next) => {
@@ -340,6 +430,12 @@ exports.updatePortfolioVid = (req, res, next) => {
 
 //LOGIN
 exports.getlogin = (req, res, next) => {
+  let logValid = req.flash("valid");
+  if (logValid.length > 0) {
+    logValid = logValid[0];
+  } else {
+    logValid = null;
+  }
   let innerText;
   let message = req.flash("error");
   if (message.length > 0) {
@@ -358,17 +454,34 @@ exports.getlogin = (req, res, next) => {
       }
     })
     .then((text) => {
+      buttonTxt = text;
       res.render("admin/login", {
         pageTitle: "login",
         buttonTxt: text,
         errorMessage: message,
+        flashMsg: logValid,
       });
     })
     .catch((err) => console.log(err));
 };
 exports.postlogin = (req, res, next) => {
-  const email = req.body.email;
-  const password = req.body.password;
+  const email = req.body.email.trim();
+  const password = req.body.password.trim();
+  const errors = validationResult(req);
+  console.log(errors);
+  console.log(errors.array().length);
+  if (!errors.isEmpty()) {
+    let errorMsg;
+    errors.array().length > 1
+      ? (errorMsg = errors.array()[0].msg + " " + errors.array()[1].msg)
+      : (errorMsg = errors.array()[0].msg);
+    console.log("errors: ", errors.array()[0].msg);
+    return res.status(422).render("admin/login", {
+      pageTitle: "login",
+      buttonTxt: buttonTxt,
+      errorMessage: errorMsg,
+    });
+  }
 
   SafInfo.findOne()
     .then((info) => {
@@ -402,7 +515,11 @@ exports.postlogin = (req, res, next) => {
           })
           .then(() => {
             console.log("log created");
-            //send an email to Saf with password info
+            req.flash(
+              "valid",
+              "Password created! 🥳 You may now log in. Ps: Check your email."
+            );
+            //send an email to Saf with password info + Vimeo video link
             res.redirect("/admin/login");
           });
       }

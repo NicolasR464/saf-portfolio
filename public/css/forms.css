@@ -273,6 +273,22 @@ button:focus {
   border: 1px solid rgb(255, 80, 80);
 }
 
+.pwd-box {
+  position: relative;
+}
+
+#eye-toggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  width: 2rem;
+  height: 80%;
+}
+.eye-icon {
+  font-size: 1rem;
+}
+
 @media screen and (max-width: 820px) {
   .modal-container {
     width: 90vw;

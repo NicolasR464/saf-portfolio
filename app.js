@@ -26,7 +26,7 @@ const portfolioRoutes = require("./routes/portfolio");
 //
 app.use(
   session({
-    secret: "qpfktqgpb74w0x8pllic",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store,

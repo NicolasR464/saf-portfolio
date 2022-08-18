@@ -6,6 +6,14 @@ class VideoPlr {
 
   idExtractor() {
     let extracted;
+    const idArray = this.id.split("");
+    function getOccurrence(array, value) {
+      return array.filter((v) => v === value).length;
+    }
+    const numberSlash = getOccurrence(idArray, "/");
+    console.log(getOccurrence(idArray, "/"));
+
+    //FILTER
     if (this.id.includes("?v=")) {
       // YOUTUBE URL
       this.type = "yt";
@@ -18,12 +26,13 @@ class VideoPlr {
         console.log(extracted);
       }
       return extracted;
-    } else if (this.id.includes("/")) {
+    } else if (numberSlash >= 3) {
       if (this.id.includes("youtu.be")) {
         this.type = "yt";
       } else {
         this.type = "vimeo";
       }
+
       extracted =
         this.id.split("/")[4] === undefined
           ? this.id.split("/")[3]
@@ -32,10 +41,12 @@ class VideoPlr {
       if (extracted.includes("video")) {
         extracted = extracted.split("/")[1];
       }
-
+      console.log({ extracted });
       return extracted;
     } else {
       //MESSAGE: URL INCORRECT
+      extracted = undefined;
+      return extracted;
     }
   }
 

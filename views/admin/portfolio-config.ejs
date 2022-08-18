@@ -12,6 +12,9 @@
       <% if (flashMsg) { %>
         <div><p class="user-message"><%= flashMsg  %></p></div>
       <% } %>
+      <% if (errorMsg) { %>
+        <div><p class="user-message user-message--error"><%= errorMsg  %></p></div>
+      <% } %>
       <input type="hidden" name="folder" value="portfolio">
       <!-- <input type="hidden" name="infoId" value="<%= vidsInfo._id %>"> -->
       <input type="text" name="title" placeholder="add the video title here" class="form__element input input-port" required />

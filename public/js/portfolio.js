@@ -43,134 +43,22 @@ const tbnl = document.querySelector(".tbnl");
 // });
 
 /** LAPTOP VIDEO PLR */
-class VideoPlr {
-  constructor(id) {
-    this.id = id;
-  }
 
-  vidLaptopPlr() {
-    if (this.id.includes("/") || this.id.includes("?h=") || !isNaN(this.id)) {
-      console.log("this is a vimeo id");
-      return `https://player.vimeo.com/video/${this.id}?amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
-    } else {
-      console.log("this is a yt id");
-      return `https://www.youtube.com/embed/${this.id}?modestbranding=1&rel=0&iv_load_policy=3&theme=light&color=white&autoplay=1&loop=1`;
+const vidLaptopPlr = (vidId, vimeo, hash) => {
+  if (vimeo) {
+    if (hash) {
+      console.log("this is a private vimeo id");
+      return `https://player.vimeo.com/video/${vidId}?h=${hash}&amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
     }
+    console.log("this is a normal vimeo id");
+    return `https://player.vimeo.com/video/${vidId}?amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
+  } else {
+    console.log("this is a yt id");
+    return `https://www.youtube.com/embed/${vidId}?modestbranding=1&rel=0&iv_load_policy=3&theme=light&color=white&autoplay=1&loop=1`;
   }
-}
+};
 //
 
-const videoInfo = {
-  mv: [
-    {
-      title: "ZUUI | Distant Interior | Trailer",
-      id: "lge80mpJ97I",
-    },
-    {
-      title: "En Mi Barrio | Paloma Pradal",
-      id: "1eG8-Kpjk0I",
-    },
-    {
-      title: "Hendrix Harris | Moonlit Ride",
-      id: "Q3oGx2UZ2aY",
-    },
-    {
-      title: "Itonas | L’hiver",
-      id: "VIBfmOgwb3M",
-    },
-    {
-      title: "Caroline | Nobody Knows",
-      id: "rZ15daGZD-0",
-    },
-    {
-      title: "Rachmaninoff | Jean Paul Gasparian",
-      id: "xeIsooiYL9E",
-    },
-    {
-      title: "Jwles | Yummy",
-      id: "d57qu-0HOlA",
-    },
-    {
-      title: "Jwles | cancérigène",
-      id: "Kpx4ljJ_cjk",
-    },
-    {
-      title: "Damsel | Ramesses II",
-      id: "aeato83blJ4",
-    },
-    {
-      title: "Thierry Pécou | Sikus",
-      id: "bzqkJg6RWU4",
-    },
-  ],
-  narrative: [
-    {
-      title: "Folia | 2021",
-      id: "656486023",
-    },
-    {
-      title: "Mon p’tit coin de rue | 2021",
-      id: "662483611",
-    },
-    {
-      title: "Speedsters | 2020",
-      id: "IDVKL_I_nBM",
-    },
-    {
-      title: "Agni | 2020",
-      id: "RRaIeuiZ-Vs",
-    },
-    {
-      title: "East Wind | 2015",
-      id: "RU1-8LP2pPI",
-    },
-    {
-      title: "An Eye for An Eye | 2018",
-      id: "awELvfSQ14c",
-    },
-  ],
-  commercial: [
-    {
-      title: "Vacheron Constantin | 2017",
-      id: "222151246",
-    },
-    {
-      title: "Nike | 2017",
-      id: "377489779",
-    },
-    {
-      title: "Christie’s | 2018",
-      id: "332012682",
-    },
-    {
-      title: "Roses on rails | LUNA 2020",
-      id: "599477117",
-    },
-    {
-      title: "Plastic | 2016",
-      id: "yl-nOl0xU84",
-    },
-    {
-      title: "Plastic | Part 2",
-      id: "bzKdymW87f8",
-    },
-    {
-      title: "Elise Bertrand | Lettera Amorosa(debut album) Teaser (2022)",
-      id: "FjFN-ROsCNA",
-    },
-  ],
-  reel: [
-    {
-      title: "Showreel | 2019",
-      id: "vOmiMvt8Gg0",
-    },
-    {
-      title: "Showreel | 2022",
-      // id: "662483611",
-      id: "6PptGqIu6jM",
-    },
-  ],
-};
 //
 //
 //DEFAULT CONTENT (MV) - if portfolio in localstorage or nothing
@@ -206,6 +94,16 @@ const plrContent = () => {
       //CLICK event > lecture video
       button.addEventListener("click", () => {
         let idInfo = button.getAttribute("data-id");
+        let hash = null;
+
+        if (idInfo.includes("/")) {
+          hash = idInfo.split("/")[1];
+          idInfo = idInfo.split("/")[0];
+        }
+        console.log(hash);
+        let isVimeo = false;
+        let playerInfo = button.getAttribute("data-player");
+        playerInfo == "vimeo" ? (isVimeo = true) : isVimeo;
 
         const clickedBtn = document.querySelector(".btns-g.clicked--btn");
         if (clickedBtn != null) {
@@ -216,8 +114,8 @@ const plrContent = () => {
         tbnl.classList.remove("fade");
         toggleVid.classList.add("active");
         //PLAY VID
-        const vidPlr = new VideoPlr(idInfo);
-        iframeSelec.src = vidPlr.vidLaptopPlr();
+        // const vidPlr = new VideoPlr(idInfo);
+        iframeSelec.src = vidLaptopPlr(idInfo, isVimeo, hash);
         isNotPlaying = false;
       });
       // MOUSEOVER BTN EVENT > vid plr off + tbnl on
@@ -570,15 +468,11 @@ const loadVid = () => {
         // change vimeo id
         dataIdVim = img.getAttribute("data-id");
         // load vimeo video
-        videoVim
-          .loadVideo(dataIdVim)
-          .then(() => {
-            console.log("coucou vimeo");
-          })
-          .catch((err) => {
-            console.log(err);
-            errMsg.innerHTML = "video not found!";
-          });
+        videoVim.loadVideo(dataIdVim).catch((err) => {
+          console.log(err);
+          errMsg.innerHTML = "video not found!";
+          playBtn.style.opacity = "0";
+        });
 
         //Events
         videoVim.on("loaded", () => {});
@@ -642,6 +536,8 @@ const loadVid = () => {
           console.error(e);
           console.log("yt no work");
           errMsg.innerHTML = "video not found!";
+          //remove play btn
+          playBtn.style.opacity = "0";
         });
       }
     }
