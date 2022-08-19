@@ -434,9 +434,9 @@ exports.getlogin = (req, res, next) => {
   if (logValid.length > 0) {
     logValid = logValid[0];
   } else {
-    logValid = null;
+    logValid = undefined;
   }
-  let innerText;
+  // let innerText;
   let message = req.flash("error");
   if (message.length > 0) {
     message = message[0];
@@ -448,9 +448,9 @@ exports.getlogin = (req, res, next) => {
   SafInfo.findOne()
     .then((info) => {
       if (!info) {
-        return (innerText = "Create password");
+        return "Create password";
       } else {
-        return (innerText = "LOG IN");
+        return "LOG IN";
       }
     })
     .then((text) => {
@@ -465,21 +465,24 @@ exports.getlogin = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 exports.postlogin = (req, res, next) => {
+  const logValid = undefined;
   const email = req.body.email.trim();
   const password = req.body.password.trim();
   const errors = validationResult(req);
   console.log(errors);
   console.log(errors.array().length);
   if (!errors.isEmpty()) {
+    console.log(errors);
     let errorMsg;
     errors.array().length > 1
       ? (errorMsg = errors.array()[0].msg + " " + errors.array()[1].msg)
       : (errorMsg = errors.array()[0].msg);
-    console.log("errors: ", errors.array()[0].msg);
+    console.log("errors :( : ", errors.array()[0].msg);
     return res.status(422).render("admin/login", {
       pageTitle: "login",
       buttonTxt: buttonTxt,
       errorMessage: errorMsg,
+      flashMsg: logValid,
     });
   }
 
@@ -519,7 +522,7 @@ exports.postlogin = (req, res, next) => {
               "valid",
               "Password created! 🥳 You may now log in. Ps: Check your email."
             );
-            //send an email to Saf with password info + Vimeo video link
+            //send an email to Saf with password info + Vimeo explainer video link
             res.redirect("/admin/login");
           });
       }

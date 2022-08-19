@@ -35,16 +35,16 @@ router.get("/login", adminController.getlogin);
 router.post(
   "/login",
   [
-    body("email").isEmail().withMessage("Please enter a valid email."),
-    body(
-      "password",
-      "The password must be 5 characters long and contain a number."
-    )
-      .not()
-      .isIn(["123", "password", "god"])
-      .withMessage("Do not use a common word as the password")
+    body("email")
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("Please enter a valid email."),
+    body("password")
       .isLength({ min: 5 })
-      .matches(/\d/),
+      .matches(/\d/)
+      .withMessage(
+        "The password must be at least 5 characters long and contain a number."
+      ),
   ],
   adminController.postlogin
 );
