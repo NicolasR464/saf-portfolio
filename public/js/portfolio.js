@@ -383,7 +383,7 @@ const slideMaker = () => {
         img.width = "1920";
         img.height = "1080";
         img.dataset.vidSource = button.getAttribute("data-player");
-
+        img.dataset.ispubrated = button.getAttribute("data-ispubrated");
         img.dataset.index = index;
         img.classList.add("slide");
 
@@ -440,13 +440,32 @@ const loadVid = () => {
 
   //
   let imgIndex;
+  let isPublicRated;
   carouselImages.forEach((img) => {
     imgIndex = img.getAttribute("data-index");
+    isPublicRated = img.getAttribute("data-isPubRated");
 
     //
     // img.style.display = "block";
 
     if (imgIndex == swiper.activeIndex) {
+      console.log({ isPublicRated });
+
+      if (isPublicRated != "") {
+        if (isPublicRated === "false") {
+          console.log("isPublicRated -> false");
+          isPublicRated = false;
+          console.log(isPublicRated);
+          console.log("typeof: ", typeof isPublicRated);
+        } else {
+          isPublicRated = true;
+          console.log("it's public shit");
+        }
+      } else {
+        console.log("not defined");
+        isPublicRated = true;
+      }
+      console.log("typeof: ", typeof isPublicRated);
       //console
       console.log("imgIndex: " + imgIndex);
       console.log("Swiper imgIndex: " + swiper.activeIndex);
@@ -469,9 +488,22 @@ const loadVid = () => {
         dataIdVim = img.getAttribute("data-id");
         // load vimeo video
         videoVim.loadVideo(dataIdVim).catch((err) => {
-          console.log(err);
-          errMsg.innerHTML = "video not found!";
-          playBtn.style.opacity = "0";
+          console.log("Vimeo 1st err: ", err);
+          let vidId;
+          let hash;
+          if (dataIdVim.includes("/")) {
+            vidId = dataIdVim.split("/")[0];
+            hash = dataIdVim.split("/")[1];
+          }
+
+          videoVim
+            .loadVideo(`https://vimeo.com/${vidId}?h=${hash}`)
+            .then((info) => console.log(info))
+            .catch((err) => {
+              console.log("Vimeo 2n err: ", err);
+              errMsg.innerHTML = "video not found!";
+              playBtn.style.opacity = "0";
+            });
         });
 
         //Events
@@ -521,7 +553,6 @@ const loadVid = () => {
           } else if (e.data === 1) {
             console.log("yt vid plays");
             img.style.opacity = "0";
-
             loadIcon.classList.remove("active");
             ytV.classList.add("show");
           } else if (e.data === 2) {
@@ -530,6 +561,12 @@ const loadVid = () => {
             console.log(player.getVideoUrl());
           } else if (e.data === -1) {
             console.log("unstarted");
+            // if rated R...
+            console.log("and now? : ", isPublicRated);
+            if (isPublicRated === false) {
+              img.style.opacity = "0";
+              ytV.classList.add("show");
+            }
           }
         });
         player.addEventListener("onError", (e) => {

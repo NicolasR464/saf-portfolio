@@ -276,6 +276,13 @@ s */
 .active {
   opacity: 1;
 }
+@media screen and (max-width: 1181px) and (orientation: portrait) {
+  html {
+    overflow-x: none;
+    overflow-y: none;
+    -webkit-overflow-scrolling: none;
+  }
+}
 
 @media screen and (max-width: 1181px) {
   html {
@@ -346,6 +353,8 @@ s */
     color: white;
     font-family: sans-serif;
     font-size: 1rem;
+    touch-action: none;
+    pointer-events: none;
   }
 
   .yt-container,
@@ -353,11 +362,11 @@ s */
     position: absolute;
     top: 0;
 
-    width: 30%;
-    height: 30%;
+    width: 20%;
+    height: 20%;
     margin: 0 auto;
     z-index: 2;
-    transform: translate(120%, 120%);
+    transform: translate(195%, 195%);
     opacity: 0;
   }
   #video-placeholder {
@@ -378,7 +387,7 @@ s */
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-56%, -53%);
+    transform: translate(-56%, -56%);
   }
 
   .play-icon {
