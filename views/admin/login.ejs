@@ -15,16 +15,20 @@
     <% if (errorMessage) { %>
       <div><p class="user-message user-message--error"><%= errorMessage  %></p></div>
     <% } %>
-    <input placeholder="email" type="email" name="email" class="form__element input" required>
+    <input placeholder="email" type="email" name="email" class="form__element input" required autocomplete="email">
     <div class="pwd-box">
-      <input placeholder="password" class="form__element input " name="password"  id="pwd" type="password" required>
+      <input placeholder="password" class="form__element input " name="password"  id="pwd" type="password" required autocomplete="current-password">
       <button type="button" id="eye-toggle"><i class="eye-icon fa-regular fa-eye"></i></button>
     </div>
     
 
     <button class="form__element form__btn" type="submit"><%= buttonTxt  %></button>
+    <% if (buttonTxt == "LOG IN") { %>
+      <a class="pwd-reset" href="/admin/pwdreset">forgot password?</a>
+    <% } %>
   </form>
-
+  
+  
  
  <script src="/js/login.js"></script>
 </body>

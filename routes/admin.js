@@ -51,4 +51,6 @@ router.post(
 
 router.post("/logout", adminController.postLogout);
 
+router.get("/pwdreset/resetId", adminController.pwdreset);
+
 module.exports = router;

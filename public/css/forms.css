@@ -288,6 +288,12 @@ button:focus {
 .eye-icon {
   font-size: 1rem;
 }
+.pwd-reset {
+  font-size: 1.3rem;
+  color: white;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
 
 @media screen and (max-width: 820px) {
   .modal-container {

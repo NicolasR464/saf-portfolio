@@ -7,6 +7,8 @@ const imgHandler = require("../util/img-handler");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const axios = require("axios");
+const sgMail = require("@sendgrid/mail");
+require("dotenv").config();
 
 let Vimeo = require("vimeo").Vimeo;
 let vimeoAPI = new Vimeo(
@@ -17,6 +19,7 @@ let vimeoAPI = new Vimeo(
 
 const path = require("path");
 const session = require("express-session");
+const { rmSync } = require("fs");
 require("dotenv/config");
 const cloudinary = require("cloudinary").v2;
 // const streamifier = require("streamifier");
@@ -231,6 +234,7 @@ exports.postPortfolioConfig = (req, res, next) => {
   const videoCategory = req.body.category;
   const videoImage = req.file.buffer;
   let isPublicRated = true;
+  let isEmbeddable = true;
   console.log({ videoUrl });
   //
   let order = 0;
@@ -274,13 +278,28 @@ exports.postPortfolioConfig = (req, res, next) => {
               order: order,
               number: number,
               isPublicRated: isPublicRated,
+              isEmbeddable: isEmbeddable,
             });
             videoNew
               .save()
-              .then(() => {
+              .then((video) => {
+                console.log(video);
                 number++;
                 console.log("New video saved in portfolio 🔥");
                 req.flash("valid", "new project uploaded 🤩");
+                if (video.isPublicRated == false) {
+                  req.flash(
+                    "error",
+                    "This video is not rated 'All audiences' or not rated at all 🔞. Visitors may be redirected to Vimeo or Youtube to watch it..."
+                  );
+                }
+                if (video.isEmbeddable == false) {
+                  req.flash(
+                    "error",
+                    "The owner of this video didn't set it up to be embeddable ❌"
+                  );
+                }
+
                 res.status(201).redirect("/admin/portfolio-config");
               })
               .catch((err) => {
@@ -325,6 +344,7 @@ exports.postPortfolioConfig = (req, res, next) => {
         "ytAgeRestricted"
           ? (isPublicRated = false)
           : isPublicRated;
+
         const idExists = info.data.pageInfo.totalResults;
         if (idExists == 1) {
           saveVideo();
@@ -342,7 +362,7 @@ exports.postPortfolioConfig = (req, res, next) => {
     vimeoAPI.request(
       {
         method: "GET",
-        path: `videos/${idCheck}?fields=uri,name,content_rating`,
+        path: `videos/${idCheck}?fields=uri,name,content_rating,privacy`,
       },
       function (error, body, status_code, headers) {
         if (error) {
@@ -351,10 +371,13 @@ exports.postPortfolioConfig = (req, res, next) => {
           return;
         }
         console.log(body);
-        isPublicRated;
+
         body.content_rating[0] != "safe"
           ? (isPublicRated = false)
           : isPublicRated;
+
+        body.privacy.embed == "private" ? (isEmbeddable = false) : isEmbeddable;
+
         saveVideo();
       }
     );
@@ -532,6 +555,35 @@ exports.postlogin = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(() => {
+    //delete session in db
     res.redirect("/admin/login");
   });
+};
+
+let randomHash;
+exports.pwdreset = (req, res, next) => {
+  res.render("admin/pwdreset", {
+    pageTitle: "pwd reset",
+  });
+
+  //send email
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  console.log("sendgrid api: ", process.env.SENDGRID_API_KEY);
+  const msg = {
+    to: "nicolas.rocagel@gmail.com", // Change to your recipient
+    from: "nicolas.rocagel@gmail.com", // Change to your verified sender
+    subject: "Password reset",
+    html: `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ <p>
+    <p><a href="http://localhost:5500/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
+  };
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent");
+      // res.redirect("/contact");
+    })
+    .catch((error) => {
+      console.error(error);
+      res.redirect("/admin/login");
+    });
 };

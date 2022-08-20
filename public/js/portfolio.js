@@ -271,6 +271,11 @@ const prevB = document.querySelector(".swiper-button-prev");
 const nextB = document.querySelector(".swiper-button-next");
 const title = document.querySelector(".title");
 //
+// like vdo blocker test
+const blocker = document.querySelector(".vdo-like-blocker");
+blocker.addEventListener("click", () => {
+  console.log("blocker clicked");
+});
 
 let count = 0;
 const letterCount = (txt) => {
@@ -440,32 +445,38 @@ const loadVid = () => {
 
   //
   let imgIndex;
-  let isPublicRated;
+  let isPublicArr = [];
+
   carouselImages.forEach((img) => {
     imgIndex = img.getAttribute("data-index");
-    isPublicRated = img.getAttribute("data-isPubRated");
+    isPublicArr.push(img.getAttribute("data-isPubRated"));
+    // console.log(isPublicArr);
+    // console.log(typeof imgIndex);
 
     //
     // img.style.display = "block";
 
     if (imgIndex == swiper.activeIndex) {
-      console.log({ isPublicRated });
+      console.log("this vid is: ", isPublicArr[Number(imgIndex)]);
 
-      if (isPublicRated != "") {
-        if (isPublicRated === "false") {
-          console.log("isPublicRated -> false");
-          isPublicRated = false;
-          console.log(isPublicRated);
-          console.log("typeof: ", typeof isPublicRated);
-        } else {
-          isPublicRated = true;
-          console.log("it's public shit");
-        }
-      } else {
-        console.log("not defined");
-        isPublicRated = true;
-      }
-      console.log("typeof: ", typeof isPublicRated);
+      // const isPublicFn = () => {
+      //   let isPublicRated = img.getAttribute("data-isPubRated");
+      //   if (isPublicRated != "") {
+      //     if (isPublicRated === "false") {
+      //       console.log("isPublicRated -> false");
+      //       return false;
+      //       console.log(isPublicRated);
+      //       console.log("typeof: ", typeof isPublicRated);
+      //     } else {
+      //       return true;
+      //       console.log("it's public shit");
+      //     }
+      //   } else {
+      //     console.log("not defined");
+      //     return true;
+      //   }
+      // };
+
       //console
       console.log("imgIndex: " + imgIndex);
       console.log("Swiper imgIndex: " + swiper.activeIndex);
@@ -526,6 +537,11 @@ const loadVid = () => {
         //console
         console.log("YT");
 
+        if (isPublicArr[Number(imgIndex)] === "false") {
+          img.style.opacity = "0";
+          ytV.classList.add("show");
+        }
+
         vimeoContainer.classList.remove("show");
         vimeoContainer.classList.remove("forward");
         ytV.classList.add("forward");
@@ -549,7 +565,6 @@ const loadVid = () => {
             console.log("Yt buffering");
             loadIcon.classList.add("active");
             playBtn.style.opacity = "0";
-            ytIsOn = true;
           } else if (e.data === 1) {
             console.log("yt vid plays");
             img.style.opacity = "0";
@@ -558,15 +573,16 @@ const loadVid = () => {
           } else if (e.data === 2) {
             console.log("yt vid paused");
           } else if (e.data === 5) {
+            console.log("yt vid cued");
             console.log(player.getVideoUrl());
           } else if (e.data === -1) {
             console.log("unstarted");
             // if rated R...
-            console.log("and now? : ", isPublicRated);
-            if (isPublicRated === false) {
-              img.style.opacity = "0";
-              ytV.classList.add("show");
-            }
+
+            // if (isPublicRated === false) {
+            //   img.style.opacity = "0";
+            //   ytV.classList.add("show");
+            // }
           }
         });
         player.addEventListener("onError", (e) => {
