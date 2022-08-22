@@ -18,16 +18,20 @@
     <input placeholder="email" type="email" name="email" class="form__element input" required autocomplete="email">
     <div class="pwd-box">
       <input placeholder="password" class="form__element input " name="password"  id="pwd" type="password" required autocomplete="current-password">
-      <button type="button" id="eye-toggle"><i class="eye-icon fa-regular fa-eye"></i></button>
+      <button type="button" class="eye-toggle"><i class="eye-icon fa-regular fa-eye"></i></button>
     </div>
     
 
     <button class="form__element form__btn" type="submit"><%= buttonTxt  %></button>
-    <% if (buttonTxt == "LOG IN") { %>
-      <a class="pwd-reset" href="/admin/pwdreset">forgot password?</a>
-    <% } %>
+    
   </form>
-  
+  <% if (buttonTxt == "LOG IN") { %>
+  <form action="/admin/pwdforgot"  method="POST">
+      <button  type="submit">
+        forgot password?
+      </button>
+  </form>
+  <% } %>
   
  
  <script src="/js/login.js"></script>

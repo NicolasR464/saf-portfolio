@@ -51,6 +51,18 @@ router.post(
 
 router.post("/logout", adminController.postLogout);
 
-router.get("/pwdreset/resetId", adminController.pwdreset);
+router.get("/pwdforgot", adminController.getForgotPwd);
+
+router.get("/pwdreset/:token", adminController.pwdreset);
+router.post(
+  "/pwdreset/:token",
+  body("password")
+    .isLength({ min: 5 })
+    .matches(/\d/)
+    .withMessage(
+      "The password must be at least 5 characters long and contain a number."
+    ),
+  adminController.postPwdreset
+);
 
 module.exports = router;

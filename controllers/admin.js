@@ -8,6 +8,8 @@ const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const axios = require("axios");
 const sgMail = require("@sendgrid/mail");
+const crypto = require("crypto");
+
 require("dotenv").config();
 
 let Vimeo = require("vimeo").Vimeo;
@@ -29,16 +31,18 @@ let buttonTxt;
 //
 
 exports.getHomeConfig = (req, res, next) => {
+  console.log(req.session.isLoggedIn);
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/admin/login");
+  }
+
   let message = req.flash("valid");
   if (message.length > 0) {
     message = message[0];
   } else {
     message = null;
   }
-  console.log(req.session.isLoggedIn);
-  if (!req.session.isLoggedIn) {
-    return res.redirect("/admin/login");
-  }
+
   cloudinary.api
     .resources({ type: "upload", prefix: "saf_portfolio/index" })
     .then((imgs) => {
@@ -323,7 +327,7 @@ exports.postPortfolioConfig = (req, res, next) => {
       "error",
       "Mh...there must be something off with the URL, please check it and try again."
     );
-    res.redirect("/admin/portfolio-config");
+    return res.redirect("/admin/portfolio-config");
   };
   ////YT API - to check if the extracted id is real
   if (vidPlr == "yt") {
@@ -454,6 +458,7 @@ exports.updatePortfolioVid = (req, res, next) => {
 //LOGIN
 exports.getlogin = (req, res, next) => {
   let logValid = req.flash("valid");
+  console.log({ logValid });
   if (logValid.length > 0) {
     logValid = logValid[0];
   } else {
@@ -560,10 +565,29 @@ exports.postLogout = (req, res, next) => {
   });
 };
 
+//PWD RESET
 let randomHash;
-exports.pwdreset = (req, res, next) => {
-  res.render("admin/pwdreset", {
-    pageTitle: "pwd reset",
+exports.getForgotPwd = (req, res, next) => {
+  res.render("admin/pwdforgot", {
+    pageTitle: "Email sent",
+    actionPrompt: "emailPrompt",
+  });
+
+  //random hash
+  const buf = crypto.randomBytes(20);
+  console.log("The random bytes of data generated is: " + buf.toString("utf8"));
+  randomHash = buf.toString("hex");
+  console.log({ randomHash });
+
+  //save hash to db
+  SafInfo.findOne().then((info) => {
+    console.log(info);
+    if (!info) {
+      console.log("couldn't find info in db");
+      return res.redirect("/admin/login");
+    }
+    info.resetpwd = randomHash;
+    info.save();
   });
 
   //send email
@@ -573,7 +597,10 @@ exports.pwdreset = (req, res, next) => {
     to: "nicolas.rocagel@gmail.com", // Change to your recipient
     from: "nicolas.rocagel@gmail.com", // Change to your verified sender
     subject: "Password reset",
-    html: `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ <p>
+    html:
+      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +
+      `<p>http://${req.headers.host}/admin/pwdreset/${randomHash}</p>` +
+      `
     <p><a href="http://localhost:5500/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
   };
   sgMail
@@ -585,5 +612,78 @@ exports.pwdreset = (req, res, next) => {
     .catch((error) => {
       console.error(error);
       res.redirect("/admin/login");
+    });
+};
+
+exports.pwdreset = (req, res, next) => {
+  console.log("get reset page");
+  //
+  let errorMsg = req.flash("error");
+  console.log("errorMsg before transfo: ", errorMsg);
+  if (errorMsg.length > 0) {
+    errorMsg = errorMsg[0];
+  } else {
+    errorMsg = null;
+  }
+  console.log({ errorMsg });
+  //check randomHash from req.params
+  const token = req.params.token;
+  console.log({ token });
+  SafInfo.findOne({ resetpwd: token })
+    .then((user) => {
+      if (!user) {
+        req.flash("error", "The token to reset password is invalid.");
+        return res.redirect("/admin/login");
+      }
+
+      res.render("admin/pwdreset", {
+        pageTitle: "Reset password",
+        errorMessage: errorMsg,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      // res.redirect("/admin/login");
+    });
+  //render form
+  //store new pwd
+};
+
+exports.postPwdreset = (req, res, next) => {
+  const validationErrs = validationResult(req);
+  console.log(validationErrs);
+  console.log("post reset page");
+  const token = req.params.token;
+  const pwd = req.body.password;
+  const checkPwd = req.body.checkPwd;
+
+  if (!validationErrs.isEmpty()) {
+    let errorMsg;
+    errorMsg = validationErrs.array()[0].msg;
+
+    return res.status(422).render("admin/pwdreset", {
+      pageTitle: "Reset password",
+      errorMessage: errorMsg,
+    });
+  }
+
+  if (pwd != checkPwd) {
+    console.log("pwd don't match");
+    req.flash("error", "Passwords don't match, try again!");
+    return res.redirect(`/admin/pwdreset/${token}`);
+  }
+
+  SafInfo.findOne()
+    .then((info) => {
+      //encrypt pwd!
+      console.log(info);
+      info.password = pwd;
+      info.save();
+    })
+    .then(() => {
+      console.log("passwrd changed!");
+      req.flash("valid", "Password changed!");
+      res.redirect("/admin/login");
+      //send confirmation email
     });
 };

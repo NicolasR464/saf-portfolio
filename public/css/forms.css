@@ -277,7 +277,7 @@ button:focus {
   position: relative;
 }
 
-#eye-toggle {
+.eye-toggle {
   position: absolute;
   right: 1rem;
   background: none;
