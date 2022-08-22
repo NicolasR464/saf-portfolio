@@ -51,7 +51,7 @@ router.post(
 
 router.post("/logout", adminController.postLogout);
 
-router.get("/pwdforgot", adminController.getForgotPwd);
+router.post("/pwdforgot", adminController.getForgotPwd);
 
 router.get("/pwdreset/:token", adminController.pwdreset);
 router.post(

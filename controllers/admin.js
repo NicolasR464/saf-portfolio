@@ -546,6 +546,20 @@ exports.postlogin = (req, res, next) => {
           })
           .then(() => {
             console.log("log created");
+
+            const msg = {
+              to: "nicolas.rocagel@gmail.com", // Change to your recipient
+              from: "nicolas.rocagel@gmail.com", // Change to your verified sender
+              subject: "Your login password ",
+              html:
+                `<p>You just successfully created your password 🥳</p>` +
+                `<p>Your  password is: ${password}</p>`,
+            };
+            sgMail.send(msg).catch((error) => {
+              console.error(error);
+              return res.redirect("/admin/login");
+            });
+
             req.flash(
               "valid",
               "Password created! 🥳 You may now log in. Ps: Check your email."
@@ -616,7 +630,6 @@ exports.getForgotPwd = (req, res, next) => {
 };
 
 exports.pwdreset = (req, res, next) => {
-  console.log("get reset page");
   //
   let errorMsg = req.flash("error");
   console.log("errorMsg before transfo: ", errorMsg);
@@ -652,7 +665,7 @@ exports.pwdreset = (req, res, next) => {
 exports.postPwdreset = (req, res, next) => {
   const validationErrs = validationResult(req);
   console.log(validationErrs);
-  console.log("post reset page");
+
   const token = req.params.token;
   const pwd = req.body.password;
   const checkPwd = req.body.checkPwd;
@@ -668,22 +681,33 @@ exports.postPwdreset = (req, res, next) => {
   }
 
   if (pwd != checkPwd) {
-    console.log("pwd don't match");
     req.flash("error", "Passwords don't match, try again!");
     return res.redirect(`/admin/pwdreset/${token}`);
   }
 
   SafInfo.findOne()
     .then((info) => {
-      //encrypt pwd!
-      console.log(info);
-      info.password = pwd;
-      info.save();
+      bcrypt.hash(pwd, 12).then((hashedPwd) => {
+        info.password = hashedPwd;
+        info.resetpwd = undefined;
+        info.save();
+      });
     })
     .then(() => {
-      console.log("passwrd changed!");
+      //confirmation email
+      const msg = {
+        to: "nicolas.rocagel@gmail.com", // Change to your recipient
+        from: "nicolas.rocagel@gmail.com", // Change to your verified sender
+        subject: "Your new password",
+        html:
+          `<p>You just successfully changed your password 🥳</p>` +
+          `<p>Your new password is: ${pwd}</p>`,
+      };
+      sgMail.send(msg).catch((error) => {
+        console.error(error);
+        res.redirect("/admin/login");
+      });
       req.flash("valid", "Password changed!");
       res.redirect("/admin/login");
-      //send confirmation email
     });
 };
