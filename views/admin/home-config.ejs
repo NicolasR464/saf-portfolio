@@ -1,72 +1,84 @@
 <%- include('../includes/head.ejs') %>
-<script src="https://kit.fontawesome.com/766e633129.js" crossorigin="anonymous"></script>
+<!-- <script src="https://kit.fontawesome.com/766e633129.js" crossorigin="anonymous"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css" /> -->
 <link rel="stylesheet" href="/css/forms.css" />
 <link rel="stylesheet" href="/css/admin.css" />
 </head>
 
 <body>
-  <%- include('../includes/navigation.ejs') %>
-  <main>
+  <header> <%- include('../includes/navigation.ejs') %></header>
+  <main >
+   
     <%- include('../includes/admin-nav.ejs')%>
-    <div class="upload-cont">
-      <h3 class="uploadTxt">Image upload</h3>
-      <div class="upload">
-        <form class="form add-img" action="/admin/home-config" method="POST" enctype="multipart/form-data">
-          
-          <% if (flashMsg) { %>
-            <div><p class="user-message"><%= flashMsg  %></p></div>
-          <% } %>
-          <input type="hidden" name="folder" value="index">
-          <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required />
-          <div class="phone-upload-v">
-            <p>Phone & Tablet version?</p>
-            <button type="button" class="form__element form__btn phone-btn"><i class="fa-flip fa-solid fa-mobile-screen-button" style="--fa-animation-duration: 3s;"></i></button>
-            <div class="modal-container">
-              <button type="button" class="form__element form__btn close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
-
-              <div class="image-container">
-                <div class="image-workspace">
-                  <img class="cropper-img" src="" alt="">
-                </div>
-              </div>
-              <div class="preview-container">
-                <div class="preview-cover">
-                  <div class="img-preview" style="height: 9rem; width: 16rem"></div>
-
-                </div>
-              </div>
-              <button type="button" class="form__element form__btn crop-btn">FRAME</button>
-            </div>
-
-          </div>
-          <input type="hidden" value="" name="cropX">
-          <input type="hidden" value="" name="cropY">
-          <input type="hidden" value="" name="cropWidth">
-          <input type="hidden" value="" name="cropHeight">
-          <button type="submit" class="form__element form__btn">ADD</button>
+    <section id="swup" class="transition-fade home-admin">
+      <div class="admin-link">
+        <a class="<%= path === '/admin/home-config' ? 'clicked--btn' : '' %> btns-g" href="/admin/home-config">Home</a>
+        <a class="<%= path === '/admin/portfolio-config' ? 'clicked--btn' : '' %> btns-g" href="/admin/portfolio-config">Portfolio</a>
+        <a class="<%= path === '/admin/about-config' ? 'clicked--btn' : '' %> btns-g" href="/admin/about-config">About</a>
       </div>
+      <div class="upload-cont">
+        <h3 class="uploadTxt">Image upload</h3>
+        <div class="upload">
+          <form class="form add-img" action="/admin/home-config" method="POST" enctype="multipart/form-data">
+            
+            <% if (flashMsg) { %>
+              <div><p class="user-message"><%= flashMsg  %></p></div>
+            <% } %>
+            <input type="hidden" name="folder" value="index">
+            <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required />
+            <div class="phone-upload-v">
+              <p>Phone & Tablet version?</p>
+              <button type="button" class="form__element form__btn phone-btn"><i class="fa-flip fa-solid fa-mobile-screen-button" style="--fa-animation-duration: 3s;"></i></button>
+              <div class="modal-container">
+                <button type="button" class="form__element form__btn close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+  
+                <div class="image-container">
+                  <div class="image-workspace">
+                    <img class="cropper-img" src="" alt="">
+                  </div>
+                </div>
+                <div class="preview-container">
+                  <div class="preview-cover">
+                    <div class="img-preview" style="height: 9rem; width: 16rem"></div>
+  
+                  </div>
+                </div>
+                <button type="button" class="form__element form__btn crop-btn">FRAME</button>
+              </div>
+  
+            </div>
+            <input type="hidden" value="" name="cropX">
+            <input type="hidden" value="" name="cropY">
+            <input type="hidden" value="" name="cropWidth">
+            <input type="hidden" value="" name="cropHeight">
+            <button type="submit" class="form__element form__btn">ADD</button>
+        </div>
+  
+  
+      </div>
+      </form>
+  
+  
+      <hr class="menu--line" />
+      <section class="cont blur-none">
+        <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
+        <article class="vignette">
+          <img src="<%= img%>" alt="film image" />
+          <input type="hidden" value="<%= img %>" name="imgId">
+          <button class="form__btn delBtn" type="button">DELETE</button>
+        </article>
+        <% } %>
+        <% } else { %> <h3>No image uploaded yet !</h3> <% } %>
+      </section>
 
-
-    </div>
-    </form>
-
-
-    <hr class="menu--line" />
-    <section class="cont blur-none">
-      <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
-      <article class="vignette">
-        <img src="<%= img%>" alt="film image" />
-        <input type="hidden" value="<%= img %>" name="imgId">
-        <button class="form__btn delBtn" type="button">DELETE</button>
-      </article>
-      <% } %>
-      <% } else { %> <h3>No image uploaded yet !</h3> <% } %>
     </section>
+    
   </main>
+  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>  
 
-  <script src="/js/home-admin.js"></script>
+  <!-- <script src="/js/home-admin.js"></script> -->
+  <script type="module" src="/js/main.js"></script>  
   <%- include('../includes/footer.ejs') %>

@@ -16,6 +16,7 @@ html {
 }
 .admin-link {
   display: flex;
+  justify-content: center;
 }
 .admin-title {
   color: #fffcf4;

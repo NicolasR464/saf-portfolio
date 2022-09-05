@@ -1,46 +1,11 @@
-// INDEX page BTNS
-//BTNS general
+// export default function portfolio() {
+console.log("portfolio module");
 const mainBtns = document.querySelectorAll(".btns-main");
 const btnsG = document.querySelectorAll(".btns-g");
 const toggleVid = document.querySelector(".toggle-vid");
 const iframeSelec = document.querySelector("iframe");
-const playerPlyr = document.querySelector("#player");
-
-const html = document.querySelector("html");
+let tbnlContent;
 const tbnl = document.querySelector(".tbnl");
-//
-//
-
-//
-//
-
-// console.log(document.cookie);
-
-/* ELEMENT ON CLICK */
-// window.onclick = (e) => {
-//   console.log(e.target.tagName); // to get the element tag name alone
-//   console.log(e.target); // to get the element
-// };
-//
-//
-//BURGER MENU
-
-// const burgerWrap = document.querySelector(".burger-wrap");
-// const burger = document.querySelector(".burger");
-// const wrapBlur = document.querySelector(".wrap-blur");
-// const burgerLinks = document.querySelectorAll(".burger--link");
-// const linkIndexed = document.querySelector(".burger-links");
-// const listWrapper = document.querySelector(".burger-link-cont");
-
-// burgerWrap.addEventListener("click", () => {
-//   burger.classList.toggle("tapped");
-//   burgerWrap.classList.toggle("tapped");
-//   wrapBlur.classList.toggle("blur");
-//   burgerLinks.forEach((el) => {
-//     el.classList.toggle("showlink");
-//   });
-//   linkIndexed.classList.toggle("indexed");
-// });
 
 /** LAPTOP VIDEO PLR */
 
@@ -214,6 +179,7 @@ mainBtns.forEach((mainBtn) => {
         if (player != undefined) {
           clearInterval(checkYt);
           loadVid();
+          console.log("yt check");
         }
       }, 100);
     }
@@ -676,3 +642,4 @@ function getOrientation() {
 }
 
 window.onresize = getOrientation;
+// }

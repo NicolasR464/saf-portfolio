@@ -1,26 +1,39 @@
 <%- include('../includes/head.ejs') %>
 <link rel="stylesheet" href="/css/forms.css" />
 <link rel="stylesheet" href="/css/admin.css" />
+
 </head>
 
 <body>
-  <%- include('../includes/navigation.ejs') %>
+  <header> <%- include('../includes/navigation.ejs') %></header>
   <main>
     <%- include('../includes/admin-nav.ejs')%>
+    
 
-    <form class="form" action="/admin/about-config" method="POST" enctype="multipart/form-data">
-      <% if (flashMsg) { %>
-        <div><p class="user-message"><%= flashMsg  %></p></div>
-      <% } %>
-      <input type="hidden" name="folder" value="about">
-      <input type="hidden" name="bioId" value="<%= bio._id %>">
-      <textarea class="form__element input__txt" name="bio" id="bio" cols="30" rows="20" placeholder="Write your bio here" required><%= bio.bio%></textarea>
-      <p class="form-txt">Select your profile picture: </p>
-      <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input">
-      <img class="profil-vignette" src="<%= bio.image.url%>" alt="">
-      <button class="form__element form__btn" type="submit" >EDIT</button>
-    </form>
+    <article id="swup" class="transition-fade">
+      <div class="admin-link">
+        <a class="<%= path === '/admin/home-config' ? 'clicked--btn' : '' %> btns-g" href="/admin/home-config">Home</a>
+        <a class="<%= path === '/admin/portfolio-config' ? 'clicked--btn' : '' %> btns-g" href="/admin/portfolio-config">Portfolio</a>
+        <a class="<%= path === '/admin/about-config' ? 'clicked--btn' : '' %> btns-g" href="/admin/about-config">About</a>
+      </div>
+      <form class="form" action="/admin/about-config" method="POST" enctype="multipart/form-data">
+        <% if (flashMsg) { %>
+          <div><p class="user-message"><%= flashMsg  %></p></div>
+        <% } %>
+        <input type="hidden" name="folder" value="about">
+        <input type="hidden" name="bioId" value="<%= bio._id %>">
+        <textarea class="form__element input__txt" name="bio" id="bio" cols="30" rows="20" placeholder="Write your bio here" required><%= bio.bio%></textarea>
+        <p class="form-txt">Select your profile picture: </p>
+        <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input">
+        <img class="profil-vignette" src="<%= bio.image.url%>" alt="">
+        <button class="form__element form__btn" type="submit" >EDIT</button>
+      </form>
+  
+    </article>
 
+    
 
   </main>
+  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script>
+  <script type="module" src="/js/main.js"></script>  
   <%- include('../includes/footer.ejs')%>>

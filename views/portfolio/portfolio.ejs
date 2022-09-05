@@ -1,13 +1,12 @@
 <%- include('../includes/head.ejs')%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-<link rel="stylesheet" href="/css/portfolio.css" />
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" /> -->
+<!-- <link rel="stylesheet" href="/css/portfolio.css" /> -->
 </head>
 
 <body>
   <%- include("../includes/navigation.ejs")%>
   <main>
-
-
+    <section id="swup" class="transition-fade portfolio">
 
     <!--MENU BTNS-->
     <div class="menu--container">
@@ -136,12 +135,15 @@
 
     </div>
 
+  </section>
     <!--script-->
-    <script src="https://player.vimeo.com/api/player.js"></script>
+    <!-- <script src="https://player.vimeo.com/api/player.js"></script> -->
     <!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <script src="/js/portfolio.js"></script>
+    <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script> 
+    <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> -->
+    <!-- <script src="/js/portfolio.js"></script> -->
+    <script type="module" src="/js/main.js"></script>  
   </main>
   <%- include ("../includes/footer.ejs")  %>

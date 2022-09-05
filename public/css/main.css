@@ -15,6 +15,17 @@ html {
     radial-gradient(at 92% 95%, rgb(0, 0, 0) 0, transparent 95%);
 }
 
+/* SWUP */
+.transition-fade {
+  transition: 0.4s;
+  opacity: 1;
+}
+
+html.is-animating .transition-fade {
+  opacity: 0;
+}
+/**/
+
 .link-wrap {
   display: flex;
   align-items: center;

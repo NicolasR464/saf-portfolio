@@ -31,7 +31,7 @@ let buttonTxt;
 //
 
 exports.getHomeConfig = (req, res, next) => {
-  console.log(req.session.isLoggedIn);
+  // console.log(req.session.isLoggedIn);
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
@@ -96,7 +96,7 @@ exports.postHomeConfig = (req, res, next) => {
   }
 
   imgHandler(req, folder, file, tags, metadata).then((info) => {
-    req.flash("valid", "new home page still uploaded 🔥");
+    req.flash("valid", "new home page image uploaded 🔥");
     res.status(201).redirect("/admin/home-config");
     console.log("cloudinary uploaded 🥳");
     console.log({ info });

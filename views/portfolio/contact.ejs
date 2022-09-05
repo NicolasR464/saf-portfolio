@@ -6,6 +6,7 @@
 <body>
   <%- include("../includes/navigation.ejs")%>
   <main>
+    <section id="swup" class="transition-fade">
     <div class="container">
       <form class="form" method="POST" action="/contact">
         <input class="form__element input" type="text" name="subject" placeholder="Hi! What's your email subject?" required />
@@ -28,11 +29,12 @@
 
     </div>
 
-
+  </section>
   </main>
 
 
 
-
-  <script src="/js/contact.js"></script>
+  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script> 
+  <!-- <script src="/js/contact.js"></script> -->
+  <script type="module" src="/js/main.js"></script>  
   <%- include ("../includes/footer.ejs") %>

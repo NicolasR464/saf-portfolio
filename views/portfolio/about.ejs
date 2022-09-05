@@ -1,10 +1,11 @@
 <%- include('../includes/head.ejs')%>
-<link rel="stylesheet" href="/css/about.css" />
+<!-- <link rel="stylesheet" href="/css/about.css" /> -->
 </head>
 
-<body>
+<body >
   <%- include("../includes/navigation.ejs")%>
   <main>
+    <section id="swup" class="transition-fade">
     <div class="container">
       <section>
         <box class="cont">
@@ -16,7 +17,7 @@
 
           <div class="box2">
             <div class="img--container">
-              <img class="img" src="/<%= info.image %>" alt="profile picture" />
+              <img class="img" src="<%= info.image.url %>" alt="profile picture" />
             </div>
           </div>
         </box>
@@ -24,10 +25,12 @@
       </section>
 
     </div>
+  </section>
   </main>
 
 
 
-
-  <script src="/js/about.js"></script>
+  <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script> 
+  <!-- <script src="/js/about.js"></script> -->
+  <script type="module" src="/js/main.js"></script>  
   <%- include ("../includes/footer.ejs") %>
