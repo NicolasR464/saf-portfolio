@@ -7,7 +7,7 @@
 
 <body>
 
- 
+  <%- include("../includes/projector-loader.ejs")  %> 
   <form class="form" action="/admin/login"" method="POST" >
     <% if (flashMsg) { %>
       <div><p class="user-message"><%= flashMsg  %></p></div>

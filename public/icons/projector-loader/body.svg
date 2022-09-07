@@ -1,0 +1,5 @@
+<svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="75" height="75" fill="#1E1E1E"/>
+<rect id="body" x="0.5" y="0.5" width="74" height="74" rx="11.5" stroke="white"/>
+<path id="lense" d="M76.3114 35.8829L110.42 14.4626C112.085 13.417 114.25 14.6137 114.25 16.5797V59.4203C114.25 61.3863 112.085 62.583 110.42 61.5374L76.3114 40.1171C74.7508 39.1371 74.7508 36.8629 76.3114 35.8829Z" stroke="white"/>
+</svg>
