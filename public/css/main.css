@@ -167,12 +167,52 @@ a {
   }
 }
 
-/* loader anim */
+/* loader and fade anim */
 
+body {
+  opacity: 0;
+  /* transition-duration: 0.7s;
+  transition-property: opacity; */
+  transition: opacity 1s ease-in;
+  /* display: none; */
+  -webkit-animation-name: fadeIn;
+  animation: fadeIn 0.7s ease-in forwards;
+}
+
+body.fade-in {
+  opacity: 1;
+  /* display: block; */
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  /* transition: opacity 1s ease-out; */
+}
+.loader-wrapper.wrapper-off {
+  opacity: 0;
+}
 .projector-loader {
   max-width: 350px;
   height: 350px;
-
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -184,24 +224,24 @@ a {
   align-items: center;
 }
 .body {
-  width: 100px;
-  height: 100px;
-  border: 2.5px solid rgb(255, 255, 255);
+  width: 50px;
+  height: 50px;
+  border: 1.5px solid rgb(255, 255, 255);
   border-radius: 20%;
   display: flex;
   align-items: center;
 }
 .lense {
   align-self: center;
-  width: 30px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
   border: 1px solid white;
   border-radius: 40% 20% 20% 40%;
 }
 .smoke {
-  width: 60px;
-  height: 60px;
-  box-shadow: 165px 0px 60px 6px rgba(255, 255, 255, 1);
+  width: 30px;
+  height: 30px;
+  box-shadow: 95px 0px 40px 6px rgba(255, 255, 255, 1);
   opacity: 1;
   background-color: #00000000;
   border-radius: 30%;
@@ -213,28 +253,28 @@ a {
 }
 .wheel-one,
 .wheel-two {
-  border: 2px solid white;
+  border: 1px solid white;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 30px;
+  height: 30px;
   transform: translateX(-30%);
   display: flex;
   align-items: center;
 }
 .film-one {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   margin: 0 auto;
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='white' stroke-width='4' stroke-dasharray='32%2c 32' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='white' stroke-width='2' stroke-dasharray='32%2c 32' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
   border-radius: 100px;
   animation: wheelTurn 2.3s linear infinite;
 }
 .film-two {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   margin: 0 auto;
 
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='white' stroke-width='4' stroke-dasharray='32%2c 32' stroke-dashoffset='17' stroke-linecap='butt'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='white' stroke-width='2' stroke-dasharray='32%2c 32' stroke-dashoffset='43' stroke-linecap='butt'/%3e%3c/svg%3e");
   border-radius: 100px;
   animation: wheelTurn 2.3s linear infinite;
 }

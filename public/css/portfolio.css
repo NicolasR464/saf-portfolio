@@ -67,8 +67,7 @@
   border-color: #0b0c22;
   border-radius: 11px;
   border-style: none;
-  transition: color ease-in-out 0.5s, border 2s;
-  transition: all ease-in-out 0.5s;
+  transition: color ease-in-out 0.5s, border 2s, text-shadow 0.5s;
 }
 .btns-main:hover {
   color: #fffcf4;

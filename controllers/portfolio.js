@@ -114,6 +114,7 @@ exports.getPortfolio = (req, res, next) => {
       res.render("portfolio/portfolio", {
         pageTitle: "Portfolio",
         vidInfo: vidInfo,
+        path: "/portfolio",
       });
     });
 };
@@ -122,6 +123,7 @@ exports.getPortfolio = (req, res, next) => {
 exports.getContact = (req, res, next) => {
   res.render("portfolio/contact", {
     pageTitle: "Contact",
+    path: "/contact",
   });
   //mail
 

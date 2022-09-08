@@ -7,7 +7,7 @@
 
 <body>
 
-  <%- include("../includes/projector-loader.ejs")  %> 
+  
   <form class="form" action="/admin/login"" method="POST" >
     <% if (flashMsg) { %>
       <div><p class="user-message"><%= flashMsg  %></p></div>
@@ -33,8 +33,6 @@
   </form>
   <% } %>
   
- 
+</main>
  <script src="/js/login.js"></script>
-</body>
-
-</html>
+ <%- include('../includes/footer.ejs')%>
