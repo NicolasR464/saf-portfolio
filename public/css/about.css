@@ -107,9 +107,6 @@ article:first-of-type(2) {
 /* MEDIA QUERY */
 
 @media screen and (max-width: 500px) {
-  .link {
-    display: none;
-  }
   /* burger */
   .burger-wrap {
     display: block;

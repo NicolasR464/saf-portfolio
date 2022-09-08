@@ -1,5 +1,5 @@
 <header class="header">
-  <%- include("./projector-loader.ejs")  %> 
+  
   <div class="link-wrap">
     <% if (path == "/portfolio") { %>
       <a class="link" href="/about">about</a>
@@ -23,5 +23,35 @@
   </div>
 
   <hr class="menu--line" />
+  <button class="burger-wrap">
+    <span class="burger"></span>
+  </button>
+  <div class="burger-link-cont">
+    <div class="wrap-blur"></div>
+
+    <li class="burger-links">
+      <ul>
+        <a class="burger--link" href="/">Home</a>
+      </ul>
+      <ul>
+        <a class="burger--link" href="/portfolio">portfolio</a>
+      </ul>
+      <ul>
+        <a class="burger--link" href="/about">about</a>
+      </ul>
+      <ul>
+        <a class="burger--link" href="/contact">contact</a>
+      </ul>
+      <ul>
+        <a
+          class="burger--link"
+          id="insta"
+          href="https://www.instagram.com/safwan_lekwibre/"
+          target="_blank"
+          ><img src="./icons/insta.png" alt="Instagram logo"
+        /></a>
+      </ul>
+    </li>
+  </div>
 </header>
 
