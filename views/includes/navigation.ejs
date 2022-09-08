@@ -1,14 +1,25 @@
 <header class="header">
   <%- include("./projector-loader.ejs")  %> 
   <div class="link-wrap">
-    <a class="link" href="/">portfolio</a>
+    <% if (path == "/portfolio") { %>
+      <a class="link" href="/about">about</a>
+    <% } else if(path == "/about" || path == "/contact") { %>
+      <a class="link" href="/portfolio">portfolio</a>
+      <% } %>
+       
+   
     <div class="lien-home">
       <h1>
         <a href="/">Safran Lecuivre <br />
           <i>cinematographer</i></a>
       </h1>
     </div>
-    <a class="link" href="/about">about</a>
+    <% if (path == "/portfolio" || path == "/about") { %>
+      <a class="link" href="/contact">contact</a>
+    <% } else if(path == "/contact"){ %>
+      <a class="link" href="/about">about</a>
+      <% } %> 
+    
   </div>
 
   <hr class="menu--line" />

@@ -20,7 +20,7 @@
   background-color: black;
   color: #fffdf7;
   font-family: "Cairo", sans-serif;
-  transition: all 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out;
 }
 .input {
   margin-bottom: 1rem;
@@ -48,12 +48,12 @@
 }
 
 .input__txt::-webkit-scrollbar-thumb:hover {
-  background: #fce295;
+  background: rgb(252, 247, 255);
   border-radius: 10px;
 }
 
 .input__txt::-webkit-scrollbar-thumb:active {
-  background: #ffdb6e;
+  background: rgb(252, 247, 255);
   border-radius: 10px;
 }
 
@@ -74,7 +74,6 @@ button:focus {
 }
 .form__element:focus::placeholder {
   color: #000000;
-  transition: all 0.3s ease-in-out;
 }
 .form__element::placeholder {
   color: #fffdf7c6;
@@ -90,7 +89,7 @@ button:focus {
   border-radius: 1rem;
   margin: 0 auto;
   letter-spacing: 1px;
-  transition: all 0.3s ease-in-out;
+  transition: box-shadow text-shadow 0.3s ease-in-out;
   color: #fffdf7;
 }
 .form__btn:hover {
