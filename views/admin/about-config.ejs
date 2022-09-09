@@ -10,12 +10,12 @@
 
     <form class="form" action="/admin/about-config" method="POST" enctype="multipart/form-data">
       <% if (flashMsg) { %>
-        <div><p class="user-message"><%= flashMsg  %></p></div>
+        <div><p class="user-message txt-misc"><%= flashMsg  %></p></div>
       <% } %>
       <input type="hidden" name="folder" value="about">
       <input type="hidden" name="bioId" value="<%= bio._id %>">
       <textarea class="form__element input__txt" name="bio" id="bio" cols="30" rows="20" placeholder="Write your bio here" required><%= bio.bio%></textarea>
-      <p class="form-txt">Select your profile picture: </p>
+      <p class="form-txt txt-misc">Select your profile picture: </p>
       <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input">
       <img class="profil-vignette" src="<%= bio.image.url%>" alt="">
       <button class="form__element form__btn" type="submit" >EDIT</button>

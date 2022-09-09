@@ -8,6 +8,8 @@ require("dotenv").config();
 //
 
 exports.getIndex = (req, res, next) => {
+  const isLogged = req.session.isLoggedIn;
+
   const device = req.device.type;
   const orientation = req.params.orientation;
   let URLs = [];
@@ -40,6 +42,7 @@ exports.getIndex = (req, res, next) => {
             pageTitle: "Home",
             path: "/",
             imgs: URLs,
+            isLogged: isLogged,
           });
         } else {
           res.status(200).json({
@@ -94,12 +97,16 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getAbout = (req, res, next) => {
+  const isLogged = req.session.isLoggedIn;
+  console.log({ isLogged });
+
   AboutInfo.findOne()
     .then((info) => {
       res.render("portfolio/about", {
         pageTitle: "About",
         path: "/about",
         info: info,
+        isLogged: isLogged,
       });
     })
     .catch((err) => {
@@ -108,6 +115,7 @@ exports.getAbout = (req, res, next) => {
 };
 
 exports.getPortfolio = (req, res, next) => {
+  const isLogged = req.session.isLoggedIn;
   PortfolioInfo.find()
     .sort({ order: 1 })
     .then((vidInfo) => {
@@ -115,6 +123,7 @@ exports.getPortfolio = (req, res, next) => {
         pageTitle: "Portfolio",
         vidInfo: vidInfo,
         path: "/portfolio",
+        isLogged: isLogged,
       });
     });
 };

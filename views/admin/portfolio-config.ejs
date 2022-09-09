@@ -10,10 +10,10 @@
 
     <form class="form add-bio" action="/admin/portfolio-config" method="POST" enctype="multipart/form-data">
       <% if (flashMsg) { %>
-        <div><p class="user-message"><%= flashMsg  %></p></div>
+        <div><p class="user-message txt-misc"><%= flashMsg  %></p></div>
       <% } %>
       <% if (errorMsg) { %>
-        <div><p class="user-message user-message--error"><%= errorMsg  %></p></div>
+        <div><p class="user-message user-message--error txt-misc"><%= errorMsg  %></p></div>
       <% } %>
       <input type="hidden" name="folder" value="portfolio">
       <!-- <input type="hidden" name="infoId" value="<%= vidsInfo._id %>"> -->
@@ -28,7 +28,7 @@
       </select>
 
 
-      <p class="form-txt">Select a video thumbnail: </p>
+      <p class="form-txt txt-misc">Select a video thumbnail: </p>
       <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required>
       <button class="form__element form__btn" type="submit">ADD</button>
     </form>
@@ -37,7 +37,7 @@
     <section class="cont cont-port">
       <% if(vidsInfo.length > 0) { %>
 
-      <h3>* MUSIC VIDEO *</h3>
+      <h3 class="h3">* MUSIC VIDEO *</h3>
 
 
       <div class="cont-vignette" data-section="0" data-name="mv">
@@ -49,7 +49,7 @@
           <input type="hidden" value="<%= vidMv.number %>" name="number">
           <span class="arrow-ud">&#8597;</span>
           <img src="<%= vidMv.image.url %>" alt="film image" />
-          <h3 class="title-port" data-text="<%= vidMv.title %>"><%= vidMv.title %> - <%= vidMv.number %></h3>
+          <h3 class="title-port h3" data-text="<%= vidMv.title %>"><%= vidMv.title %> - <%= vidMv.number %></h3>
 
           <input type="hidden" value="<%= vidMv._id %>" name="vidId">
           <button class="form__btn delBtn" type="button">DELETE</button>
@@ -58,7 +58,7 @@
         <% } %>
 
       </div>
-      <h3>* COMMERCIAL *</h3>
+      <h3 class="h3">* COMMERCIAL *</h3>
       <div class="cont-vignette" data-section="1" data-name="commercial">
         <% for (let vidCom of vidsInfo) { %>
 
@@ -69,7 +69,7 @@
           <input type="hidden" value="<%= vidCom.number %>" name="number">
           <span class="arrow-ud">&#8597;</span>
           <img src="<%= vidCom.image.url %>" alt="film image" />
-          <h3 class="title-port" data-text="<%= vidCom.title %>"><%= vidCom.title %></h3>
+          <h3 class="title-port h3" data-text="<%= vidCom.title %>"><%= vidCom.title %></h3>
 
           <input type="hidden" value="<%= vidCom._id %>" name="vidId">
           <button class="form__btn delBtn" type="button">DELETE</button>
@@ -77,7 +77,7 @@
         <% } %>
         <% } %>
       </div>
-      <h3>* NARRATIVE *</h3>
+      <h3 class="h3">* NARRATIVE *</h3>
       <div class="cont-vignette" data-section="2" data-name="narrative">
         <% for (let vidNar of vidsInfo) { %>
 
@@ -88,7 +88,7 @@
           <input type="hidden" value="<%= vidNar.number %>" name="number">
           <span class="arrow-ud">&#8597;</span>
           <img src="<%= vidNar.image.url %>" alt="film image" />
-          <h3 class="title-port" data-text="<%= vidNar.title %>"><%= vidNar.title %></h3>
+          <h3 class="title-port h3" data-text="<%= vidNar.title %>"><%= vidNar.title %></h3>
 
           <input type="hidden" value="<%= vidNar._id %>" name="vidId">
           <button class="form__btn delBtn" type="button">DELETE</button>
@@ -96,7 +96,7 @@
         <% } %>
         <% } %>
       </div>
-      <h3>* REEL *</h3>
+      <h3 class="h3">* REEL *</h3>
       <div class="cont-vignette" data-section="3" data-name="reel">
 
         <% for (let vidReel of vidsInfo) { %>
@@ -108,7 +108,7 @@
           <input type="hidden" value="<%= vidReel.number %>" name="number">
           <span class="arrow-ud">&#8597;</span>
           <img src="<%= vidReel.image.url %>" alt="film image" />
-          <h3 class="title-port" data-text="<%= vidReel.title %>"><%= vidReel.title %></h3>
+          <h3 class="title-port h3" data-text="<%= vidReel.title %>"><%= vidReel.title %></h3>
 
           <input type="hidden" value="<%= vidReel._id %>" name="vidId">
           <button class="form__btn delBtn" type="button">DELETE</button>
@@ -116,7 +116,7 @@
         <% } %>
         <% } %>
       </div>
-      <% } else { %> <h3>No Video uploaded yet !</h3> <% } %>
+      <% } else { %> <h3 class="h3">No Video uploaded yet !</h3> <% } %>
     </section>
   </main>
   <script src="/js/portfolio-admin.js"></script>

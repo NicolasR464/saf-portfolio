@@ -9,11 +9,12 @@
 
   
   <form class="form" action="/admin/login"" method="POST" >
+    <h3 class="h3">Welcome! ☕️</h3>
     <% if (flashMsg) { %>
-      <div><p class="user-message"><%= flashMsg  %></p></div>
+      <div><p class="user-message txt-misc txt-smaller"><%= flashMsg  %></p></div>
     <% } %>
     <% if (errorMessage) { %>
-      <div><p class="user-message user-message--error"><%= errorMessage  %></p></div>
+      <div><p class="user-message user-message--error txt-misc txt-smaller"><%= errorMessage  %></p></div>
     <% } %>
     <input placeholder="email" type="email" name="email" class="form__element input" required autocomplete="email">
     <div class="pwd-box">
@@ -26,8 +27,8 @@
     
   </form>
   <% if (buttonTxt == "LOG IN") { %>
-  <form action="/admin/pwdforgot"  method="POST">
-      <button  type="submit">
+  <form class="forgot-cont" action="/admin/pwdforgot"  method="POST">
+      <button class="forgot-btn"  type="submit">
         forgot password?
       </button>
   </form>
@@ -35,4 +36,6 @@
   
 </main>
  <script src="/js/login.js"></script>
- <%- include('../includes/footer.ejs')%>
+</body>
+
+</html>

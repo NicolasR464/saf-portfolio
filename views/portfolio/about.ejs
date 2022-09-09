@@ -20,10 +20,15 @@
             </div>
           </div>
         </box>
-        <a id="insta" href="https://www.instagram.com/safwan_lekwibre/" target="_blank"><img src="./icons/insta/insta.png" alt="" /></a>
+        <a class="a-tag" id="insta" href="https://www.instagram.com/safwan_lekwibre/" target="_blank"><img src="./icons/insta.png" alt="" /></a>
       </section>
 
     </div>
+    <% if (isLogged) { %>
+     
+      <button class="form__element form__btn admin-btn" type="button"> <a class="a-tag" href="/admin/about-config" >ADMIN PANEL</a></button>
+
+    <% } %>
   </main>
 
 

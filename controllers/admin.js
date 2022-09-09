@@ -613,9 +613,8 @@ exports.getForgotPwd = (req, res, next) => {
     subject: "Password reset",
     html:
       `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +
-      `<p>http://${req.headers.host}/admin/pwdreset/${randomHash}</p>` +
       `
-    <p><a href="http://localhost:5500/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
+    <p><a href="http://${req.headers.host}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
   };
   sgMail
     .send(msg)

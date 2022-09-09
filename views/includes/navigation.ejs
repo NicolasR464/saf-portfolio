@@ -2,22 +2,24 @@
   
   <div class="link-wrap">
     <% if (path == "/portfolio") { %>
-      <a class="link" href="/about">about</a>
+      <a class="link a-tag" href="/about">about</a>
     <% } else if(path == "/about" || path == "/contact") { %>
-      <a class="link" href="/portfolio">portfolio</a>
+      <a class="link a-tag" href="/portfolio">portfolio</a>
+      <% } else{ %>
+        <a class="link a-tag" href="/portfolio">portfolio</a>
       <% } %>
        
    
     <div class="lien-home">
-      <h1>
-        <a href="/">Safran Lecuivre <br />
-          <i>cinematographer</i></a>
+      <h1 class="h1">
+        <a class="a-tag" href="/">Safran Lecuivre <br />
+          <i class="txt-smaller">cinematographer</i></a>
       </h1>
     </div>
     <% if (path == "/portfolio" || path == "/about") { %>
-      <a class="link" href="/contact">contact</a>
-    <% } else if(path == "/contact"){ %>
-      <a class="link" href="/about">about</a>
+      <a class="link a-tag" href="/contact">contact</a>
+    <% } else{ %>
+      <a class="link a-tag" href="/about">about</a>
       <% } %> 
     
   </div>
@@ -31,20 +33,20 @@
 
     <li class="burger-links">
       <ul>
-        <a class="burger--link" href="/">Home</a>
+        <a class="burger--link a-tag" href="/">Home</a>
       </ul>
       <ul>
-        <a class="burger--link" href="/portfolio">portfolio</a>
+        <a class="burger--link a-tag" href="/portfolio">portfolio</a>
       </ul>
       <ul>
-        <a class="burger--link" href="/about">about</a>
+        <a class="burger--link a-tag" href="/about">about</a>
       </ul>
       <ul>
-        <a class="burger--link" href="/contact">contact</a>
+        <a class="burger--link a-tag" href="/contact">contact</a>
       </ul>
       <ul>
         <a
-          class="burger--link"
+          class="burger--link a-tag"
           id="insta"
           href="https://www.instagram.com/safwan_lekwibre/"
           target="_blank"

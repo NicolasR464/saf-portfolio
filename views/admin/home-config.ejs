@@ -13,17 +13,17 @@
   <main>
     <%- include('../includes/admin-nav.ejs')%>
     <div class="upload-cont">
-      <h3 class="uploadTxt">Image upload</h3>
+      <h3 class="uploadTxt h3">Image upload</h3>
       <div class="upload">
         <form class="form add-img" action="/admin/home-config" method="POST" enctype="multipart/form-data">
           
           <% if (flashMsg) { %>
-            <div><p class="user-message"><%= flashMsg  %></p></div>
+            <div><p class="user-message txt-misc"><%= flashMsg  %></p></div>
           <% } %>
           <input type="hidden" name="folder" value="index">
           <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required />
           <div class="phone-upload-v">
-            <p>Phone & Tablet version?</p>
+            <p class="txt-misc txt-smaller">Phone & Tablet version?</p>
             <button type="button" class="form__element form__btn phone-btn"><i class="fa-flip fa-solid fa-mobile-screen-button" style="--fa-animation-duration: 3s;"></i></button>
             <div class="modal-container">
               <button type="button" class="form__element form__btn close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
@@ -64,7 +64,7 @@
         <button class="form__btn delBtn" type="button">DELETE</button>
       </article>
       <% } %>
-      <% } else { %> <h3>No image uploaded yet !</h3> <% } %>
+      <% } else { %> <h3 class="h3">No image uploaded yet !</h3> <% } %>
     </section>
   </main>
 

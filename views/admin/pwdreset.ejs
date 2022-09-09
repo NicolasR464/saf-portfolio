@@ -8,9 +8,9 @@
 <body>
   <main>
     <form class="form"  method="POST">
-      <h1>You can now reset your password</h1>
+      <h1 class="h1">You can now reset your password</h1>
       <% if (errorMessage) { %>
-        <div><p class="user-message user-message--error"><%= errorMessage  %></p></div>
+        <div><p class="user-message user-message--error txt-misc"><%= errorMessage  %></p></div>
       <% } %>
         <div class="pwd-box">
             <input placeholder="enter new password" class="form__element input pwd" name="password"   type="password" required >
@@ -26,4 +26,6 @@
   </main>
   <script src="/js/login.js"></script>
 
-  <%- include('../includes/footer.ejs')%>
+</body>
+
+</html>
