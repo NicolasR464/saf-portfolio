@@ -66,6 +66,7 @@ html {
   right: 0;
   background: none;
   border: 1px solid#fffcf4;
+  border-right: none;
 }
 
 /* burger */

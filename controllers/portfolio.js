@@ -9,6 +9,7 @@ require("dotenv").config();
 
 exports.getIndex = (req, res, next) => {
   const isLogged = req.session.isLoggedIn;
+  console.log({ isLogged });
 
   const device = req.device.type;
   const orientation = req.params.orientation;
@@ -84,6 +85,7 @@ exports.getIndex = (req, res, next) => {
             pageTitle: "Home",
             path: "/",
             imgs: URLs,
+            isLogged: isLogged,
           });
         } else {
           //json

@@ -269,7 +269,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 // SWIPER
 const prevB = document.querySelector(".swiper-button-prev");
 const nextB = document.querySelector(".swiper-button-next");
-const title = document.querySelector(".title");
+const vidTitle = document.querySelector(".title");
 //
 // like vdo blocker test
 const blocker = document.querySelector(".vdo-like-blocker");
@@ -317,24 +317,34 @@ function onYouTubeIframeAPIReady() {
       rel: 0,
       loop: 1,
     },
-    // enablejsapi: 1,
-    // events: {
-    //   onReady: onPlayerReady,
-    //   onStateChange: onPlayerStateChange,
-    // },
   });
 }
 
 //
 //  VIMEO API
+//maxheight: document.querySelectorAll(".carouselImages")[0].innerHeight,
+const containerHeight = document.querySelector(".swiper-wrapper");
+
+console.log(containerHeight);
+const styles = window.getComputedStyle(containerHeight);
+const height = styles.getPropertyValue("height");
+// console.log(styles);
+// console.log(styles.border);
+// console.log(styles.width);
+// console.log(height);
+// console.log(containerHeight.getPropertyValue("height"));
 
 let optionsVim = {
   url: firstIdVim,
-  width: screen.width,
   responsive: true,
+  maxheight: 335,
+  maxwidth: screen.width,
   autoplay: false,
   loop: true,
   portrait: false,
+
+  title: false,
+  color: "#FFF",
 };
 const videoVim = new Vimeo.Player("vimeoVideo", optionsVim);
 //
@@ -450,39 +460,19 @@ const loadVid = () => {
   carouselImages.forEach((img) => {
     imgIndex = img.getAttribute("data-index");
     isPublicArr.push(img.getAttribute("data-isPubRated"));
-    // console.log(isPublicArr);
-    // console.log(typeof imgIndex);
-
-    //
-    // img.style.display = "block";
 
     if (imgIndex == swiper.activeIndex) {
       console.log("this vid is: ", isPublicArr[Number(imgIndex)]);
-
-      // const isPublicFn = () => {
-      //   let isPublicRated = img.getAttribute("data-isPubRated");
-      //   if (isPublicRated != "") {
-      //     if (isPublicRated === "false") {
-      //       console.log("isPublicRated -> false");
-      //       return false;
-      //       console.log(isPublicRated);
-      //       console.log("typeof: ", typeof isPublicRated);
-      //     } else {
-      //       return true;
-      //       console.log("it's public shit");
-      //     }
-      //   } else {
-      //     console.log("not defined");
-      //     return true;
-      //   }
-      // };
 
       //console
       console.log("imgIndex: " + imgIndex);
       console.log("Swiper imgIndex: " + swiper.activeIndex);
       //update title
-      title.textContent = img.title;
-      //TEXT MOVE UPDATE
+      vidTitle.textContent = img.title;
+
+      const titleWidth = "-" + vidTitle.getBoundingClientRect().width + "px";
+      console.log({ titleWidth });
+      vidTitle.style.setProperty("--new-width", titleWidth, "important");
 
       if (img.getAttribute("data-vid-source") === "vimeo") {
         //console
@@ -556,8 +546,6 @@ const loadVid = () => {
         } catch (err) {
           // console.log(err);
         }
-        // console.log(player.playerInfo.videoData.title);
-        // console.log(player.playerInfo);
 
         //  YT API EVENT
         player.addEventListener("onStateChange", (e) => {
@@ -577,12 +565,6 @@ const loadVid = () => {
             console.log(player.getVideoUrl());
           } else if (e.data === -1) {
             console.log("unstarted");
-            // if rated R...
-
-            // if (isPublicRated === false) {
-            //   img.style.opacity = "0";
-            //   ytV.classList.add("show");
-            // }
           }
         });
         player.addEventListener("onError", (e) => {
@@ -634,6 +616,9 @@ const slideUpdate = () => {
   document.querySelectorAll(".swiper-slide img").forEach((img) => {
     img.style.opacity = "1";
   });
+
+  errMsg.innerHTML = "";
+  playBtn.style.opacity = "1";
 
   try {
     loadVid();
