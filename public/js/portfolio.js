@@ -337,7 +337,6 @@ const height = styles.getPropertyValue("height");
 let optionsVim = {
   url: firstIdVim,
   responsive: true,
-  maxheight: 335,
   maxwidth: screen.width,
   autoplay: false,
   loop: true,

@@ -59,7 +59,7 @@
     <section class="cont blur-none">
       <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
       <article class="vignette">
-        <img src="<%= img%>" alt="film image" />
+        <img src="<%= img%>" alt="film image" width="1920" height="1080" />
         <input type="hidden" value="<%= img %>" name="imgId">
         <button class="form__btn delBtn" type="button">DELETE</button>
       </article>

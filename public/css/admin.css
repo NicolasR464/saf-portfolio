@@ -89,7 +89,9 @@ html {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 0;
+  text-align: center;
 }
+
 .title-port:hover:after {
   content: attr(data-text);
   overflow: visible;
