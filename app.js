@@ -36,11 +36,14 @@ app.use(
 app.use(flash());
 //
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/admin", adminRoutes);
 
 app.use(portfolioRoutes);
+
+app.use((req, res, next) => {
+  res.send("404 page not found!");
+});
 //
 mongoose
   .connect(process.env.MONGO_URL, {

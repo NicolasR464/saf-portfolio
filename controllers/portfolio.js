@@ -21,7 +21,11 @@ exports.getIndex = (req, res, next) => {
     // URLs = [];
     console.log("laptop or landscape version");
     cloudinary.api
-      .resources({ type: "upload", prefix: "saf_portfolio/index" })
+      .resources({
+        type: "upload",
+        prefix: "saf_portfolio/index",
+        max_results: 500,
+      })
       .then((imgs) => {
         imgs.resources.forEach((img) => {
           URLs.push(

@@ -33,6 +33,14 @@ html {
   flex-direction: column;
   align-items: center;
 }
+.admin-img {
+  width: auto;
+  height: 100%;
+}
+.admin-home-img {
+  width: 100% auto;
+  height: auto;
+}
 .vignette {
   border: 1px groove white;
   padding: 1rem;

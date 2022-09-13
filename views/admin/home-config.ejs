@@ -59,9 +59,12 @@
     <section class="cont blur-none">
       <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
       <article class="vignette">
-        <img src="<%= img%>" alt="film image" width="1920" height="1080" />
-        <input type="hidden" value="<%= img %>" name="imgId">
+        <img src="<%= img.url%>" alt="film image" width="1920" height="1080" class="admin-home-img"/>
+        <input type="hidden" value="<%= img.url %>" name="imgId">
         <button class="form__btn delBtn" type="button">DELETE</button>
+        <% if (img.phoneV) { %>
+          <i class="fa-solid fa-mobile-screen-button" ></i>
+        <% } %>
       </article>
       <% } %>
       <% } else { %> <h3 class="h3">No image uploaded yet !</h3> <% } %>

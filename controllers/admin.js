@@ -19,9 +19,6 @@ let vimeoAPI = new Vimeo(
   process.env.VIMEO_ACCESS_TOKEN
 );
 
-const path = require("path");
-const session = require("express-session");
-const { rmSync } = require("fs");
 require("dotenv/config");
 const cloudinary = require("cloudinary").v2;
 // const streamifier = require("streamifier");
@@ -44,15 +41,26 @@ exports.getHomeConfig = (req, res, next) => {
   }
 
   cloudinary.api
-    .resources({ type: "upload", prefix: "saf_portfolio/index" })
+    .resources({
+      type: "upload",
+      prefix: "saf_portfolio/index",
+      max_results: 500,
+      context: true,
+    })
     .then((imgs) => {
-      // console.log(imgs);
+      console.log(imgs);
+      imgs.resources.forEach((img) => {
+        console.log(img.context);
+      });
+      // console.log(imgs.metadata);
 
       let URLs = [];
 
       imgs.resources.forEach((img) => {
-        URLs.push(
-          cloudinary.url(img.public_id, {
+        let phoneV;
+        img.context != undefined ? (phoneV = true) : (phoneV = false);
+        URLs.push({
+          url: cloudinary.url(img.public_id, {
             secure: true,
             transformation: {
               aspect_ratio: "16:9",
@@ -60,8 +68,9 @@ exports.getHomeConfig = (req, res, next) => {
               fetch_format: "auto",
               quality: "auto",
             },
-          })
-        );
+          }),
+          phoneV: phoneV,
+        });
       });
       // console.log({ URLs });
 
@@ -96,7 +105,7 @@ exports.postHomeConfig = (req, res, next) => {
   }
 
   imgHandler(req, folder, file, tags, metadata).then((info) => {
-    req.flash("valid", "new home page still uploaded 🔥");
+    req.flash("valid", "new home page image uploaded 🔥");
     res.status(201).redirect("/admin/home-config");
     console.log("cloudinary uploaded 🥳");
     console.log({ info });
@@ -219,7 +228,7 @@ exports.getPortfolioConfig = (req, res, next) => {
     .then((vidsInfo) => {
       // console.log(vidsInfo);
       res.render("admin/portfolio-config", {
-        pageTitle: "Portfolio | add video ",
+        pageTitle: "Portfolio | add video",
         path: "/admin/portfolio-config",
         vidsInfo: vidsInfo,
         flashMsg: message,
@@ -357,7 +366,14 @@ exports.postPortfolioConfig = (req, res, next) => {
           errorHandling();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        req.flash(
+          "error",
+          "Mh...there must be something off with the URL, please check it and try again."
+        );
+        return res.redirect("/admin/portfolio-config");
+      });
   } else if (vidPlr == "vimeo") {
     //VIMEO API
     let idCheck = extractId;
@@ -405,6 +421,27 @@ exports.deletePortfolioVid = (req, res, next) => {
       PortfolioVid.find({ category: vid.category })
         .updateMany({ number: { $gt: vid.number } }, { $inc: { number: -1 } })
         .then((update) => {
+          //update order to !
+          PortfolioVid.find({ category: vid.category })
+            .sort({ order: 1 })
+            .then((docs) => {
+              docs.forEach((doc, i) => {
+                // console.log("before: ", doc);
+                // let index = order.indexOf(doc.number.toString());
+                // console.log({ index });
+                doc.order = i;
+                // console.log("after: ", doc);
+                doc
+                  .save()
+                  .then((result) => {
+                    // console.log(result);
+                    console.log("order updated after delete");
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              });
+            });
           console.log({ update });
         });
 

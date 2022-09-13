@@ -2,12 +2,18 @@ const delBtns = document.querySelectorAll(".delBtn");
 
 const delPortVid = (btn) => {
   const vidId = btn.parentNode.querySelector("[name=vidId]").value;
+  const category = btn.parentNode.querySelector("[name=category]").value;
   const videoEl = btn.closest("article");
   fetch("/admin/portfolio-config/" + vidId, {
     method: "DELETE",
   })
     .then((result) => {
       videoEl.parentNode.removeChild(videoEl);
+      // UPDATE order number !
+      const videoCont = document.querySelector(`[data-name=${category}]`);
+      Array.from(videoCont.children).forEach((article, newI) => {
+        article.children[0].value = newI;
+      });
       return result.json();
     })
     .catch((err) => {
