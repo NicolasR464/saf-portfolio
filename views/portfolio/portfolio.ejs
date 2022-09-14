@@ -34,24 +34,22 @@
 
 
         <% vidInfo.forEach(vid =>{ %>
+          <img class="tbnl-dload" src="<%= vid.image.url %>" alt="thumbnail image download">
         <% if(vid.category == "mv"){ %>
-        <button data-title="<%= vid.title%>" data-section="mv" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>" class="btns-g btns2">
-          <%= vid.title %>
+        <button data-title="<%= vid.title%>" data-section="mv" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>" class="btns-g btns2"><span class="title-span"><%= vid.title %></span>
+         
         </button>
         <% } %>
         <% if(vid.category == "narrative"){ %>
-        <button data-title="<%= vid.title%>" data-section="narrative" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns3">
-          <%= vid.title %>
+        <button data-title="<%= vid.title%>" data-section="narrative" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns3"><span class="title-span"><%= vid.title %></span>
         </button>
         <% } %>
         <% if(vid.category == "commercial"){ %>
-        <button data-title="<%= vid.title%>" data-section="commercial" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns">
-          <%= vid.title %>
+        <button data-title="<%= vid.title%>" data-section="commercial" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns"><span class="title-span"><%= vid.title %></span>
         </button>
         <% } %>
         <% if(vid.category == "reel"){ %>
-        <button data-title="<%= vid.title%>" data-section="reel" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns5">
-          <%= vid.title %>
+        <button data-title="<%= vid.title%>" data-section="reel" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns5"><span class="title-span"><%= vid.title %></span>
         </button>
         <% } %>
         <% }) %>
@@ -66,6 +64,7 @@
         </div>
 
         <!-- THUMBNAILS -->
+       
         <img class="tbnl img-vid fade" src="" alt="thumbnail" width="1920" height="1080" />
 
       </div>

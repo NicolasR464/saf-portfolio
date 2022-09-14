@@ -9,38 +9,21 @@ const playerPlyr = document.querySelector("#player");
 const html = document.querySelector("html");
 const tbnl = document.querySelector(".tbnl");
 //
-//
-
-//
-//
-
-// console.log(document.cookie);
-
-/* ELEMENT ON CLICK */
-// window.onclick = (e) => {
-//   console.log(e.target.tagName); // to get the element tag name alone
-//   console.log(e.target); // to get the element
-// };
-//
-//
-//BURGER MENU
-
-// const burgerWrap = document.querySelector(".burger-wrap");
-// const burger = document.querySelector(".burger");
-// const wrapBlur = document.querySelector(".wrap-blur");
-// const burgerLinks = document.querySelectorAll(".burger--link");
-// const linkIndexed = document.querySelector(".burger-links");
-// const listWrapper = document.querySelector(".burger-link-cont");
-
-// burgerWrap.addEventListener("click", () => {
-//   burger.classList.toggle("tapped");
-//   burgerWrap.classList.toggle("tapped");
-//   wrapBlur.classList.toggle("blur");
-//   burgerLinks.forEach((el) => {
-//     el.classList.toggle("showlink");
-//   });
-//   linkIndexed.classList.toggle("indexed");
-// });
+btnsG.forEach((btn) => {
+  btn.addEventListener("mouseenter", () => {
+    const span = btn.firstChild;
+    let btnWidth = btn.offsetWidth;
+    let spanWidth = span.offsetWidth;
+    let offset;
+    if (spanWidth > btnWidth + 1) {
+      offset = btnWidth - spanWidth + "px";
+      btn.style.setProperty("text-indent", offset);
+    }
+  });
+  btn.addEventListener("mouseleave", () => {
+    btn.style.removeProperty("text-indent");
+  });
+});
 
 /** LAPTOP VIDEO PLR */
 
@@ -58,18 +41,9 @@ const vidLaptopPlr = (vidId, vimeo, hash) => {
   }
 };
 //
-
-//
-//
-//DEFAULT CONTENT (MV) - if portfolio in localstorage or nothing
 let isNotPlaying = true;
 
 const plrContent = () => {
-  //console
-
-  //
-  //   tbnlContent = `./images/portfolio/${dataSection}/0.jpg`;
-  //   tbnl.src = tbnlContent;
   let indexArr = [];
   let minIndex;
   btnsG.forEach((button) => {
@@ -114,7 +88,7 @@ const plrContent = () => {
         tbnl.classList.remove("fade");
         toggleVid.classList.add("active");
         //PLAY VID
-        // const vidPlr = new VideoPlr(idInfo);
+
         iframeSelec.src = vidLaptopPlr(idInfo, isVimeo, hash);
         isNotPlaying = false;
       });
@@ -133,7 +107,7 @@ const plrContent = () => {
           }
           //display tbnl
           tbnlContent = button.getAttribute("data-img");
-          console.log(tbnlContent);
+
           iframeSelec.src = "";
           tbnl.src = tbnlContent;
           tbnl.classList.add("fade");
@@ -472,6 +446,7 @@ const loadVid = () => {
       const titleWidth = "-" + vidTitle.getBoundingClientRect().width + "px";
       console.log({ titleWidth });
       vidTitle.style.setProperty("--new-width", titleWidth, "important");
+      vidTitle.style.setProperty("transform", "translateX(0px)");
 
       if (img.getAttribute("data-vid-source") === "vimeo") {
         //console
@@ -608,10 +583,6 @@ const slideNext = () => {
   }, 10);
 };
 const slideUpdate = () => {
-  console.log("slide changed");
-  console.log(swiper.activeIndex);
-
-  console.log(swiper.slides[swiper.activeIndex].innerHTML);
   document.querySelectorAll(".swiper-slide img").forEach((img) => {
     img.style.opacity = "1";
   });
@@ -648,7 +619,6 @@ let goTop = swiperWrapper.getBoundingClientRect().top;
 function getOrientation() {
   var orientation =
     window.innerWidth > window.innerHeight ? "Landscape" : "Portrait";
-  console.log("new fn: ", orientation);
 
   if (orientation == "Landscape") {
     const wrapper = document.querySelector(".swiper-wrapper");

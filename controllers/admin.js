@@ -254,7 +254,7 @@ exports.postPortfolioConfig = (req, res, next) => {
   let number = 0;
   //
   const videoPlr = new VideoPlr(videoUrl);
-  const extractId = videoPlr.idExtractor();
+  let extractId = videoPlr.idExtractor();
   console.log(videoPlr.type);
   const vidPlr = videoPlr.type;
   console.log({ extractId });
@@ -377,8 +377,12 @@ exports.postPortfolioConfig = (req, res, next) => {
   } else if (vidPlr == "vimeo") {
     //VIMEO API
     let idCheck = extractId;
+    if (extractId.includes("?h=")) {
+      extractId = extractId.split("?h=")[0];
+      return saveVideo();
+    }
     extractId.includes("/") ? (idCheck = idCheck.replace("/", ":")) : idCheck;
-    console.log("new extract: ", extractId);
+
     vimeoAPI.request(
       {
         method: "GET",

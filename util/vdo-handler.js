@@ -41,6 +41,7 @@ class VideoPlr {
       if (extracted.includes("video")) {
         extracted = extracted.split("/")[1];
       }
+
       console.log({ extracted });
       return extracted;
     } else {
@@ -49,18 +50,6 @@ class VideoPlr {
       return extracted;
     }
   }
-
-  // vidLaptopPlr() {
-  //   //if id has only numbers, then it is a vimeo id
-  //   let processedId = this.idExtractor();
-
-  //   if (isNaN(processedId)) {
-  //     console.log("this is a yt id");
-  //     return `https://www.youtube.com/embed/${processedId}?modestbranding=1&rel=0&iv_load_policy=3&theme=light&color=white&autoplay=1&loop=1`;
-  //   } else {
-  //     return `https://player.vimeo.com/video/${processedId}?amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
-  //   }
-  // }
 }
 
 module.exports = VideoPlr;

@@ -1,7 +1,8 @@
 .carousel-container,
 .lien-home hr,
 .foot-click,
-.swiper-container {
+.swiper-container,
+.tbnl-dload {
   display: none;
 }
 
@@ -36,10 +37,15 @@
 .btns-g {
   font-size: 1rem;
   font-weight: 400;
-  margin-left: 0.7rem;
+  margin-left: 0.75rem;
   height: 3.2em;
+  max-width: 215px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-style: none;
-  transition: all 0.4s ease-in-out;
+  transition: color ease-in-out 0s, border 1s, text-shadow 0.5s;
+  transition: text-indent linear 1.2s;
 }
 
 .btns,
@@ -86,8 +92,6 @@
 }
 .btns-main.active {
   border-radius: 11px;
-  /* background: #0b0c22;
-  box-shadow: inset -11px 11px 22px #04050e, inset 11px -11px 22px #121336; */
   color: #fffcf4;
   border: #fffcf4 0.02em solid;
   text-shadow: 0 0 0.65em currentColor, 0 0 0.9em currentColor;
@@ -98,18 +102,17 @@
   position: relative;
   display: flex;
   justify-content: center;
-  /* border: 2px solid pink; */
 }
 
 .videos-container {
   display: flex;
   flex-direction: column;
   align-items: baseline;
-  justify-content: center;
+  max-height: 470px;
+  justify-self: center;
+  margin: auto 0;
   width: 20%;
-  white-space: nowrap;
-  /* overflow: hidden; */
-  /* text-overflow: ellipsis; */
+  overflow-y: scroll;
 }
 .ellipsis {
   text-overflow: ellipsis;
@@ -122,10 +125,6 @@
   opacity: 0;
   transition: opacity 0.3s ease-in-out 0.1s;
   pointer-events: none;
-  /* margin-top: 1.5em; */
-  /* test*/
-  /* margin-left: 10%;
-  margin-right: 10%; */
   max-height: 60vh;
   width: auto;
   min-height: 200px;
@@ -688,7 +687,7 @@ s */
     padding-left: 100%;
     white-space: nowrap;
     animation: marquee linear infinite;
-    animation-duration: 8s;
+    animation-duration: 11s;
     font-family: "Cairo", sans-serif;
     font-size: 1.1rem;
     font-weight: 350;

@@ -125,6 +125,21 @@ exports.getPortfolio = (req, res, next) => {
   PortfolioInfo.find()
     .sort({ order: 1 })
     .then((vidInfo) => {
+      vidInfo.forEach((vid) => {
+        console.log(vid.image.public_id);
+        let newVidUrl = cloudinary.url(vid.image.public_id, {
+          secure: true,
+          transformation: {
+            aspect_ratio: "16:9",
+            crop: "fill",
+            fetch_format: "auto",
+            quality: "auto",
+          },
+        });
+        vid.image.url = newVidUrl;
+        console.log(vid.image.url);
+      });
+
       res.render("portfolio/portfolio", {
         pageTitle: "Portfolio",
         vidInfo: vidInfo,
