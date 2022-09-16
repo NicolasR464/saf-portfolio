@@ -13,14 +13,14 @@
     <div class="menu--container">
 
       <div class="menu--content">
-        <button data-index="2" data-section="mv" class="btns-main btn-menu2 active">
+        <button aria-label="music video" data-index="2" data-section="mv" class="btns-main btn-menu2 active">
           music video
         </button>
-        <button data-index="3" data-section="narrative" class="btns-main btn-menu3">narrative</button>
-        <button class="btns-main" data-section="commercial" btn-menu1">commercial</button>
+        <button aria-label="narrative" data-index="3" data-section="narrative" class="btns-main btn-menu3">narrative</button>
+        <button aria-label="commercial" class="btns-main" data-section="commercial" btn-menu1">commercial</button>
 
-        <!-- <button data-index="4" class="btns-main btn-menu4">miscellaneous</button> -->
-        <button data-section="reel" class="btns-main btn-menu5">reel</button>
+       
+        <button aria-label="reel" data-section="reel" class="btns-main btn-menu5">reel</button>
       </div>
       <hr class="menu--line--two" />
     </div>
@@ -36,20 +36,20 @@
         <% vidInfo.forEach(vid =>{ %>
           <img class="tbnl-dload" src="<%= vid.image.url %>" alt="thumbnail image download">
         <% if(vid.category == "mv"){ %>
-        <button data-title="<%= vid.title%>" data-section="mv" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>" class="btns-g btns2"><span class="title-span"><%= vid.title %></span>
+        <button aria-label="video title" data-title="<%= vid.title%>" data-section="mv" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>" class="btns-g btns2"><span class="title-span"><%= vid.title %></span>
          
         </button>
         <% } %>
         <% if(vid.category == "narrative"){ %>
-        <button data-title="<%= vid.title%>" data-section="narrative" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns3"><span class="title-span"><%= vid.title %></span>
+        <button aria-label="video title" data-title="<%= vid.title%>" data-section="narrative" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns3"><span class="title-span"><%= vid.title %></span>
         </button>
         <% } %>
         <% if(vid.category == "commercial"){ %>
-        <button data-title="<%= vid.title%>" data-section="commercial" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns"><span class="title-span"><%= vid.title %></span>
+        <button aria-label="video title" data-title="<%= vid.title%>" data-section="commercial" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns"><span class="title-span"><%= vid.title %></span>
         </button>
         <% } %>
         <% if(vid.category == "reel"){ %>
-        <button data-title="<%= vid.title%>" data-section="reel" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns5"><span class="title-span"><%= vid.title %></span>
+        <button aria-label="video title" data-title="<%= vid.title%>" data-section="reel" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>"  class="btns-g btns5"><span class="title-span"><%= vid.title %></span>
         </button>
         <% } %>
         <% }) %>
@@ -86,7 +86,7 @@
         <!--  VIDEO API  -->
         <p class="err-msg"></p>
         <div class="player-container">
-          <button class="play-icon fade-sm">
+          <button class="play-icon fade-sm" role="play video">
            
             <svg width="130" height="130" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g id="Frame 1">

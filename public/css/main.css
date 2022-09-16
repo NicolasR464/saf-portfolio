@@ -170,7 +170,7 @@ html {
 .burger-links.indexed {
   z-index: 7;
 }
-.burger-links ul {
+.burger-links li {
   text-align: center;
   margin-bottom: 2rem;
 }

@@ -7,6 +7,9 @@ const app = express();
 const path = require("path");
 const device = require("express-device");
 const session = require("express-session");
+const compression = require("compression");
+const helmet = require("helmet");
+
 const MongoDBStore = require("connect-mongodb-session")(session);
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
@@ -24,6 +27,9 @@ app.use(device.capture());
 const adminRoutes = require("./routes/admin");
 const portfolioRoutes = require("./routes/portfolio");
 //
+app.use(helmet());
+app.use(compression());
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
