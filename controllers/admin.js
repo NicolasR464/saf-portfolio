@@ -465,9 +465,11 @@ exports.deletePortfolioVid = (req, res, next) => {
 exports.updatePortfolioVid = (req, res, next) => {
   const newOrder = req.params.newOrder;
   const category = newOrder.split("-")[0];
-  const order = newOrder.split("-")[1].split("");
+  console.log({ newOrder });
+  const order = newOrder.split(`${category}-`).pop().split("-"); // BUG ICI - pour les nums à partir de 10
+
   console.log({ order });
-  let changeCount = 0;
+
   PortfolioVid.find({ category: category })
 
     .then((docs) => {

@@ -53,7 +53,7 @@ function dragStart() {
   sectionStart = this.closest(".cont-vignette");
   sectionIndex = +this.closest(".cont-vignette").attributes[1].value;
   sectionName = this.closest(".cont-vignette").attributes[2].value;
-  newOrder = sectionName + "-";
+  newOrder = sectionName;
   itemNum = sectionStart.childElementCount;
   dragStartEl = this;
   //
@@ -94,7 +94,7 @@ function changeOrder(fromIndex, toIndex) {
   const vignetChildren = contVignettes[sectionIndex].children;
   Array.from(vignetChildren).forEach((article, newI) => {
     article.children[0].value = newI;
-    newOrder += article.children[1].value;
+    newOrder += "-" + article.children[1].value;
     console.log(newOrder);
   });
 }
