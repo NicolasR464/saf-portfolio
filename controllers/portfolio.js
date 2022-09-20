@@ -158,7 +158,7 @@ exports.postContact = (req, res, next) => {
 
   const msg = {
     to: "nicolas.rocagel@gmail.com",
-    from: "em7785.safranlecuivre.com",
+    from: "safranlecuivre.com",
     subject: subject,
     html:
       message + "<br><br>" + "<strong>My email address</strong> 👉 " + email,
@@ -170,7 +170,8 @@ exports.postContact = (req, res, next) => {
     })
     .catch((error) => {
       console.error(error);
-      req.flash("error", error);
+      console.error(error.response.body.errors);
+      req.flash("error", error.response.body.errors);
       res.redirect("/contact");
     });
 };
