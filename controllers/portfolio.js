@@ -170,10 +170,7 @@ exports.postContact = (req, res, next) => {
     })
     .catch((error) => {
       console.error(error);
-      req.flash(
-        "error",
-        "Something went wrong when sending your e-mail. Please try again later!"
-      );
+      req.flash("error", error);
       res.redirect("/contact");
     });
 };
