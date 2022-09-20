@@ -171,7 +171,8 @@ exports.postContact = (req, res, next) => {
     .catch((error) => {
       console.error(error);
       console.error(error.response.body.errors);
-      req.flash("error", error.response.body.errors);
+      console.error(error.response.body.errors[0].message);
+      req.flash("error", error.response.body.errors[0].message);
       res.redirect("/contact");
     });
 };
