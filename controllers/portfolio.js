@@ -135,9 +135,17 @@ exports.getPortfolio = (req, res, next) => {
 
 //contact
 exports.getContact = (req, res, next) => {
+  let errorMsg = req.flash("error");
+  if (errorMsg.length > 0) {
+    errorMsg[0];
+  } else {
+    errorMsg = null;
+  }
+
   res.render("portfolio/contact", {
     pageTitle: "Contact",
     path: "/contact",
+    errorMsg: errorMsg,
   });
 };
 
@@ -149,8 +157,8 @@ exports.postContact = (req, res, next) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const msg = {
-    to: "nicolas.rocagel@gmail.com", // Change to your recipient
-    from: "em7785.safranlecuivre.com", // Change to your verified sender
+    to: "nicolas.rocagel@gmail.com",
+    from: "em7785.safranlecuivre.com",
     subject: subject,
     html:
       message + "<br><br>" + "<strong>My email address</strong> 👉 " + email,
@@ -162,6 +170,10 @@ exports.postContact = (req, res, next) => {
     })
     .catch((error) => {
       console.error(error);
+      req.flash(
+        "error",
+        "Something went wrong when sending your e-mail. Please try again later!"
+      );
       res.redirect("/contact");
     });
 };

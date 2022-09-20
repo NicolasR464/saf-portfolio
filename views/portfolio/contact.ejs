@@ -7,6 +7,9 @@
   <%- include("../includes/navigation.ejs")%>
   <main>
     <div class="container">
+      <% if (errorMsg) { %>
+        <div><p class="user-message user-message--error txt-misc"><%= errorMsg  %></p></div>
+      <% } %>
       <form class="form" method="POST" action="/contact">
         <input class="form__element input" type="text" name="subject" placeholder="Hi! What's your email subject?" required />
         <input class="form__element input" type="email" name="email" placeholder="Enter your email address here" required />
