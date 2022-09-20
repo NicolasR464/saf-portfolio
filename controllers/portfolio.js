@@ -172,15 +172,16 @@ exports.postContact = (req, res, next) => {
   console.log("sendgrid api: ", process.env.SENDGRID_API_KEY);
   const msg = {
     to: "nicolas.rocagel@gmail.com", // Change to your recipient
-    from: email, // Change to your verified sender
+    from: "em7785.safranlecuivre.com", // Change to your verified sender
     subject: subject,
-    text: message,
+    html:
+      message + "<br><br>" + "<strong>My email address</strong> 👉 " + email,
   };
   sgMail
     .send(msg)
     .then(() => {
       console.log("Email sent");
-      res.redirect("/contact");
+      res.redirect("/thanks"); // create thanks page
     })
     .catch((error) => {
       console.error(error);

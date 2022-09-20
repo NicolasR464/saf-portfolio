@@ -592,7 +592,7 @@ exports.postlogin = (req, res, next) => {
 
             const msg = {
               to: "nicolas.rocagel@gmail.com", // Change to your recipient
-              from: "nicolas.rocagel@gmail.com", // Change to your verified sender
+              from: "em7785.safranlecuivre.com", // Change to your verified sender
               subject: "Your login password ",
               html:
                 `<p>You just successfully created your password 🥳</p>` +
@@ -629,6 +629,7 @@ exports.getForgotPwd = (req, res, next) => {
     pageTitle: "Email sent",
     actionPrompt: "emailPrompt",
   });
+  req.session.destroy();
 
   //random hash
   const buf = crypto.randomBytes(20);
@@ -652,7 +653,7 @@ exports.getForgotPwd = (req, res, next) => {
   console.log("sendgrid api: ", process.env.SENDGRID_API_KEY);
   const msg = {
     to: "nicolas.rocagel@gmail.com", // Change to your recipient
-    from: "nicolas.rocagel@gmail.com", // Change to your verified sender
+    from: "em7785.safranlecuivre.com", // Change to your verified sender
     subject: "Password reset",
     html:
       `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +

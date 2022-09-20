@@ -10,5 +10,11 @@ router.get("/about", portfolioContr.getAbout);
 router.get("/portfolio", portfolioContr.getPortfolio);
 router.get("/contact", portfolioContr.getContact);
 router.post("/contact", portfolioContr.postContact);
+router.get("/thanks", (req, res, next) => {
+  res.render("portfolio/thanks", {
+    pageTitle: "Thanks",
+    path: "/",
+  });
+});
 
 module.exports = router;
