@@ -57,19 +57,17 @@ function dragStart() {
   itemNum = sectionStart.childElementCount;
   dragStartEl = this;
   //
-  console.log({ dragStartIndex });
 }
 
 function dragOver(e) {
   e.preventDefault(); // enables the drop event
 }
 function dragDrop() {
-  console.log("dropped");
   sectionEnd = this.closest(".cont-vignette");
   sectionEndIndex = +this.closest(".cont-vignette").attributes[1].value;
   const dragEndEl = this;
   dragEndIndex = +this.childNodes[1].value;
-  console.log(dragStartIndex, " > ", dragEndIndex);
+
   changeOrder(dragStartEl, dragEndEl);
   //THEN fetch change order info the backend
   fetch("/admin/portfolio-config/" + newOrder, {
@@ -86,7 +84,6 @@ function dragDrop() {
 
 function changeOrder(fromIndex, toIndex) {
   if (sectionIndex === sectionEndIndex) {
-    console.log("in change order: ", dragStartIndex, " > ", dragEndIndex);
     dragStartIndex < dragEndIndex
       ? contVignettes[sectionIndex].insertBefore(fromIndex, toIndex.nextSibling)
       : contVignettes[sectionIndex].insertBefore(fromIndex, toIndex);
@@ -95,7 +92,6 @@ function changeOrder(fromIndex, toIndex) {
   Array.from(vignetChildren).forEach((article, newI) => {
     article.children[0].value = newI;
     newOrder += "-" + article.children[1].value;
-    console.log(newOrder);
   });
 }
 

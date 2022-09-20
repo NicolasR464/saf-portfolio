@@ -25,7 +25,6 @@ const imgHandler = async (req, folder, file, tags, metadata) => {
 
   async function upload(req) {
     let result = await streamUpload(req);
-    console.log(result);
     return result;
   }
 

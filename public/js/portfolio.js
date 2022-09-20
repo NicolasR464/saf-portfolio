@@ -30,13 +30,11 @@ btnsG.forEach((btn) => {
 const vidLaptopPlr = (vidId, vimeo, hash) => {
   if (vimeo) {
     if (hash) {
-      console.log("this is a private vimeo id");
       return `https://player.vimeo.com/video/${vidId}?h=${hash}&amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
     }
-    console.log("this is a normal vimeo id");
+
     return `https://player.vimeo.com/video/${vidId}?amp;byline=false&amp;portrait=false&color=ffffff&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media&autoplay=1&loop=1`;
   } else {
-    console.log("this is a yt id");
     return `https://www.youtube.com/embed/${vidId}?modestbranding=1&rel=0&iv_load_policy=3&theme=light&color=white&autoplay=1&loop=1`;
   }
 };
@@ -74,7 +72,7 @@ const plrContent = () => {
           hash = idInfo.split("/")[1];
           idInfo = idInfo.split("/")[0];
         }
-        console.log(hash);
+
         let isVimeo = false;
         let playerInfo = button.getAttribute("data-player");
         playerInfo == "vimeo" ? (isVimeo = true) : isVimeo;
@@ -171,7 +169,7 @@ mainBtns.forEach((mainBtn) => {
     iframeSelec.src = "";
     //
     dataSection = mainBtn.getAttribute("data-section");
-    console.log(dataSection);
+
     tbnl.classList.add("fade");
     if (screen.width > 1181) {
       plrContent();
@@ -227,13 +225,6 @@ const playIcon2 = document.querySelector("#play2");
 const playIcon3 = document.querySelector("#play3");
 const playIcon4 = document.querySelector("#play4");
 
-//
-// window.onclick = (e) => {
-//   console.log(e.target.tagName); // to get the element tag name alone
-//   console.log(e.target); // to get the element
-// };
-//
-// YT Player API code asynchronous
 var tag = document.createElement("script");
 
 tag.src = "https://www.youtube.com/iframe_api";
@@ -245,11 +236,6 @@ const prevB = document.querySelector(".swiper-button-prev");
 const nextB = document.querySelector(".swiper-button-next");
 const vidTitle = document.querySelector(".title");
 //
-// like vdo blocker test
-const blocker = document.querySelector(".vdo-like-blocker");
-blocker.addEventListener("click", () => {
-  console.log("blocker clicked");
-});
 
 let count = 0;
 const letterCount = (txt) => {
@@ -257,11 +243,10 @@ const letterCount = (txt) => {
   split.forEach((letter) => {
     count++;
   });
-  // console.log("letter count: " + count);
+
   return count;
 };
-// letterCount("hey");
-//
+
 let firstIdYt;
 let firstIdVim;
 let ids = [];
@@ -299,14 +284,8 @@ function onYouTubeIframeAPIReady() {
 //maxheight: document.querySelectorAll(".carouselImages")[0].innerHeight,
 const containerHeight = document.querySelector(".swiper-wrapper");
 
-console.log(containerHeight);
 const styles = window.getComputedStyle(containerHeight);
 const height = styles.getPropertyValue("height");
-// console.log(styles);
-// console.log(styles.border);
-// console.log(styles.width);
-// console.log(height);
-// console.log(containerHeight.getPropertyValue("height"));
 
 let optionsVim = {
   url: firstIdVim,
@@ -353,7 +332,6 @@ const slideMaker = () => {
   swiper.activeIndex = 0;
 
   while (swiperWrapper.firstChild) {
-    console.log("el removed");
     swiperWrapper.firstChild.remove();
   }
 
@@ -437,24 +415,15 @@ const loadVid = () => {
     if (imgIndex == swiper.activeIndex) {
       console.log("this vid is: ", isPublicArr[Number(imgIndex)]);
 
-      //console
-      console.log("imgIndex: " + imgIndex);
-      console.log("Swiper imgIndex: " + swiper.activeIndex);
       //update title
       vidTitle.textContent = img.title;
 
       const titleWidth = "-" + vidTitle.getBoundingClientRect().width + "px";
-      console.log({ titleWidth });
+
       vidTitle.style.setProperty("--new-width", titleWidth, "important");
       vidTitle.style.setProperty("transform", "translateX(0px)");
 
       if (img.getAttribute("data-vid-source") === "vimeo") {
-        //console
-        console.log("vimeo");
-        console.log("dataId inside: " + img.getAttribute("data-id"));
-        console.log(img.title);
-
-        //class
         ytV.classList.remove("show");
         ytV.classList.remove("forward");
         vimeoContainer.classList.add("forward");
@@ -463,7 +432,6 @@ const loadVid = () => {
         dataIdVim = img.getAttribute("data-id");
         // load vimeo video
         videoVim.loadVideo(dataIdVim).catch((err) => {
-          console.log("Vimeo 1st err: ", err);
           let vidId;
           let hash;
           if (dataIdVim.includes("/")) {
@@ -475,7 +443,6 @@ const loadVid = () => {
             .loadVideo(`https://vimeo.com/${vidId}?h=${hash}`)
             .then((info) => console.log(info))
             .catch((err) => {
-              console.log("Vimeo 2n err: ", err);
               errMsg.innerHTML = "video not found!";
               playBtn.style.opacity = "0";
             });
@@ -492,15 +459,11 @@ const loadVid = () => {
           loadIcon.classList.remove("active");
         });
         videoVim.on("play", () => {
-          console.log("vimeo playing");
           img.style.opacity = "0";
           vimeoContainer.classList.add("show");
         });
         //
       } else if (img.getAttribute("data-vid-source") === "yt") {
-        //console
-        console.log("YT");
-
         if (isPublicArr[Number(imgIndex)] === "false") {
           img.style.opacity = "0";
           ytV.classList.add("show");
@@ -516,7 +479,6 @@ const loadVid = () => {
 
         try {
           player.cueVideoById(vidId);
-          console.log(player);
         } catch (err) {
           // console.log(err);
         }
@@ -524,26 +486,15 @@ const loadVid = () => {
         //  YT API EVENT
         player.addEventListener("onStateChange", (e) => {
           if (e.data === 3) {
-            console.log("Yt buffering");
             loadIcon.classList.add("active");
             playBtn.style.opacity = "0";
           } else if (e.data === 1) {
-            console.log("yt vid plays");
             img.style.opacity = "0";
             loadIcon.classList.remove("active");
             ytV.classList.add("show");
-          } else if (e.data === 2) {
-            console.log("yt vid paused");
-          } else if (e.data === 5) {
-            console.log("yt vid cued");
-            console.log(player.getVideoUrl());
-          } else if (e.data === -1) {
-            console.log("unstarted");
           }
         });
         player.addEventListener("onError", (e) => {
-          console.error(e);
-          console.log("yt no work");
           errMsg.innerHTML = "video not found!";
           //remove play btn
           playBtn.style.opacity = "0";

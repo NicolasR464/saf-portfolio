@@ -21,7 +21,7 @@ let vimeoAPI = new Vimeo(
 
 require("dotenv/config");
 const cloudinary = require("cloudinary").v2;
-// const streamifier = require("streamifier");
+
 let metadata = null;
 let tags = null;
 let buttonTxt;
@@ -52,7 +52,6 @@ exports.getHomeConfig = (req, res, next) => {
       imgs.resources.forEach((img) => {
         console.log(img.context);
       });
-      // console.log(imgs.metadata);
 
       let URLs = [];
 
@@ -72,7 +71,6 @@ exports.getHomeConfig = (req, res, next) => {
           phoneV: phoneV,
         });
       });
-      // console.log({ URLs });
 
       res.render("admin/home-config", {
         pageTitle: "Home | Image upload",
@@ -107,14 +105,11 @@ exports.postHomeConfig = (req, res, next) => {
   imgHandler(req, folder, file, tags, metadata).then((info) => {
     req.flash("valid", "new home page image uploaded 🔥");
     res.status(201).redirect("/admin/home-config");
-    console.log("cloudinary uploaded 🥳");
-    console.log({ info });
   });
 };
 
 exports.deleteHomeImg = (req, res, next) => {
   const imgId = req.params.imgId.replaceAll("-", "/");
-  console.log(imgId);
 
   if (!imgId) {
     return next(new Error("Img not found."));
@@ -123,7 +118,6 @@ exports.deleteHomeImg = (req, res, next) => {
   cloudinary.uploader
     .destroy(imgId, { invalidate: true })
     .then((result) => {
-      console.log(result);
       res.status(200).json({ message: "delete successs!" });
     })
     .catch((err) => {
@@ -171,7 +165,6 @@ exports.postAboutConfig = (req, res, next) => {
       .save()
       .then(() => {
         req.flash("valid", "Updated 👌");
-        console.log("bio updated");
         res.redirect("/admin/about-config");
       })
       .catch((err) => console.log(err));
@@ -190,11 +183,9 @@ exports.postAboutConfig = (req, res, next) => {
 
         imgHandler(req, folder, imgUpdate, tags, metadata)
           .then((newImg) => {
-            console.log(newImg.secure_url);
-            //add image url to Mongodb
             content.image.url = newImg.secure_url;
             content.image.public_id = newImg.public_id;
-            console.log(content.image.url);
+
             save(content);
           })
           .catch((err) => console.log(err));
@@ -226,7 +217,6 @@ exports.getPortfolioConfig = (req, res, next) => {
   PortfolioVid.find()
     .sort({ order: 1 })
     .then((vidsInfo) => {
-      // console.log(vidsInfo);
       res.render("admin/portfolio-config", {
         pageTitle: "Portfolio | add video",
         path: "/admin/portfolio-config",
@@ -248,16 +238,14 @@ exports.postPortfolioConfig = (req, res, next) => {
   const videoImage = req.file.buffer;
   let isPublicRated = true;
   let isEmbeddable = true;
-  console.log({ videoUrl });
   //
   let order = 0;
   let number = 0;
   //
   const videoPlr = new VideoPlr(videoUrl);
   let extractId = videoPlr.idExtractor();
-  console.log(videoPlr.type);
+
   const vidPlr = videoPlr.type;
-  console.log({ extractId });
 
   //FUNCTIONS
   const saveVideo = () => {
@@ -277,8 +265,6 @@ exports.postPortfolioConfig = (req, res, next) => {
           metadata
         )
           .then((newImg) => {
-            // console.log(newImg);
-
             const videoNew = new PortfolioVid({
               title: videoTitle,
               vidId: extractId,
@@ -296,7 +282,6 @@ exports.postPortfolioConfig = (req, res, next) => {
             videoNew
               .save()
               .then((video) => {
-                console.log(video);
                 number++;
                 console.log("New video saved in portfolio 🔥");
                 req.flash("valid", "new project uploaded 🤩");
@@ -331,7 +316,6 @@ exports.postPortfolioConfig = (req, res, next) => {
   };
 
   const errorHandling = () => {
-    console.log("url off");
     req.flash(
       "error",
       "Mh...there must be something off with the URL, please check it and try again."
@@ -344,15 +328,10 @@ exports.postPortfolioConfig = (req, res, next) => {
     const ytKey = "key=" + process.env.YT_KEY;
     const parameter = "&part=contentDetails&";
     const ytURL = baseUri + ytKey + parameter + "id=" + extractId;
-    console.log(ytURL);
+
     axios
       .get(ytURL)
       .then((info) => {
-        console.log(info.data.items);
-        console.log(info.data.items[0].contentDetails.contentRating.ytRating);
-        console.log(info.data.pageInfo);
-        console.log(info.data.pageInfo.totalResults);
-
         info.data.items[0].contentDetails.contentRating.ytRating ==
         "ytAgeRestricted"
           ? (isPublicRated = false)
@@ -394,7 +373,6 @@ exports.postPortfolioConfig = (req, res, next) => {
           errorHandling();
           return;
         }
-        console.log(body);
 
         body.content_rating[0] != "safe"
           ? (isPublicRated = false)
@@ -420,25 +398,18 @@ exports.deletePortfolioVid = (req, res, next) => {
         return next(new Error("vid not found."));
       }
 
-      //
-      //UPDATE THE 'NUMBER' FIELD + 'ORDER' FIELD
       PortfolioVid.find({ category: vid.category })
         .updateMany({ number: { $gt: vid.number } }, { $inc: { number: -1 } })
         .then((update) => {
-          //update order to !
           PortfolioVid.find({ category: vid.category })
             .sort({ order: 1 })
             .then((docs) => {
               docs.forEach((doc, i) => {
-                // console.log("before: ", doc);
-                // let index = order.indexOf(doc.number.toString());
-                // console.log({ index });
                 doc.order = i;
-                // console.log("after: ", doc);
+
                 doc
                   .save()
                   .then((result) => {
-                    // console.log(result);
                     console.log("order updated after delete");
                   })
                   .catch((err) => {
@@ -449,7 +420,6 @@ exports.deletePortfolioVid = (req, res, next) => {
           console.log({ update });
         });
 
-      // fileHelper.deleteFile(vid.image);
       cloudinary.uploader
         .destroy(vid.image.public_id, { invalidate: true })
         .then((result) => console.log(result))
@@ -457,7 +427,6 @@ exports.deletePortfolioVid = (req, res, next) => {
       return PortfolioVid.deleteOne({ _id: vidId });
     })
     .then((info) => {
-      console.log(info);
       res.status(200).json({ message: "delete successs!" });
     });
 };
@@ -465,34 +434,21 @@ exports.deletePortfolioVid = (req, res, next) => {
 exports.updatePortfolioVid = (req, res, next) => {
   const newOrder = req.params.newOrder;
   const category = newOrder.split("-")[0];
-  console.log({ newOrder });
-  const order = newOrder.split(`${category}-`).pop().split("-"); // BUG ICI - pour les nums à partir de 10
 
-  console.log({ order });
+  const order = newOrder.split(`${category}-`).pop().split("-");
 
   PortfolioVid.find({ category: category })
 
     .then((docs) => {
       docs.forEach((doc) => {
-        // console.log("before: ", doc);
         let index = order.indexOf(doc.number.toString());
-        // console.log({ index });
         doc.order = index;
-        // console.log("after: ", doc);
-        doc
-          .save()
-          .then((result) => {
-            // console.log(result);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        doc.save().catch((err) => {
+          console.log(err);
+        });
       });
     })
     .then((result) => {
-      // console.log(result);
-      console.log("update done ");
-      // console.log("update done: " + changeCount++);
       res.status(200);
     })
     .catch((err) => console.log(err));
@@ -501,13 +457,13 @@ exports.updatePortfolioVid = (req, res, next) => {
 //LOGIN
 exports.getlogin = (req, res, next) => {
   let logValid = req.flash("valid");
-  console.log({ logValid });
+
   if (logValid.length > 0) {
     logValid = logValid[0];
   } else {
     logValid = undefined;
   }
-  // let innerText;
+
   let message = req.flash("error");
   if (message.length > 0) {
     message = message[0];
@@ -515,7 +471,6 @@ exports.getlogin = (req, res, next) => {
     message = null;
   }
 
-  console.log(req.session.isLoggedIn);
   SafInfo.findOne()
     .then((info) => {
       if (!info) {
@@ -540,15 +495,13 @@ exports.postlogin = (req, res, next) => {
   const email = req.body.email.trim();
   const password = req.body.password.trim();
   const errors = validationResult(req);
-  console.log(errors);
-  console.log(errors.array().length);
+
   if (!errors.isEmpty()) {
-    console.log(errors);
     let errorMsg;
     errors.array().length > 1
       ? (errorMsg = errors.array()[0].msg + " " + errors.array()[1].msg)
       : (errorMsg = errors.array()[0].msg);
-    console.log("errors :( : ", errors.array()[0].msg);
+
     return res.status(422).render("admin/login", {
       pageTitle: "login",
       buttonTxt: buttonTxt,
@@ -588,8 +541,6 @@ exports.postlogin = (req, res, next) => {
             return user.save();
           })
           .then(() => {
-            console.log("log created");
-
             const msg = {
               to: "nicolas.rocagel@gmail.com", // Change to your recipient
               from: "em7785.safranlecuivre.com", // Change to your verified sender
@@ -607,7 +558,7 @@ exports.postlogin = (req, res, next) => {
               "valid",
               "Password created! 🥳 You may now log in. Ps: Check your email."
             );
-            //send an email to Saf with password info + Vimeo explainer video link
+
             res.redirect("/admin/login");
           });
       }
@@ -617,7 +568,6 @@ exports.postlogin = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(() => {
-    //delete session in db
     res.redirect("/admin/login");
   });
 };
@@ -633,15 +583,12 @@ exports.getForgotPwd = (req, res, next) => {
 
   //random hash
   const buf = crypto.randomBytes(20);
-  console.log("The random bytes of data generated is: " + buf.toString("utf8"));
+
   randomHash = buf.toString("hex");
-  console.log({ randomHash });
 
   //save hash to db
   SafInfo.findOne().then((info) => {
-    console.log(info);
     if (!info) {
-      console.log("couldn't find info in db");
       return res.redirect("/admin/login");
     }
     info.resetpwd = randomHash;
@@ -650,7 +597,7 @@ exports.getForgotPwd = (req, res, next) => {
 
   //send email
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log("sendgrid api: ", process.env.SENDGRID_API_KEY);
+
   const msg = {
     to: "nicolas.rocagel@gmail.com", // Change to your recipient
     from: "em7785.safranlecuivre.com", // Change to your verified sender
@@ -675,16 +622,15 @@ exports.getForgotPwd = (req, res, next) => {
 exports.pwdreset = (req, res, next) => {
   //
   let errorMsg = req.flash("error");
-  console.log("errorMsg before transfo: ", errorMsg);
+
   if (errorMsg.length > 0) {
     errorMsg = errorMsg[0];
   } else {
     errorMsg = null;
   }
-  console.log({ errorMsg });
-  //check randomHash from req.params
+
   const token = req.params.token;
-  console.log({ token });
+
   SafInfo.findOne({ resetpwd: token })
     .then((user) => {
       if (!user) {
@@ -701,8 +647,6 @@ exports.pwdreset = (req, res, next) => {
       console.log(err);
       // res.redirect("/admin/login");
     });
-  //render form
-  //store new pwd
 };
 
 exports.postPwdreset = (req, res, next) => {
@@ -740,7 +684,7 @@ exports.postPwdreset = (req, res, next) => {
       //confirmation email
       const msg = {
         to: "nicolas.rocagel@gmail.com", // Change to your recipient
-        from: "nicolas.rocagel@gmail.com", // Change to your verified sender
+        from: "em7785.safranlecuivre.com", // Change to your verified sender
         subject: "Your new password",
         html:
           `<p>You just successfully changed your password 🥳</p>` +

@@ -5,21 +5,14 @@ const cloudinary = require("cloudinary").v2;
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 //
-//
 
 exports.getIndex = (req, res, next) => {
   const isLogged = req.session.isLoggedIn;
-  console.log({ isLogged });
-
   const device = req.device.type;
   const orientation = req.params.orientation;
   let URLs = [];
-  console.log({ device });
-  console.log({ orientation });
 
   if (orientation == "landscape" || device == "desktop") {
-    // URLs = [];
-    console.log("laptop or landscape version");
     cloudinary.api
       .resources({
         type: "upload",
@@ -40,7 +33,6 @@ exports.getIndex = (req, res, next) => {
             })
           );
         });
-        console.log({ URLs });
 
         if (!orientation) {
           res.render("portfolio/index", {
@@ -58,15 +50,11 @@ exports.getIndex = (req, res, next) => {
       })
       .catch((err) => console.log(err));
   } else {
-    // URLs = [];
-    console.log("portrait mode");
-
     cloudinary.api
       .resources_by_tag("phone-option", {
         context: true,
       })
       .then((imgs) => {
-        // console.log(imgs);
         imgs.resources.forEach((img) => {
           URLs.push(
             cloudinary.url(img.public_id, {
@@ -83,7 +71,7 @@ exports.getIndex = (req, res, next) => {
             })
           );
         });
-        console.log("Phone V URLs: : ", URLs);
+
         if (!orientation) {
           res.render("portfolio/index", {
             pageTitle: "Home",
@@ -92,7 +80,6 @@ exports.getIndex = (req, res, next) => {
             isLogged: isLogged,
           });
         } else {
-          //json
           res.status(200).json({
             message: "new URLs",
             URLs: URLs,
@@ -104,7 +91,6 @@ exports.getIndex = (req, res, next) => {
 
 exports.getAbout = (req, res, next) => {
   const isLogged = req.session.isLoggedIn;
-  console.log({ isLogged });
 
   AboutInfo.findOne()
     .then((info) => {
@@ -126,7 +112,6 @@ exports.getPortfolio = (req, res, next) => {
     .sort({ order: 1 })
     .then((vidInfo) => {
       vidInfo.forEach((vid) => {
-        console.log(vid.image.public_id);
         let newVidUrl = cloudinary.url(vid.image.public_id, {
           secure: true,
           transformation: {
@@ -137,7 +122,6 @@ exports.getPortfolio = (req, res, next) => {
           },
         });
         vid.image.url = newVidUrl;
-        console.log(vid.image.url);
       });
 
       res.render("portfolio/portfolio", {
@@ -155,12 +139,6 @@ exports.getContact = (req, res, next) => {
     pageTitle: "Contact",
     path: "/contact",
   });
-  //mail
-
-  // using Twilio SendGrid's v3 Node.js Library
-  // https://github.com/sendgrid/sendgrid-nodejs
-
-  //
 };
 
 exports.postContact = (req, res, next) => {
@@ -169,7 +147,7 @@ exports.postContact = (req, res, next) => {
   const message = req.body.message;
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log("sendgrid api: ", process.env.SENDGRID_API_KEY);
+
   const msg = {
     to: "nicolas.rocagel@gmail.com", // Change to your recipient
     from: "em7785.safranlecuivre.com", // Change to your verified sender
@@ -180,8 +158,7 @@ exports.postContact = (req, res, next) => {
   sgMail
     .send(msg)
     .then(() => {
-      console.log("Email sent");
-      res.redirect("/thanks"); // create thanks page
+      res.redirect("/thanks");
     })
     .catch((error) => {
       console.error(error);

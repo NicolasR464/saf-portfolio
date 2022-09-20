@@ -20,16 +20,13 @@ let cropHeight;
 image.onchange = () => {
   image_workspace.src = "";
 
-  console.log(image);
   file = image.files[0];
   url = window.URL.createObjectURL(new Blob([file], { type: "image/jpg" }));
-  console.log(url);
-  console.log(image_workspace.src);
+
   image_workspace.src = url;
-  console.log(image_workspace.src);
+
   try {
     cropper.replace(url, { hasSameSize: true });
-    console.log("cropper is launched");
   } catch {
     console.log("cropper not launched yet");
   }
@@ -47,16 +44,8 @@ image.onchange = () => {
       cropY = Math.floor(event.detail.y);
       cropWidth = Math.floor(event.detail.width);
       cropHeight = Math.floor(event.detail.height);
-      console.log({ cropX });
-      console.log({ cropY });
-      console.log({ cropWidth });
-      console.log({ cropHeight });
     },
   };
-
-  //
-
-  //
 };
 phoneBtn.addEventListener("click", () => {
   if (url) {
@@ -77,34 +66,9 @@ cropBtn.addEventListener("click", () => {
   document.querySelector("[name=cropY]").value = cropY;
   document.querySelector("[name=cropWidth]").value = cropWidth;
   document.querySelector("[name=cropHeight]").value = cropHeight;
-  console.log(
-    " cropX: ",
-    cropX,
-    " cropY: ",
-    cropY,
-    " cropWidth: ",
-    cropWidth,
-    " cropHeight: ",
-    cropHeight
-  );
 });
 
-// const cropper = new Cropper(image_workspace, {
-//   aspectRatio: 9 / 16,
-//   crop(event) {
-//     console.log(event.detail.x);
-//     console.log(event.detail.y);
-//     console.log(event.detail.width);
-//     console.log(event.detail.height);
-//     console.log(event.detail.rotate);
-//     console.log(event.detail.scaleX);
-//     console.log(event.detail.scaleY);
-//   },
-// });
-
-//DELETE VIGNETTE ACTION
 const delBtn = document.querySelectorAll(".delBtn");
-//This code runs on the client side - not on the server
 
 const deleteHomeImg = (btn) => {
   let imgId = btn.parentNode
@@ -112,8 +76,6 @@ const deleteHomeImg = (btn) => {
     .value.split("v1/")[1]
     .replaceAll("/", "-");
 
-  //to adentify the arcticle you want to delete on the DOM instentaneously
-  //closest() - indentify the closest parent of the element that matches the selector
   const productElement = btn.closest("article");
 
   fetch("/admin/home-config/" + imgId, {
