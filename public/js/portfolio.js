@@ -269,6 +269,7 @@ function onYouTubeIframeAPIReady() {
     width: "100%",
     height: "100%",
     autoplay: 0,
+    controls: 0,
     iv_load_policy: 3,
     videoId: firstIdYt, //change id source
     playerVars: {
@@ -413,9 +414,6 @@ const loadVid = () => {
     isPublicArr.push(img.getAttribute("data-isPubRated"));
 
     if (imgIndex == swiper.activeIndex) {
-      console.log("this vid is: ", isPublicArr[Number(imgIndex)]);
-
-      //update title
       vidTitle.textContent = img.title;
 
       const titleWidth = "-" + vidTitle.getBoundingClientRect().width + "px";
