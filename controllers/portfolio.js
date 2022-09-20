@@ -157,7 +157,7 @@ exports.postContact = (req, res, next) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const msg = {
-    to: "nicolas.rocagel@gmail.com",
+    to: "safranlecuivre@gmail.com",
     from: "nicolas.rocagel@gmail.com",
     subject: subject,
     html:
