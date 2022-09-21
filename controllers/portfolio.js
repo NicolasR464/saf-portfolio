@@ -158,7 +158,7 @@ exports.postContact = (req, res, next) => {
 
   const msg = {
     to: "safranlecuivre@gmail.com",
-    from: "nicolas.rocagel@gmail.com",
+    from: "mail@safranlecuivre.com",
     subject: subject,
     html:
       message + "<br><br>" + "<strong>My email address</strong> 👉 " + email,

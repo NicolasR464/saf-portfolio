@@ -12,7 +12,6 @@ class Slide {
 
   //1st RANDOM IMAGE
   firstImg() {
-    console.log(this.startDiapo);
     this.startDiapo.style.opacity = 1;
   }
 
@@ -21,8 +20,7 @@ class Slide {
     this.startDiapo.style.opacity = 0;
     let step = Math.floor(Math.random() * this.img.length);
     const activeImg = document.querySelector(`.i${step}`);
-    // console.log(activeImg);
-    //
+
     if (this.startDiapo.classList[1] === activeImg.classList[1]) {
       this.startDiapo.style.opacity = 1;
     }
@@ -31,7 +29,7 @@ class Slide {
   start() {
     if (this.isPlaying) {
       clearInterval(this.isPlaying);
-      // console.log(this.isPlaying);
+
       this.isPlaying = null;
     } else {
       this.isPlaying = setInterval(() => {
@@ -78,15 +76,14 @@ phoneImg.classList.add("display");
 // Orientation
 let landscapeLoaded = false;
 let imgsCont = document.querySelector(".imgs");
-console.log(imgsCont);
+
 function getOrientation() {
   let orientation =
     window.innerWidth > window.innerHeight ? "landscape" : "portrait";
-  console.log("Orientation is on: ", orientation);
 
   if (landscapeLoaded || orientation == "landscape") {
     landscapeLoaded = true;
-    console.log({ landscapeLoaded });
+
     fetch("/home/" + orientation)
       .then(() => {
         fetch("/home/" + orientation)
@@ -94,8 +91,6 @@ function getOrientation() {
             return res.json();
           })
           .then((result) => {
-            console.log({ result });
-            // update images section
             while (imgsCont.firstChild) {
               imgsCont.firstChild.remove();
             }
@@ -111,10 +106,9 @@ function getOrientation() {
             });
 
             const randomIndex = Math.floor(Math.random() * index);
-            console.log(randomIndex);
+
             const newImg = document.querySelector(`.i${randomIndex}`);
             newImg.classList.add("display");
-            console.log(newImg);
           });
       })
       .catch((err) => {
