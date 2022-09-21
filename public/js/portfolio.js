@@ -493,6 +493,7 @@ const loadVid = () => {
           }
         });
         player.addEventListener("onError", (e) => {
+          console.log(e);
           errMsg.innerHTML = "video not found!";
           //remove play btn
           playBtn.style.opacity = "0";
