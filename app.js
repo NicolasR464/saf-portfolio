@@ -48,7 +48,7 @@ app.use("/admin", adminRoutes);
 app.use(portfolioRoutes);
 
 app.use((req, res, next) => {
-  res.send("404 page not found!");
+  res.redirect("/");
 });
 //
 mongoose
