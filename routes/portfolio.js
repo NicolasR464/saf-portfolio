@@ -16,5 +16,9 @@ router.get("/thanks", (req, res, next) => {
     path: "/",
   });
 });
-
+router.get("/error", (req, res, next) => {
+  res.render("portfolio/error", {
+    pageTitle: "error",
+  });
+});
 module.exports = router;

@@ -1,0 +1,127 @@
+.projector-loader {
+  max-width: 350px;
+  height: 250px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.body-to-smoke {
+  display: flex;
+  align-items: center;
+}
+.body {
+  width: 50px;
+  height: 50px;
+  border: 1.5px solid rgb(255, 255, 255);
+  border-radius: 20%;
+  display: flex;
+  align-items: center;
+}
+.lense {
+  align-self: center;
+  width: 15px;
+  height: 15px;
+  border: 1px solid white;
+  border-radius: 40% 20% 20% 40%;
+}
+.smoke {
+  width: 30px;
+  height: 30px;
+  box-shadow: 95px 0px 40px 6px rgba(255, 255, 255, 1);
+  opacity: 1;
+  background-color: #00000000;
+  border-radius: 30%;
+  animation: flicker 5s linear reverse infinite;
+}
+
+.wheels {
+  display: flex;
+}
+.wheel-one,
+.wheel-two {
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translateX(-30%);
+  display: flex;
+  align-items: center;
+}
+.film-one {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='white' stroke-width='2' stroke-dasharray='32%2c 32' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
+  border-radius: 100px;
+  animation: wheelTurn 2.3s linear infinite;
+}
+.film-two {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='white' stroke-width='2' stroke-dasharray='32%2c 32' stroke-dashoffset='43' stroke-linecap='butt'/%3e%3c/svg%3e");
+  border-radius: 100px;
+  animation: wheelTurn 2.3s linear infinite;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.4;
+  }
+  5% {
+    opacity: 0.5;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 0.25;
+  }
+  45% {
+    opacity: 0.5;
+  }
+  60% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes wheelTurn {
+  0% {
+    transform: rotate(0turn);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+a {
+  font-family: sans-serif;
+  color: rgb(83, 83, 83);
+}
