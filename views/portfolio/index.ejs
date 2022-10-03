@@ -37,8 +37,11 @@
     <% if (imgs.length > 0) { %>
 
     <% imgs.forEach((img, i ) =>{ %>
-    <img class="img i<%= i %>" src="<%= img %>" alt="cinema still" />
+      
+    <img class="img i<%= i %>" src="<%= img %>" alt="cinema still" loading="lazy" />
     <% }) %>
+    <!--if next_cursor -->
+    
     <% } %>
   </section>
 

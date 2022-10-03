@@ -12,26 +12,55 @@ exports.getIndex = (req, res, next) => {
   const orientation = req.params.orientation;
   let URLs = [];
 
+  //
+  // var result = [];
+  // var options = {
+  //   type: "upload",
+  //   prefix: "saf_portfolio/index",
+  //   max_results: 5,
+  // };
+
+  // function listResources(next_cursor) {
+  //   if (next_cursor) {
+  //     options["next_cursor"] = next_cursor;
+  //   }
+  //   cloudinary.api.resources(options, function (error, res) {
+  //     resources = res.resources;
+  //     result = result.concat(resources);
+  //     var more = res.next_cursor;
+  //     listResources(more);
+  //     console.log(more);
+  //   });
+  // }
+
+  //
+
   if (orientation == "landscape" || device == "desktop") {
     cloudinary.api
       .resources({
         type: "upload",
         prefix: "saf_portfolio/index",
-        max_results: 500,
+        max_results: 5,
       })
       .then((imgs) => {
-        imgs.resources.forEach((img) => {
-          URLs.push(
-            cloudinary.url(img.public_id, {
-              secure: true,
-              transformation: {
-                aspect_ratio: "16:9",
-                crop: "fill",
-                fetch_format: "auto",
-                quality: "auto",
-              },
-            })
-          );
+        console.log(imgs);
+        const next_cursor = imgs.next_cursor;
+        imgs.resources.forEach((img, i) => {
+          let randomNum = Math.floor(Math.random() * imgs.resources.length);
+          if (i < 10) {
+            URLs.push(
+              cloudinary.url(imgs.resources[randomNum].public_id, {
+                secure: true,
+                transformation: {
+                  aspect_ratio: "16:9",
+                  crop: "lfill",
+                  fetch_format: "auto",
+                  quality: "auto",
+                },
+                loading: "lazy",
+              })
+            );
+          }
         });
 
         if (!orientation) {
@@ -40,6 +69,7 @@ exports.getIndex = (req, res, next) => {
             path: "/",
             imgs: URLs,
             isLogged: isLogged,
+            next_cursor: next_cursor,
           });
         } else {
           res.status(200).json({
@@ -66,7 +96,7 @@ exports.getIndex = (req, res, next) => {
                 width: img.context.custom.cropWidth,
                 x: img.context.custom.cropX,
                 y: img.context.custom.cropY,
-                crop: "crop",
+                crop: "fill",
               },
             })
           );

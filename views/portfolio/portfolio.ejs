@@ -34,7 +34,7 @@
 
 
         <% vidInfo.forEach(vid =>{ %>
-          <img class="tbnl-dload" src="<%= vid.image.url %>" alt="thumbnail image download">
+          <img class="tbnl-dload" src="<%= vid.image.url %>" alt="thumbnail image download" loading="lazy">
         <% if(vid.category == "mv"){ %>
         <button aria-label="video title" data-title="<%= vid.title%>" data-section="mv" data-id="<%= vid.vidId%>" data-player="<%= vid.player %>" data-img="<%= vid.image.url %>" data-index="<%= vid.order %>" data-ispubrated="<%= vid.isPublicRated %>" class="btns-g btns2"><span class="title-span"><%= vid.title %></span>
          
@@ -59,13 +59,13 @@
       <!--VIDEO WINDOW LAPTOP-->
       <div class="visual--window">
         <div class="toggle-vid">
-          <iframe class="img-vid iframe" src="" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" frameborder="0">
+          <iframe class="img-vid iframe" src="" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" frameborder="0" >
           </iframe>
         </div>
 
         <!-- THUMBNAILS -->
        
-        <img class="tbnl img-vid fade" src="" alt="thumbnail" width="1920" height="1080" />
+        <img class="tbnl img-vid fade" src="" alt="thumbnail" width="1920" height="1080"/>
 
       </div>
     </div>
