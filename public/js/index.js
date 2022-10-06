@@ -116,7 +116,10 @@ function getOrientation() {
       });
   }
 }
-if (screen.width <= 1180) {
-  // getOrientation();
+if (
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  )
+) {
+  window.onresize = getOrientation;
 }
-window.onresize = getOrientation;

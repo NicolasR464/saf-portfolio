@@ -17,10 +17,10 @@ exports.getIndex = (req, res, next) => {
       .resources({
         type: "upload",
         prefix: "saf_portfolio/index",
-        max_results: 5,
+        max_results: 500,
       })
       .then((imgs) => {
-        console.log(imgs);
+        console.log("rate_limit_remaining: ", imgs.rate_limit_remaining);
         imgs.resources.forEach((img) => {
           URLs.push(
             cloudinary.url(img.public_id, {
@@ -43,7 +43,7 @@ exports.getIndex = (req, res, next) => {
             imgs: URLs,
             isLogged: isLogged,
           });
-        } else {
+        } else if (device == "phone" || device == "tablet") {
           res.status(200).json({
             message: "new URLs",
             URLs: URLs,
@@ -51,15 +51,16 @@ exports.getIndex = (req, res, next) => {
         }
       })
       .catch((err) => {
-        console.log("portfolio l.54 🤯");
         console.log(err);
         res.redirect("/error");
       });
-  } else {
+
+    ///////
+  } else if (device == "phone" || device == "tablet") {
     cloudinary.api
       .resources_by_tag("phone-option", {
         context: true,
-        max_results: 5,
+        max_results: 15,
       })
       .then((imgs) => {
         imgs.resources.forEach((img) => {
@@ -92,6 +93,10 @@ exports.getIndex = (req, res, next) => {
             URLs: URLs,
           });
         }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.redirect("/error");
       });
   }
 };
