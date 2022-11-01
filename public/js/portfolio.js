@@ -365,7 +365,7 @@ const slideMaker = () => {
     swiper.update();
   }
 };
-if (screen.width < 1050) {
+if (screen.width < 1181) {
   slideMaker();
   const slide = document.querySelectorAll(".slide")[0];
   const wrapper = document.querySelector(".swiper-wrapper");
@@ -508,7 +508,7 @@ const loadVid = () => {
 };
 // loadVid();
 const checkYt = setInterval(() => {
-  if (player != undefined && screen.width < 1050) {
+  if (player != undefined && screen.width < 1181) {
     clearInterval(checkYt);
     loadVid();
   }

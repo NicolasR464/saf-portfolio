@@ -108,7 +108,7 @@ function getOrientation() {
             const randomIndex = Math.floor(Math.random() * index);
 
             const newImg = document.querySelector(`.i${randomIndex}`);
-            newImg.classList.add("display");
+            newImg.classList.add("display"); // add display none to the others?
           });
       })
       .catch((err) => {
