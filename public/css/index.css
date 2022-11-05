@@ -199,33 +199,10 @@ h1 a i {
   .gradient {
     background-image: rgba(255, 0, 0, 0);
   }
-  /* .container {
-    display: block;
-  }
-  .lien-home {
-    display: block;
-    z-index: 2;
-  } */
-  /* .phone-nav {
-    display: none;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    z-index: 1;
-    height: 100vh;
-  }
-  .phone-nav li:first-child,
-  .phone-nav li:nth-child(2n),
-  .phone-nav li:nth-child(3n) {
-    padding-bottom: 1rem;
-  } */
+
   .img {
     z-index: -1;
     opacity: 1;
     display: none;
-  }
-  .display {
-    display: block;
   }
 }

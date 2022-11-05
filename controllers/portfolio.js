@@ -9,10 +9,9 @@ require("dotenv").config();
 exports.getIndex = (req, res, next) => {
   const isLogged = req.session.isLoggedIn;
   const device = req.device.type;
-  const orientation = req.params.orientation;
   let URLs = [];
 
-  if (orientation == "landscape" || device == "desktop") {
+  if (device == "desktop") {
     cloudinary.api
       .resources({
         type: "upload",
@@ -36,19 +35,12 @@ exports.getIndex = (req, res, next) => {
           );
         });
 
-        if (!orientation) {
-          res.render("portfolio/index", {
-            pageTitle: "Home",
-            path: "/",
-            imgs: URLs,
-            isLogged: isLogged,
-          });
-        } else if (device == "phone" || device == "tablet") {
-          res.status(200).json({
-            message: "new URLs",
-            URLs: URLs,
-          });
-        }
+        res.render("portfolio/index", {
+          pageTitle: "Home",
+          path: "/",
+          imgs: URLs,
+          isLogged: isLogged,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -60,39 +52,46 @@ exports.getIndex = (req, res, next) => {
     cloudinary.api
       .resources_by_tag("phone-option", {
         context: true,
-        max_results: 15,
+        max_results: 50,
       })
       .then((imgs) => {
-        imgs.resources.forEach((img) => {
-          URLs.push(
-            cloudinary.url(img.public_id, {
-              secure: true,
-              transformation: {
-                fetch_format: "auto",
-                quality: "auto",
-                height: img.context.custom.cropHeight,
-                width: img.context.custom.cropWidth,
-                x: img.context.custom.cropX,
-                y: img.context.custom.cropY,
-                crop: "fill",
-              },
-            })
-          );
-        });
+        const index = Math.floor(Math.random() * imgs.resources.length);
+        const singleImg = imgs.resources[index];
 
-        if (!orientation) {
-          res.render("portfolio/index", {
-            pageTitle: "Home",
-            path: "/",
-            imgs: URLs,
-            isLogged: isLogged,
-          });
-        } else {
-          res.status(200).json({
-            message: "new URLs",
-            URLs: URLs,
-          });
-        }
+        //image 9:16
+        URLs.push(
+          cloudinary.url(singleImg.public_id, {
+            secure: true,
+            transformation: {
+              fetch_format: "auto",
+              quality: "auto",
+              height: singleImg.context.custom.cropHeight,
+              width: singleImg.context.custom.cropWidth,
+              x: singleImg.context.custom.cropX,
+              y: singleImg.context.custom.cropY,
+              crop: "fill",
+            },
+          })
+        );
+
+        //16:9
+        URLs.push(
+          cloudinary.url(singleImg.public_id, {
+            secure: true,
+            transformation: {
+              fetch_format: "auto",
+              quality: "auto",
+              crop: "fill",
+            },
+          })
+        );
+
+        res.render("portfolio/index", {
+          pageTitle: "Home",
+          path: "/",
+          imgs: URLs,
+          isLogged: isLogged,
+        });
       })
       .catch((err) => {
         console.log(err);

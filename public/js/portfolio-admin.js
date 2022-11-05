@@ -38,43 +38,32 @@ const contVignettes = document.querySelectorAll(".cont-vignette"); // draggable-
 let dragStartEl;
 let dragStartIndex;
 let dragEndIndex;
-let sectionStart;
-let sectionEnd;
 let itemNum;
 let sectionIndex;
-let sectionName;
+let newParams;
 let sectionEndIndex;
-let newOrder;
 
 function dragStart() {
-  //   const dropEffect = this.dropEffect;
-  //   console.log(dropEffect);
   dragStartIndex = +this.childNodes[1].value;
-  sectionStart = this.closest(".cont-vignette");
   sectionIndex = +this.closest(".cont-vignette").attributes[1].value;
-  sectionName = this.closest(".cont-vignette").attributes[2].value;
-  newOrder = sectionName;
-  itemNum = sectionStart.childElementCount;
+  newParams = this.closest(".cont-vignette").attributes[2].value; // video category
   dragStartEl = this;
-  //
 }
 
 function dragOver(e) {
-  e.preventDefault(); // enables the drop event
+  e.preventDefault();
 }
 function dragDrop() {
-  sectionEnd = this.closest(".cont-vignette");
   sectionEndIndex = +this.closest(".cont-vignette").attributes[1].value;
   const dragEndEl = this;
   dragEndIndex = +this.childNodes[1].value;
 
   changeOrder(dragStartEl, dragEndEl);
-  //THEN fetch change order info the backend
-  fetch("/admin/portfolio-config/" + newOrder, {
+
+  fetch("/admin/portfolio-config/" + newParams, {
     method: "POST",
   })
     .then((data) => {
-      // console.log(data);
       data.json();
     })
     .catch((err) => {
@@ -83,15 +72,18 @@ function dragDrop() {
 }
 
 function changeOrder(fromIndex, toIndex) {
+  //condition if ci-dessous pour s'assurer que le drag&drop se fait seulement dans la même catégorie
   if (sectionIndex === sectionEndIndex) {
+    //changement de position des éléments sur le DOM
     dragStartIndex < dragEndIndex
       ? contVignettes[sectionIndex].insertBefore(fromIndex, toIndex.nextSibling)
       : contVignettes[sectionIndex].insertBefore(fromIndex, toIndex);
   }
   const vignetChildren = contVignettes[sectionIndex].children;
   Array.from(vignetChildren).forEach((article, newI) => {
-    article.children[0].value = newI;
-    newOrder += "-" + article.children[1].value;
+    article.children[0].value = newI; // nouvelle ordre des vignettes
+    // article.children[1] -> le numéro immuable d'une vignette
+    newParams += "-" + article.children[1].value; // constituera le paramètre passé dans l'URL
   });
 }
 
