@@ -28,12 +28,17 @@ let buttonTxt;
 //
 
 exports.getHomeConfig = (req, res, next) => {
-  console.log(req.session.isLoggedIn);
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
 
   let message = req.flash("valid");
+  let errorMsg = req.flash("error");
+  if (errorMsg.length > 0) {
+    errorMsg[0];
+  } else {
+    errorMsg = null;
+  }
   if (message.length > 0) {
     message = message[0];
   } else {
@@ -48,7 +53,6 @@ exports.getHomeConfig = (req, res, next) => {
       context: true,
     })
     .then((imgs) => {
-      console.log(imgs);
       imgs.resources.forEach((img) => {
         console.log(img.context);
       });
@@ -77,6 +81,7 @@ exports.getHomeConfig = (req, res, next) => {
         path: "/admin/home-config",
         imgs: URLs,
         flashMsg: message,
+        errorMsg: errorMsg,
       });
     })
     .catch((err) => console.log(err));
@@ -90,6 +95,14 @@ exports.postHomeConfig = (req, res, next) => {
   const cropWidth = req.body.cropWidth;
   const cropHeight = req.body.cropHeight;
 
+  const fileType = req.file.mimetype;
+
+  if (fileType != "image/jpeg") {
+    req.flash("error", "This file is not a jpeg, please try another.");
+    return res.redirect("/admin/home-config");
+  }
+
+  //
   if (cropX) {
     console.log("phone");
     tags = "phone-option";
@@ -102,10 +115,16 @@ exports.postHomeConfig = (req, res, next) => {
     };
   }
 
-  imgHandler(req, folder, file, tags, metadata).then((info) => {
-    req.flash("valid", "new home page image uploaded 🔥");
-    res.status(201).redirect("/admin/home-config");
-  });
+  imgHandler(req, folder, file, tags, metadata)
+    .then((info) => {
+      req.flash("valid", "new home page image uploaded 🔥");
+      res.status(201).redirect("/admin/home-config");
+    })
+    .catch((err) => {
+      console.log({ err });
+      req.flash("error", "This file can't be uploaded, please try another.");
+      res.redirect("/admin/home-config");
+    });
 };
 
 exports.deleteHomeImg = (req, res, next) => {
@@ -138,6 +157,12 @@ exports.getAboutConfig = (req, res, next) => {
   } else {
     message = null;
   }
+  let errorMsg = req.flash("error");
+  if (errorMsg.length > 0) {
+    errorMsg[0];
+  } else {
+    errorMsg = null;
+  }
 
   AboutInfo.findOne()
     .then((info) => {
@@ -146,6 +171,7 @@ exports.getAboutConfig = (req, res, next) => {
         path: "/admin/about-config",
         bio: info,
         flashMsg: message,
+        errorMsg: errorMsg,
       });
     })
     .catch((err) => console.log(err));
@@ -158,6 +184,11 @@ exports.postAboutConfig = (req, res, next) => {
     imgUpdate = req.file.buffer;
   } catch (err) {
     console.log({ err });
+  }
+  const fileType = req.file.mimetype;
+  if (fileType != "image/jpeg") {
+    req.flash("error", "This file is not a jpeg, please try another.");
+    return res.redirect("/admin/about-config");
   }
 
   const save = (content) => {
@@ -188,7 +219,14 @@ exports.postAboutConfig = (req, res, next) => {
 
             save(content);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log({ err });
+            req.flash(
+              "error",
+              "This file can't be uploaded, please try another."
+            );
+            res.redirect("/admin/home-config");
+          });
       } else {
         save(content);
       }
@@ -244,8 +282,16 @@ exports.postPortfolioConfig = (req, res, next) => {
   //
   const videoPlr = new VideoPlr(videoUrl);
   let extractId = videoPlr.idExtractor();
-
   const vidPlr = videoPlr.type;
+
+  //JPEG CHECK
+
+  const fileType = req.file.mimetype;
+
+  if (fileType != "image/jpeg") {
+    req.flash("error", "This file is not a jpeg, please try another.");
+    return res.redirect("/admin/portfolio-config");
+  }
 
   //FUNCTIONS
   const saveVideo = () => {
@@ -253,7 +299,7 @@ exports.postPortfolioConfig = (req, res, next) => {
       .count()
       .then((num) => {
         number = num;
-        order = num++;
+        order = num;
       })
       .then(() => {
         //
@@ -282,7 +328,6 @@ exports.postPortfolioConfig = (req, res, next) => {
             videoNew
               .save()
               .then((video) => {
-                number++;
                 console.log("New video saved in portfolio 🔥");
                 req.flash("valid", "new project uploaded 🤩");
                 if (video.isPublicRated == false) {
@@ -305,7 +350,14 @@ exports.postPortfolioConfig = (req, res, next) => {
                 res.status(200).redirect("/admin/portfolio-config");
               });
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log({ err });
+            req.flash(
+              "error",
+              "This file can't be uploaded, please try another."
+            );
+            res.redirect("/admin/home-config");
+          });
 
         //
       })

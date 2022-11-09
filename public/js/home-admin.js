@@ -22,7 +22,6 @@ image.onchange = () => {
 
   file = image.files[0];
   url = window.URL.createObjectURL(new Blob([file], { type: "image/jpg" }));
-
   image_workspace.src = url;
 
   try {
@@ -37,7 +36,6 @@ image.onchange = () => {
     dragMode: "move",
     preview: ".img-preview",
     viewMode: 2,
-    // modal: false,
     background: false,
     crop(event) {
       cropX = Math.floor(event.detail.x);

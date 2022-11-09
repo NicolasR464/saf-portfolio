@@ -20,6 +20,9 @@
           <% if (flashMsg) { %>
             <div><p class="user-message txt-misc"><%= flashMsg  %></p></div>
           <% } %>
+          <% if (errorMsg) { %>
+            <div><p class="user-message user-message--error txt-misc"><%= errorMsg  %></p></div>
+          <% } %>
           <input type="hidden" name="folder" value="index">
           <input type="file" name="image" id="image" accept=".jpg,.jpeg" class="form__element input" required />
           <div class="phone-upload-v">

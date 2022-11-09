@@ -439,14 +439,14 @@ const loadVid = () => {
 
           videoVim
             .loadVideo(`https://vimeo.com/${vidId}?h=${hash}`)
-            .then((info) => console.log(info))
+            .then((info) => console.log("hash!"))
             .catch((err) => {
               errMsg.innerHTML = "video not found!";
               playBtn.style.opacity = "0";
             });
         });
 
-        //Events
+        // Vimeo Events
         videoVim.on("loaded", () => {});
         videoVim.on("bufferstart", () => {
           loadIcon.classList.add("active");
@@ -478,7 +478,7 @@ const loadVid = () => {
         try {
           player.cueVideoById(vidId);
         } catch (err) {
-          // console.log(err);
+          console.log(err);
         }
 
         //  YT API EVENT

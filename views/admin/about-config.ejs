@@ -12,6 +12,9 @@
       <% if (flashMsg) { %>
         <div><p class="user-message txt-misc"><%= flashMsg  %></p></div>
       <% } %>
+      <% if (errorMsg) { %>
+        <div><p class="user-message user-message--error txt-misc"><%= errorMsg  %></p></div>
+      <% } %>
       <input type="hidden" name="folder" value="about">
       <input type="hidden" name="bioId" value="<%= bio._id %>">
       <textarea class="form__element input__txt" name="bio" id="bio" cols="30" rows="20" placeholder="Write your bio here" required><%= bio.bio%></textarea>
