@@ -14,6 +14,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const store = new MongoDBStore({
   uri: process.env.MONGO_URL,
   collection: "sessions",
+  expires: 1000 * 60 * 60 * 24 * 30,
 });
 const flash = require("connect-flash");
 //
@@ -36,6 +37,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: store,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+    },
   })
 );
 

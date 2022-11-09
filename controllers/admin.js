@@ -651,8 +651,8 @@ exports.getForgotPwd = (req, res, next) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const msg = {
-    to: "nicolas.rocagel@gmail.com", // Change to your recipient
-    from: "em7785.safranlecuivre.com", // Change to your verified sender
+    to: "safranlecuivre@gmail.com",
+    from: "em7785.safranlecuivre.com",
     subject: "Password reset",
     html:
       `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +
@@ -686,7 +686,7 @@ exports.pwdreset = (req, res, next) => {
   SafInfo.findOne({ resetpwd: token })
     .then((user) => {
       if (!user) {
-        req.flash("error", "The token to reset password is invalid.");
+        req.flash("error", "Password reset not granted.");
         return res.redirect("/admin/login");
       }
 
@@ -735,12 +735,10 @@ exports.postPwdreset = (req, res, next) => {
     .then(() => {
       //confirmation email
       const msg = {
-        to: "nicolas.rocagel@gmail.com", // Change to your recipient
-        from: "em7785.safranlecuivre.com", // Change to your verified sender
+        to: "safranlecuivre@gmail.com",
+        from: "em7785.safranlecuivre.com",
         subject: "Your new password",
-        html:
-          `<p>You just successfully changed your password 🥳</p>` +
-          `<p>Your new password is: ${pwd}</p>`,
+        html: `<p>You just successfully changed your password 🥳</p>`,
       };
       sgMail.send(msg).catch((error) => {
         console.error(error);
