@@ -594,12 +594,10 @@ exports.postlogin = (req, res, next) => {
           })
           .then(() => {
             const msg = {
-              to: "nicolas.rocagel@gmail.com", // Change to your recipient
-              from: "em7785.safranlecuivre.com", // Change to your verified sender
+              to: "safranlecuivre@gmail.com",
+              from: "em7785.safranlecuivre.com",
               subject: "Your login password ",
-              html:
-                `<p>You just successfully created your password 🥳</p>` +
-                `<p>Your  password is: ${password}</p>`,
+              html: `<p>You just successfully created your password 🥳</p>`,
             };
             sgMail.send(msg).catch((error) => {
               console.error(error);
@@ -635,7 +633,6 @@ exports.getForgotPwd = (req, res, next) => {
 
   //random hash
   const buf = crypto.randomBytes(20);
-
   randomHash = buf.toString("hex");
 
   //save hash to db
@@ -728,7 +725,7 @@ exports.postPwdreset = (req, res, next) => {
     .then((info) => {
       bcrypt.hash(pwd, 12).then((hashedPwd) => {
         info.password = hashedPwd;
-        info.resetpwd = undefined;
+        info.resetpwd = "";
         info.save();
       });
     })

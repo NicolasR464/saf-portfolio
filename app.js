@@ -29,6 +29,7 @@ const adminRoutes = require("./routes/admin");
 const portfolioRoutes = require("./routes/portfolio");
 //
 app.use(helmet());
+app.use(helmet.dnsPrefetchControl({ allow: true }));
 app.use(compression());
 
 app.use(

@@ -146,8 +146,7 @@ mainBtns.forEach((mainBtn) => {
     isNotPlaying = true;
 
     //Update light on main btn
-    // document.querySelector(".btns-main.active").classList.remove("active");
-    // mainBtn.classList.add("active");
+
     mainBtns.forEach((btn) => {
       btn.classList.remove("activeBTN");
     });
@@ -165,7 +164,7 @@ mainBtns.forEach((mainBtn) => {
 
     //reset visual window
     tbnl.classList.remove("fade");
-    // toggleVid.classList.add("active"); //??
+
     iframeSelec.src = "";
     //
     dataSection = mainBtn.getAttribute("data-section");
@@ -195,14 +194,10 @@ mainBtns.forEach((mainBtn) => {
 //
 //
 //***** SMARTPHONE VIDEO PLAYER ******
-//
-// const collect = require("collect.js"); //
-// var animations = require("create-keyframe-animation");
+
 //
 let player;
 let ytId = "";
-
-//console
 
 // CAROUSEL
 const carouselContainer = document.querySelector(".carousel-container");
@@ -271,7 +266,7 @@ function onYouTubeIframeAPIReady() {
     autoplay: 0,
     controls: 0,
     iv_load_policy: 3,
-    videoId: firstIdYt, //change id source
+    videoId: firstIdYt,
     playerVars: {
       color: "white",
       rel: 0,
@@ -282,7 +277,7 @@ function onYouTubeIframeAPIReady() {
 
 //
 //  VIMEO API
-//maxheight: document.querySelectorAll(".carouselImages")[0].innerHeight,
+
 const containerHeight = document.querySelector(".swiper-wrapper");
 
 const styles = window.getComputedStyle(containerHeight);
@@ -364,6 +359,9 @@ const slideMaker = () => {
     appendBuild();
     swiper.update();
   }
+
+  //ALT
+  //swiperWrapper.replaceChildren()
 };
 if (screen.width < 1181) {
   slideMaker();
@@ -394,7 +392,6 @@ const loadVid = () => {
     vimeoContainer.classList.remove("forward");
   }
 
-  // playBtn.classList.remove("fade-sm");
   playBtn.style.opacity = "1";
   if (loadIcon.classList.contains("active")) {
     loadIcon.classList.remove("active");

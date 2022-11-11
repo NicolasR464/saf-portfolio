@@ -9,7 +9,7 @@ const delPortVid = (btn) => {
   })
     .then((result) => {
       videoEl.parentNode.removeChild(videoEl);
-      // UPDATE order number !
+
       const videoCont = document.querySelector(`[data-name=${category}]`);
       Array.from(videoCont.children).forEach((article, newI) => {
         article.children[0].value = newI;
@@ -72,18 +72,16 @@ function dragDrop() {
 }
 
 function changeOrder(fromIndex, toIndex) {
-  //condition if ci-dessous pour s'assurer que le drag&drop se fait seulement dans la même catégorie
   if (sectionIndex === sectionEndIndex) {
-    //changement de position des éléments sur le DOM
     dragStartIndex < dragEndIndex
       ? contVignettes[sectionIndex].insertBefore(fromIndex, toIndex.nextSibling)
       : contVignettes[sectionIndex].insertBefore(fromIndex, toIndex);
   }
   const vignetChildren = contVignettes[sectionIndex].children;
   Array.from(vignetChildren).forEach((article, newI) => {
-    article.children[0].value = newI; // nouvelle ordre des vignettes
-    // article.children[1] -> le numéro immuable d'une vignette
-    newParams += "-" + article.children[1].value; // constituera le paramètre passé dans l'URL
+    article.children[0].value = newI;
+
+    newParams += "-" + article.children[1].value;
   });
 }
 
