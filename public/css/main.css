@@ -211,6 +211,10 @@ html {
   font-size: 1.22rem;
 }
 
+.insta-img {
+  width: 30px;
+  height: 30px;
+}
 /* anim buttons */
 
 .btns-g,
