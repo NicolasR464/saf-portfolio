@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const multer = require("multer");
 require("dotenv/config");
 const app = express();
 const path = require("path");
@@ -29,7 +28,6 @@ const adminRoutes = require("./routes/admin");
 const portfolioRoutes = require("./routes/portfolio");
 //
 app.use(helmet());
-app.use(helmet.dnsPrefetchControl({ allow: true }));
 app.use(compression());
 
 app.use(
