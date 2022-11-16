@@ -28,6 +28,40 @@ const adminRoutes = require("./routes/admin");
 const portfolioRoutes = require("./routes/portfolio");
 //
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [
+        "'self'",
+        "player.vimeo.com/api/player.js",
+        "cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js",
+      ],
+      scriptSrc: [
+        "'self'",
+        "player.vimeo.com/api/player.js",
+        "cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js",
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com",
+        "cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.js",
+        "kit.fontawesome.com/766e633129.js",
+        "youtube.com",
+        "vimeo.com",
+        "youtube.com/iframe_api",
+      ],
+      styleSrc: [
+        "'self'",
+        "cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css",
+        "https://fonts.googleapis.com/css2?family=Spartan:wght@200&display=swap",
+        "https://fonts.googleapis.com/css2?family=Poiret+One&display=swap",
+        "cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css",
+      ],
+      reportUri: "/report-violation",
+      objectSrc: [],
+    },
+    reportOnly: false,
+  })
+);
+
 app.use(compression());
 
 app.use(
