@@ -31,11 +31,8 @@ app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: [
-        "'self'",
-        "player.vimeo.com/api/player.js",
-        "cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js",
-      ],
+      defaultSrc: ["'self'"],
+
       scriptSrc: [
         "'self'",
         "player.vimeo.com/api/player.js",
@@ -47,13 +44,16 @@ app.use(
         "youtube.com",
         "vimeo.com",
         "youtube.com/iframe_api",
+        "res.cloudinary.com",
       ],
       styleSrc: [
         "'self'",
         "cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css",
+        "cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css",
+      ],
+      fontSrc: [
         "https://fonts.googleapis.com/css2?family=Spartan:wght@200&display=swap",
         "https://fonts.googleapis.com/css2?family=Poiret+One&display=swap",
-        "cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css",
       ],
       reportUri: "/report-violation",
       objectSrc: [],
