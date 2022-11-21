@@ -44,19 +44,6 @@ app.use(
   })
 );
 
-// scriptSrc: ["'self'", "youtube.com/iframe_api"],
-// frameAncestors: ["youtube.com", "vimeo.com", "youtube.com/iframe_api"],
-// formAction: ["'self'"],
-// baseUri: ["'self", "instagram.com"],
-// styleSrc: [
-//   "'self'",
-//   "cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css",
-// ],
-// fontSrc: ["'self'"],
-// imgSrc: ["'self'"],
-// reportUri: "/report-violation",
-// objectSrc: [],
-
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const store = new MongoDBStore({
