@@ -413,10 +413,9 @@ const loadVid = () => {
     if (imgIndex == swiper.activeIndex) {
       vidTitle.textContent = img.title;
 
-      const titleWidth = "-" + vidTitle.getBoundingClientRect().width + "px";
-
-      vidTitle.style.setProperty("--new-width", titleWidth, "important");
-      vidTitle.style.setProperty("transform", "translateX(0px)");
+      // const titleWidth = "-" + vidTitle.getBoundingClientRect().width + "px";
+      // vidTitle.style.setProperty("--new-width", titleWidth, "important");
+      // vidTitle.style.setProperty("transform", "translateX(0px)");
 
       if (img.getAttribute("data-vid-source") === "vimeo") {
         ytV.classList.remove("show");

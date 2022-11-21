@@ -355,6 +355,7 @@ s */
     font-size: 1rem;
     touch-action: none;
     pointer-events: none;
+    background-color: rgba(255, 0, 0, 0.391);
   }
 
   .vdo-like-blocker {
@@ -363,19 +364,20 @@ s */
     display: inline-block;
     width: 22%;
     height: 12%;
-    /* background-color: rgb(106, 255, 0); */
+    background-color: rgb(106, 255, 0);
     transform: translate(172%, 215%);
     position: absolute;
     pointer-events: all;
     opacity: 1;
   }
   .vdo-like-blocker::before {
+    background-color: rgb(0, 21, 255);
     content: "";
     z-index: 5;
     display: inline-block;
     width: 100%;
     height: 100%;
-    left: 53%;
+    left: 58%;
     top: 110%;
     transform: rotate(90deg);
     position: absolute;
@@ -405,12 +407,12 @@ s */
   .vimeo-container {
     position: absolute;
     top: 0;
-    width: 35%;
-    height: 35%;
+    width: 45%;
+    height: 45%;
     margin: 0 auto;
     z-index: 2;
-    transform: translate(91%, 91%);
-    opacity: 0;
+    transform: translate(61%, 61%);
+    opacity: 1;
   }
   #video-placeholder {
     width: 100%;
@@ -701,7 +703,8 @@ s */
     }
     99%,
     to {
-      transform: translateX(var(--new-width));
+      transform: translateX(-80%);
+      /* transform: translateX(var(--new-width)); */
     }
   }
 

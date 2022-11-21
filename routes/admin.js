@@ -32,22 +32,7 @@ router.delete("/portfolio-config/:vidId", adminController.deletePortfolioVid);
 router.post("/portfolio-config/:newOrder", adminController.updatePortfolioVid);
 
 router.get("/login", adminController.getlogin);
-router.post(
-  "/login",
-  [
-    body("email")
-      .isEmail()
-      .normalizeEmail()
-      .withMessage("Please enter a valid email."),
-    body("password")
-      .isLength({ min: 5 })
-      .matches(/\d/)
-      .withMessage(
-        "The password must be at least 5 characters long and contain a number."
-      ),
-  ],
-  adminController.postlogin
-);
+router.post("/login", adminController.postlogin);
 
 router.post("/logout", adminController.postLogout);
 

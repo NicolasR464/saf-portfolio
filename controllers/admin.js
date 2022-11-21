@@ -1,7 +1,6 @@
 const AboutInfo = require("../models/about-info");
 const PortfolioVid = require("../models/portfolio-vids");
 const SafInfo = require("../models/saf-model");
-const fileHelper = require("../util/file");
 const VideoPlr = require("../util/vdo-handler");
 const imgHandler = require("../util/img-handler");
 const bcrypt = require("bcryptjs");
@@ -180,13 +179,15 @@ exports.postAboutConfig = (req, res, next) => {
   const folder = req.body.folder;
   const bioUpdate = req.body.bio;
   let imgUpdate = undefined;
+  let fileType = undefined;
   try {
     imgUpdate = req.file.buffer;
+    fileType = req.file.mimetype;
   } catch (err) {
     console.log({ err });
   }
-  const fileType = req.file.mimetype;
-  if (fileType != "image/jpeg") {
+
+  if (fileType != "image/jpeg" && fileType != undefined) {
     req.flash("error", "This file is not a jpeg, please try another.");
     return res.redirect("/admin/about-config");
   }
@@ -269,23 +270,20 @@ exports.getPortfolioConfig = (req, res, next) => {
 };
 
 exports.postPortfolioConfig = (req, res, next) => {
-  const videoTitle = req.body.title.trim();
-  const videoUrl = req.body.vidId.trim();
+  const videoTitle = req.body.title.trim(); // string
+  const videoUrl = req.body.vidId.trim(); // int || string
   const videoFolder = req.body.folder;
   const videoCategory = req.body.category;
   const videoImage = req.file.buffer;
   let isPublicRated = true;
   let isEmbeddable = true;
-  //
   let order = 0;
   let number = 0;
-  //
   const videoPlr = new VideoPlr(videoUrl);
   let extractId = videoPlr.idExtractor();
   const vidPlr = videoPlr.type;
 
   //JPEG CHECK
-
   const fileType = req.file.mimetype;
 
   if (fileType != "image/jpeg") {
@@ -347,23 +345,26 @@ exports.postPortfolioConfig = (req, res, next) => {
               })
               .catch((err) => {
                 console.log(err);
-                res.status(200).redirect("/admin/portfolio-config");
+                req.flash("error", "Something went wrong, please try again.");
+                cloudinary.uploader.destroy(newImg.public_id, {
+                  invalidate: true,
+                });
+                res.redirect("/admin/portfolio-config");
               });
           })
           .catch((err) => {
             console.log({ err });
             req.flash(
               "error",
-              "This file can't be uploaded, please try another."
+              "This image couln't be uploaded, please try again or another."
             );
             res.redirect("/admin/home-config");
           });
-
-        //
       })
       .catch((err) => {
         console.log(err);
-        res.status(200).redirect("/admin/portfolio-config");
+        req.flash("error", "Something went wrong, please try again.");
+        res.redirect("/admin/portfolio-config");
       });
   };
 
@@ -378,19 +379,24 @@ exports.postPortfolioConfig = (req, res, next) => {
   if (vidPlr == "yt") {
     const baseUri = "https://www.googleapis.com/youtube/v3/videos?";
     const ytKey = "key=" + process.env.YT_KEY;
-    const parameter = "&part=contentDetails&";
+    const parameter = "&part=contentDetails,status&";
     const ytURL = baseUri + ytKey + parameter + "id=" + extractId;
 
     axios
       .get(ytURL)
       .then((info) => {
-        info.data.items[0].contentDetails.contentRating.ytRating ==
-        "ytAgeRestricted"
-          ? (isPublicRated = false)
-          : isPublicRated;
-
         const idExists = info.data.pageInfo.totalResults;
+
         if (idExists == 1) {
+          info.data.items[0].contentDetails.contentRating.ytRating ==
+          "ytAgeRestricted"
+            ? (isPublicRated = false)
+            : isPublicRated;
+
+          !info.data.items[0].status.embeddable
+            ? (isEmbeddable = false)
+            : isEmbeddable;
+
           saveVideo();
           return;
         } else {
@@ -508,6 +514,9 @@ exports.updatePortfolioVid = (req, res, next) => {
 
 //LOGIN
 exports.getlogin = (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    return res.redirect("/admin/portfolio-config");
+  }
   let logValid = req.flash("valid");
 
   if (logValid.length > 0) {
