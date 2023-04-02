@@ -8,8 +8,13 @@ const { validationResult } = require("express-validator");
 const axios = require("axios");
 const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
-
+const { log } = require("console");
 require("dotenv").config();
+// require("dotenv/config");
+const cloudinary = require("cloudinary").v2;
+
+//send email
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 let Vimeo = require("vimeo").Vimeo;
 let vimeoAPI = new Vimeo(
@@ -17,9 +22,6 @@ let vimeoAPI = new Vimeo(
   process.env.VIMEO_CLIENT_SECRET,
   process.env.VIMEO_ACCESS_TOKEN
 );
-
-require("dotenv/config");
-const cloudinary = require("cloudinary").v2;
 
 let metadata = null;
 let tags = null;
@@ -53,7 +55,7 @@ exports.getHomeConfig = (req, res, next) => {
     })
     .then((imgs) => {
       imgs.resources.forEach((img) => {
-        console.log(img.context);
+        // console.log(img.context);
       });
 
       let URLs = [];
@@ -103,7 +105,7 @@ exports.postHomeConfig = (req, res, next) => {
 
   //
   if (cropX) {
-    console.log("phone");
+    // console.log("phone");
     tags = "phone-option";
 
     metadata = {
@@ -592,34 +594,36 @@ exports.postlogin = (req, res, next) => {
             res.redirect("/admin/login");
           });
       } else {
-        bcrypt
-          .hash(password, 12)
-          .then((hashedPassword) => {
-            const user = new SafInfo({
-              email: email,
-              password: hashedPassword,
-            });
-            return user.save();
-          })
-          .then(() => {
-            const msg = {
-              to: "safranlecuivre@gmail.com",
-              from: "em7785.safranlecuivre.com",
-              subject: "Your login password ",
-              html: `<p>You just successfully created your password 🥳</p>`,
-            };
-            sgMail.send(msg).catch((error) => {
+        bcrypt.hash(password, 12).then((hashedPassword) => {
+          const user = new SafInfo({
+            email: email,
+            password: hashedPassword,
+          });
+          user.save();
+          const msg = {
+            to: "safranlecuivre.rocagel@gmail.com",
+            from: "em7785.safranlecuivre.com",
+            subject: "Your login password ",
+            html: `<p>You just successfully created your password 🥳</p>`,
+          };
+          sgMail
+            .send(msg)
+            .then((res) => {
+              console.log(res);
+              req.flash(
+                "valid",
+                "Password created! 🥳 You may now log in. Ps: Check your email."
+              );
+
+              return res.redirect("/admin/login");
+            })
+            .catch((error) => {
+              console.log("🧐");
               console.error(error);
+
               return res.redirect("/admin/login");
             });
-
-            req.flash(
-              "valid",
-              "Password created! 🥳 You may now log in. Ps: Check your email."
-            );
-
-            res.redirect("/admin/login");
-          });
+        });
       }
     })
     .catch((err) => console.log(err));
@@ -653,11 +657,8 @@ exports.getForgotPwd = (req, res, next) => {
     info.save();
   });
 
-  //send email
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
   const msg = {
-    to: "safranlecuivre@gmail.com",
+    to: "nicolas.rocagel@gmail.com",
     from: "em7785.safranlecuivre.com",
     subject: "Password reset",
     html:
