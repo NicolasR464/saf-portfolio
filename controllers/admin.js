@@ -49,32 +49,65 @@ exports.getHomeConfig = (req, res, next) => {
   cloudinary.api
     .resources({
       type: "upload",
+      tags: true,
       prefix: "saf_portfolio/index",
       max_results: 500,
       context: true,
     })
     .then((imgs) => {
       imgs.resources.forEach((img) => {
-        // console.log(img.context);
+        console.log(img);
+        console.log(img.context);
       });
 
       let URLs = [];
 
       imgs.resources.forEach((img) => {
-        let phoneV;
-        img.context != undefined ? (phoneV = true) : (phoneV = false);
-        URLs.push({
-          url: cloudinary.url(img.public_id, {
-            secure: true,
-            transformation: {
-              aspect_ratio: "16:9",
-              crop: "fill",
-              fetch_format: "auto",
-              quality: "auto",
-            },
-          }),
-          phoneV: phoneV,
-        });
+        let phoneV = false;
+        let phoneVOnly = false;
+        // img.tags[0] = "phone-option-only";
+        // console.log(img.tags[0]);
+        // img.tags[0] === "phone-option-only" ? (phoneVOnly = true) : phoneVOnly;
+        // img.context != undefined ? (phoneV = true) : (phoneV = false);
+
+        if (img.context) {
+          phoneV = true;
+          if (img.tags[0] === "phone-option-only") {
+            phoneVOnly = true;
+
+            URLs.push({
+              url: cloudinary.url(img.public_id, {
+                secure: true,
+                transformation: {
+                  crop: "crop",
+                  fetch_format: "auto",
+                  quality: "auto",
+                  height: img.context.custom.cropHeight,
+                  width: img.context.custom.cropWidth,
+                  x: img.context.custom.cropX,
+                  y: img.context.custom.cropY,
+                },
+              }),
+              phoneV: phoneV,
+              phoneVOnly: phoneVOnly,
+            });
+          }
+        }
+        if (img.tags[0] !== "phone-option-only") {
+          URLs.push({
+            url: cloudinary.url(img.public_id, {
+              secure: true,
+              transformation: {
+                aspect_ratio: "16:9",
+                crop: "fill",
+                fetch_format: "auto",
+                quality: "auto",
+              },
+            }),
+            phoneV: phoneV,
+            phoneVOnly: phoneVOnly,
+          });
+        }
       });
 
       res.render("admin/home-config", {
@@ -95,6 +128,7 @@ exports.postHomeConfig = (req, res, next) => {
   const cropY = req.body.cropY;
   const cropWidth = req.body.cropWidth;
   const cropHeight = req.body.cropHeight;
+  const deviceOption = req.body.deviceOption;
 
   const fileType = req.file.mimetype;
 
@@ -105,8 +139,9 @@ exports.postHomeConfig = (req, res, next) => {
 
   //
   if (cropX) {
-    // console.log("phone");
-    tags = "phone-option";
+    deviceOption == "all-device"
+      ? (tags = "phone-option")
+      : (tags = "phone-option-only");
 
     metadata = {
       cropX: cropX,
@@ -118,6 +153,7 @@ exports.postHomeConfig = (req, res, next) => {
 
   imgHandler(req, folder, file, tags, metadata)
     .then((info) => {
+      console.log(info);
       req.flash("valid", "new home page image uploaded 🔥");
       res.status(201).redirect("/admin/home-config");
     })
@@ -553,27 +589,12 @@ exports.getlogin = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
 exports.postlogin = (req, res, next) => {
   const logValid = undefined;
   const email = req.body.email.trim();
   const password = req.body.password.trim();
   const errors = validationResult(req);
-
-  console.log(email);
-  console.log(password);
-
-  ///////////create admin user
-
-  // bcrypt.hash(password, 12).then((hashedPassword) => {
-  //   const user = new SafInfo({
-  //     email: email,
-  //     password: hashedPassword,
-  //   });
-  //   user.save();
-  // });
-  // return;
-
-  ///////////
 
   if (!errors.isEmpty()) {
     let errorMsg;
@@ -591,13 +612,10 @@ exports.postlogin = (req, res, next) => {
 
   SafInfo.find({ email })
     .then((info) => {
-      console.log(info);
       if (info) {
-        console.log(info.password);
         bcrypt
-          .compare(password, info.password)
+          .compare(password, info[0].password)
           .then((doMatch) => {
-            console.log(doMatch);
             if (doMatch) {
               req.session.isLoggedIn = true;
               req.session.save(() => {
@@ -612,37 +630,6 @@ exports.postlogin = (req, res, next) => {
             console.log(err);
             res.redirect("/admin/login");
           });
-      } else {
-        bcrypt.hash(password, 12).then((hashedPassword) => {
-          const user = new SafInfo({
-            email: email,
-            password: hashedPassword,
-          });
-          user.save();
-          const msg = {
-            to: "safranlecuivre.rocagel@gmail.com",
-            from: "em7785.safranlecuivre.com",
-            subject: "Your login password ",
-            html: `<p>You just successfully created your password 🥳</p>`,
-          };
-          sgMail
-            .send(msg)
-            .then((res) => {
-              console.log(res);
-              req.flash(
-                "valid",
-                "Password created! 🥳 You may now log in. Ps: Check your email."
-              );
-
-              return res.redirect("/admin/login");
-            })
-            .catch((error) => {
-              console.log("🧐");
-              console.error(error);
-
-              return res.redirect("/admin/login");
-            });
-        });
       }
     })
     .catch((err) => console.log(err));
@@ -657,13 +644,11 @@ exports.postLogout = (req, res, next) => {
 //PWD RESET
 let randomHash;
 exports.getForgotPwd = (req, res, next) => {
-  // res.render("admin/pwdforgot", {
-  //   pageTitle: "Email sent",
-  //   actionPrompt: "emailPrompt",
-  // });
-  // req.session.destroy();
-
-  console.log(process.env.HOST_ROOT);
+  res.render("admin/pwdforgot", {
+    pageTitle: "Email sent",
+    actionPrompt: "emailPrompt",
+  });
+  req.session.destroy();
 
   //random hash
   const buf = crypto.randomBytes(20);
@@ -671,8 +656,6 @@ exports.getForgotPwd = (req, res, next) => {
 
   //save hash to db
   SafInfo.findOne().then((info) => {
-    console.log("💥");
-    console.log(info);
     if (!info) {
       return res.redirect("/admin/login");
     }
@@ -681,31 +664,21 @@ exports.getForgotPwd = (req, res, next) => {
   });
 
   const msg = {
-    to: "safran.lecuivre@gmail.com",
-    from: "hello@safranlecuivre.com",
+    to: process.env.ADMIN_EMAIL,
+    from: process.env.WEBSITE_EMAIL,
     subject: "Password reset",
-    text:
-      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ </p>` +
-      `
-  <p><a href="${process.env.HOST_ROOT}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
     html:
-      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ </p>` +
+      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +
       `
-    <p><a href="${process.env.HOST_ROOT}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
+    <p><a href="http://${req.headers.host}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
   };
   sgMail
     .send(msg)
     .then(() => {
       console.log("Email sent");
       // res.redirect("/contact");
-      // req.session.destroy();
-      res.render("admin/pwdforgot", {
-        pageTitle: "Email sent",
-        actionPrompt: "emailPrompt",
-      });
     })
     .catch((error) => {
-      console.log("😭");
       console.error(error);
       res.redirect("/admin/login");
     });
@@ -775,8 +748,8 @@ exports.postPwdreset = (req, res, next) => {
     .then(() => {
       //confirmation email
       const msg = {
-        to: "safranlecuivre@gmail.com",
-        from: "em7785.safranlecuivre.com",
+        to: process.env.ADMIN_EMAIL,
+        from: process.env.WEBSITE_EMAIL,
         subject: "Your new password",
         html: `<p>You just successfully changed your password 🥳</p>`,
       };

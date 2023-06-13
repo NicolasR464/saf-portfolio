@@ -69,7 +69,7 @@ exports.getIndex = (req, res, next) => {
               width: singleImg.context.custom.cropWidth,
               x: singleImg.context.custom.cropX,
               y: singleImg.context.custom.cropY,
-              crop: "fill",
+              crop: "crop",
             },
           })
         );

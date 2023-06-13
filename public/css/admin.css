@@ -40,6 +40,7 @@ html {
 .admin-home-img {
   width: 100% auto;
   height: auto;
+  /* max-height: 167px; */
 }
 .vignette {
   border: 1px groove white;
@@ -52,6 +53,8 @@ html {
   align-items: center;
   max-width: 310px;
   margin: 2rem;
+  max-height: 330px;
+  position: relative;
 }
 .vignette img {
   max-width: 300px;
@@ -69,6 +72,14 @@ html {
 }
 .vignette button:hover {
   box-shadow: 0 0 1.5em 0 #fffcf482;
+}
+.vignette-footer {
+  position: absolute;
+  bottom: 10px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profil-vignette {
@@ -128,6 +139,24 @@ html {
   font-family: sans-serif;
   padding-right: 0.2rem;
   cursor: grab;
+}
+
+.fieldset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.radio-btn {
+  appearance: none;
+  transition: 0.2s all linear;
+  border: 2px dotted #999;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+}
+.radio-btn:checked {
+  border: 4px solid rgb(255, 255, 255);
 }
 
 @media (min-width: 992px) {

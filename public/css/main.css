@@ -33,6 +33,13 @@ html {
   font-size: smaller;
   margin-left: 1.2rem;
 }
+.txt-sm {
+  font-family: "Poiret One", cursive;
+  font-size: 1rem;
+}
+.radio-txt {
+  margin-left: 0rem;
+}
 
 .a-tag {
   text-decoration: none;

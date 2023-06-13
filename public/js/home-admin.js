@@ -18,6 +18,7 @@ let cropHeight;
 //
 
 image.onchange = () => {
+  console.log("CHANGE");
   image_workspace.src = "";
 
   file = image.files[0];
@@ -31,24 +32,25 @@ image.onchange = () => {
   }
 
   //
-  options = {
-    aspectRatio: 9 / 16,
-    dragMode: "move",
-    preview: ".img-preview",
-    viewMode: 2,
-    background: false,
-    crop(event) {
-      cropX = Math.floor(event.detail.x);
-      cropY = Math.floor(event.detail.y);
-      cropWidth = Math.floor(event.detail.width);
-      cropHeight = Math.floor(event.detail.height);
-    },
-  };
 };
 phoneBtn.addEventListener("click", () => {
   if (url) {
     modalWindow.classList.add("modal-active");
     contVignettes.classList.add("blurred");
+
+    options = {
+      aspectRatio: 9 / 16,
+      dragMode: "move",
+      preview: ".img-preview",
+      viewMode: 2,
+      background: false,
+      crop(event) {
+        cropX = Math.floor(event.detail.x);
+        cropY = Math.floor(event.detail.y);
+        cropWidth = Math.floor(event.detail.width);
+        cropHeight = Math.floor(event.detail.height);
+      },
+    };
     cropper = new Cropper(image_workspace, options);
   }
 });
