@@ -168,8 +168,8 @@ exports.postContact = (req, res, next) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const msg = {
-    to: "safranlecuivre@gmail.com",
-    from: "hello@safranlecuivre.com",
+    to: process.env.ADMIN_EMAIL,
+    from: process.env.WEBSITE_EMAIL,
     subject: subject,
     html:
       message + "<br><br>" + "<strong>My email address</strong> 👉 " + email,

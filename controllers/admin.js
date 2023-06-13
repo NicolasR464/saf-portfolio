@@ -595,38 +595,6 @@ exports.postlogin = (req, res, next) => {
             res.redirect("/admin/login");
           });
       }
-      // else {
-      //   bcrypt.hash(password, 12).then((hashedPassword) => {
-      //     const user = new SafInfo({
-      //       email: email,
-      //       password: hashedPassword,
-      //     });
-      //     user.save();
-      //     const msg = {
-      //       to: "safranlecuivre.rocagel@gmail.com",
-      //       from: "em7785.safranlecuivre.com",
-      //       subject: "Your login password ",
-      //       html: `<p>You just successfully created your password 🥳</p>`,
-      //     };
-      //     sgMail
-      //       .send(msg)
-      //       .then((res) => {
-      //         console.log(res);
-      //         req.flash(
-      //           "valid",
-      //           "Password created! 🥳 You may now log in. Ps: Check your email."
-      //         );
-
-      //         return res.redirect("/admin/login");
-      //       })
-      //       .catch((error) => {
-      //         console.log("🧐");
-      //         console.error(error);
-
-      //         return res.redirect("/admin/login");
-      //       });
-      //   });
-      // }
     })
     .catch((err) => console.log(err));
 };
@@ -660,8 +628,8 @@ exports.getForgotPwd = (req, res, next) => {
   });
 
   const msg = {
-    to: "nicolas.rocagel@gmail.com",
-    from: "em7785.safranlecuivre.com",
+    to: process.env.ADMIN_EMAIL,
+    from: process.env.WEBSITE_EMAIL,
     subject: "Password reset",
     html:
       `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +
@@ -744,8 +712,8 @@ exports.postPwdreset = (req, res, next) => {
     .then(() => {
       //confirmation email
       const msg = {
-        to: "safranlecuivre@gmail.com",
-        from: "em7785.safranlecuivre.com",
+        to: process.env.ADMIN_EMAIL,
+        from: process.env.WEBSITE_EMAIL,
         subject: "Your new password",
         html: `<p>You just successfully changed your password 🥳</p>`,
       };
