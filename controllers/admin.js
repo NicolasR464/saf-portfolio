@@ -559,6 +559,22 @@ exports.postlogin = (req, res, next) => {
   const password = req.body.password.trim();
   const errors = validationResult(req);
 
+  console.log(email);
+  console.log(password);
+
+  ///////////create admin user
+
+  // bcrypt.hash(password, 12).then((hashedPassword) => {
+  //   const user = new SafInfo({
+  //     email: email,
+  //     password: hashedPassword,
+  //   });
+  //   user.save();
+  // });
+  // return;
+
+  ///////////
+
   if (!errors.isEmpty()) {
     let errorMsg;
     errors.array().length > 1
@@ -573,12 +589,15 @@ exports.postlogin = (req, res, next) => {
     });
   }
 
-  SafInfo.findOne()
+  SafInfo.find({ email })
     .then((info) => {
+      console.log(info);
       if (info) {
+        console.log(info.password);
         bcrypt
           .compare(password, info.password)
           .then((doMatch) => {
+            console.log(doMatch);
             if (doMatch) {
               req.session.isLoggedIn = true;
               req.session.save(() => {
@@ -638,11 +657,13 @@ exports.postLogout = (req, res, next) => {
 //PWD RESET
 let randomHash;
 exports.getForgotPwd = (req, res, next) => {
-  res.render("admin/pwdforgot", {
-    pageTitle: "Email sent",
-    actionPrompt: "emailPrompt",
-  });
-  req.session.destroy();
+  // res.render("admin/pwdforgot", {
+  //   pageTitle: "Email sent",
+  //   actionPrompt: "emailPrompt",
+  // });
+  // req.session.destroy();
+
+  console.log(process.env.HOST_ROOT);
 
   //random hash
   const buf = crypto.randomBytes(20);
@@ -650,6 +671,8 @@ exports.getForgotPwd = (req, res, next) => {
 
   //save hash to db
   SafInfo.findOne().then((info) => {
+    console.log("💥");
+    console.log(info);
     if (!info) {
       return res.redirect("/admin/login");
     }
@@ -658,21 +681,31 @@ exports.getForgotPwd = (req, res, next) => {
   });
 
   const msg = {
-    to: "nicolas.rocagel@gmail.com",
-    from: "em7785.safranlecuivre.com",
+    to: "safran.lecuivre@gmail.com",
+    from: "hello@safranlecuivre.com",
     subject: "Password reset",
-    html:
-      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ - </p>` +
+    text:
+      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ </p>` +
       `
-    <p><a href="http://${req.headers.host}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
+  <p><a href="${process.env.HOST_ROOT}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
+    html:
+      `<p>You got this email because you forgot your log in password to your website. It's okay, it happens (to literally everybody) 🤷🏻‍♂️ </p>` +
+      `
+    <p><a href="${process.env.HOST_ROOT}/admin/pwdreset/${randomHash}">Click here to reset your password<a/></p>`,
   };
   sgMail
     .send(msg)
     .then(() => {
       console.log("Email sent");
       // res.redirect("/contact");
+      // req.session.destroy();
+      res.render("admin/pwdforgot", {
+        pageTitle: "Email sent",
+        actionPrompt: "emailPrompt",
+      });
     })
     .catch((error) => {
+      console.log("😭");
       console.error(error);
       res.redirect("/admin/login");
     });
