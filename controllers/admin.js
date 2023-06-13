@@ -553,6 +553,7 @@ exports.getlogin = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
 exports.postlogin = (req, res, next) => {
   const logValid = undefined;
   const email = req.body.email.trim();
@@ -573,11 +574,11 @@ exports.postlogin = (req, res, next) => {
     });
   }
 
-  SafInfo.findOne()
+  SafInfo.find({ email })
     .then((info) => {
       if (info) {
         bcrypt
-          .compare(password, info.password)
+          .compare(password, info[0].password)
           .then((doMatch) => {
             if (doMatch) {
               req.session.isLoggedIn = true;
@@ -593,38 +594,39 @@ exports.postlogin = (req, res, next) => {
             console.log(err);
             res.redirect("/admin/login");
           });
-      } else {
-        bcrypt.hash(password, 12).then((hashedPassword) => {
-          const user = new SafInfo({
-            email: email,
-            password: hashedPassword,
-          });
-          user.save();
-          const msg = {
-            to: "safranlecuivre.rocagel@gmail.com",
-            from: "em7785.safranlecuivre.com",
-            subject: "Your login password ",
-            html: `<p>You just successfully created your password 🥳</p>`,
-          };
-          sgMail
-            .send(msg)
-            .then((res) => {
-              console.log(res);
-              req.flash(
-                "valid",
-                "Password created! 🥳 You may now log in. Ps: Check your email."
-              );
-
-              return res.redirect("/admin/login");
-            })
-            .catch((error) => {
-              console.log("🧐");
-              console.error(error);
-
-              return res.redirect("/admin/login");
-            });
-        });
       }
+      // else {
+      //   bcrypt.hash(password, 12).then((hashedPassword) => {
+      //     const user = new SafInfo({
+      //       email: email,
+      //       password: hashedPassword,
+      //     });
+      //     user.save();
+      //     const msg = {
+      //       to: "safranlecuivre.rocagel@gmail.com",
+      //       from: "em7785.safranlecuivre.com",
+      //       subject: "Your login password ",
+      //       html: `<p>You just successfully created your password 🥳</p>`,
+      //     };
+      //     sgMail
+      //       .send(msg)
+      //       .then((res) => {
+      //         console.log(res);
+      //         req.flash(
+      //           "valid",
+      //           "Password created! 🥳 You may now log in. Ps: Check your email."
+      //         );
+
+      //         return res.redirect("/admin/login");
+      //       })
+      //       .catch((error) => {
+      //         console.log("🧐");
+      //         console.error(error);
+
+      //         return res.redirect("/admin/login");
+      //       });
+      //   });
+      // }
     })
     .catch((err) => console.log(err));
 };
