@@ -7,6 +7,7 @@ const modalWindow = document.querySelector(".modal-container");
 const contVignettes = document.querySelector(".cont");
 const closeBtn = document.querySelector(".close-modal-btn");
 const cropBtn = document.querySelector(".crop-btn");
+const radioBtns = document.querySelector(".fieldset");
 let url;
 let file;
 let options;
@@ -18,7 +19,6 @@ let cropHeight;
 //
 
 image.onchange = () => {
-  console.log("CHANGE");
   image_workspace.src = "";
 
   file = image.files[0];
@@ -66,6 +66,9 @@ cropBtn.addEventListener("click", () => {
   document.querySelector("[name=cropY]").value = cropY;
   document.querySelector("[name=cropWidth]").value = cropWidth;
   document.querySelector("[name=cropHeight]").value = cropHeight;
+
+  //If crop done open radio buttons - phone only option
+  radioBtns.style.display = "flex";
 });
 
 const delBtn = document.querySelectorAll(".delBtn");

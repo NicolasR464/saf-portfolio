@@ -142,7 +142,8 @@ html {
 }
 
 .fieldset {
-  display: flex;
+  /* display: flex; */
+  display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -154,6 +155,9 @@ html {
   border-radius: 50%;
   width: 18px;
   height: 18px;
+}
+.radio-txt {
+  padding: 0.2rem;
 }
 .radio-btn:checked {
   border: 4px solid rgb(255, 255, 255);
