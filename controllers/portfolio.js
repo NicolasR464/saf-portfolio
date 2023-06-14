@@ -17,22 +17,25 @@ exports.getIndex = (req, res, next) => {
         type: "upload",
         prefix: "saf_portfolio/index",
         max_results: 500,
+        tags: true,
       })
       .then((imgs) => {
         console.log("rate_limit_remaining: ", imgs.rate_limit_remaining);
         imgs.resources.forEach((img) => {
-          URLs.push(
-            cloudinary.url(img.public_id, {
-              secure: true,
-              transformation: {
-                aspect_ratio: "16:9",
-                crop: "lfill",
-                fetch_format: "auto",
-                quality: "auto",
-              },
-              loading: "lazy",
-            })
-          );
+          if (!img.tags.includes("phone-option-only")) {
+            URLs.push(
+              cloudinary.url(img.public_id, {
+                secure: true,
+                transformation: {
+                  aspect_ratio: "16:9",
+                  crop: "lfill",
+                  fetch_format: "auto",
+                  quality: "auto",
+                },
+                loading: "lazy",
+              })
+            );
+          }
         });
 
         res.render("portfolio/index", {
@@ -56,7 +59,6 @@ exports.getIndex = (req, res, next) => {
         tags: true,
       })
       .then((imgs) => {
-        console.log(imgs);
         const index = Math.floor(Math.random() * imgs.resources.length);
         const singleImg = imgs.resources[index];
 

@@ -19,6 +19,7 @@ class Slide {
   repeat() {
     this.startDiapo.style.opacity = 0;
     let step = Math.floor(Math.random() * this.img.length);
+    console.log({ step });
     const activeImg = document.querySelector(`.i${step}`);
 
     if (this.startDiapo.classList[1] === activeImg.classList[1]) {
@@ -68,16 +69,30 @@ const imgPortrait = document.querySelector(`.i0`);
 const imgLandscape = document.querySelector(`.i1`);
 
 function getOrientation() {
-  let orientation =
-    window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+  // let orientation;
+  // window.innerWidth > window.innerHeight && window.innerWidth < 1181
+  //   ? "landscape"
+  //   : "portrait";
 
-  if (orientation == "portrait") {
+  if (window.innerWidth > window.innerHeight && window.innerWidth < 1181) {
+    // LANDSCAPE
     imgLandscape.style.display = "none";
     imgPortrait.style.display = "block";
-  } else {
+  } else if (
+    window.innerWidth < window.innerHeight &&
+    window.innerWidth < 1181
+  ) {
+    // PORTRAIT
     imgPortrait.style.display = "none";
     imgLandscape.style.display = "block";
   }
+  // if (orientation == "portrait") {
+  //   imgLandscape.style.display = "none";
+  //   imgPortrait.style.display = "block";
+  // } else {
+  //   imgPortrait.style.display = "none";
+  //   imgLandscape.style.display = "block";
+  // }
 }
 
 if (
