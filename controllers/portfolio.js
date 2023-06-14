@@ -59,8 +59,11 @@ exports.getIndex = (req, res, next) => {
         tags: true,
       })
       .then((imgs) => {
+        console.log({ imgs });
+        console.log(imgs.resources);
         const index = Math.floor(Math.random() * imgs.resources.length);
         const singleImg = imgs.resources[index];
+        console.log(singleImg);
 
         //image 9:16
         URLs.push(

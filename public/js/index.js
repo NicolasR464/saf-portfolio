@@ -76,15 +76,15 @@ function getOrientation() {
 
   if (window.innerWidth > window.innerHeight && window.innerWidth < 1181) {
     // LANDSCAPE
-    imgLandscape.style.display = "none";
-    imgPortrait.style.display = "block";
+    imgPortrait.style.display = "none";
+    imgLandscape.style.display = "block";
   } else if (
     window.innerWidth < window.innerHeight &&
     window.innerWidth < 1181
   ) {
     // PORTRAIT
-    imgPortrait.style.display = "none";
-    imgLandscape.style.display = "block";
+    imgLandscape.style.display = "none";
+    imgPortrait.style.display = "block";
   }
   // if (orientation == "portrait") {
   //   imgLandscape.style.display = "none";
