@@ -72,7 +72,7 @@ exports.getHomeConfig = (req, res, next) => {
 
         if (img.context) {
           phoneV = true;
-          if (img.tags[0] === "phone-option-only") {
+          if (img.tags.includes("phone-option-only")) {
             phoneVOnly = true;
 
             URLs.push({
@@ -93,7 +93,7 @@ exports.getHomeConfig = (req, res, next) => {
             });
           }
         }
-        if (img.tags[0] !== "phone-option-only") {
+        if (!img.tags.includes("phone-option-only")) {
           URLs.push({
             url: cloudinary.url(img.public_id, {
               secure: true,
@@ -140,8 +140,8 @@ exports.postHomeConfig = (req, res, next) => {
   //
   if (cropX) {
     deviceOption == "all-device"
-      ? (tags = "phone-option")
-      : (tags = "phone-option-only");
+      ? (tags = "phone-option-only")
+      : (tags = ["phone-option", "phone-option-only"]);
 
     metadata = {
       cropX: cropX,

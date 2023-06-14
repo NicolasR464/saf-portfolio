@@ -53,8 +53,10 @@ exports.getIndex = (req, res, next) => {
       .resources_by_tag("phone-option", {
         context: true,
         max_results: 50,
+        tags: true,
       })
       .then((imgs) => {
+        console.log(imgs);
         const index = Math.floor(Math.random() * imgs.resources.length);
         const singleImg = imgs.resources[index];
 

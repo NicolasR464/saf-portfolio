@@ -78,16 +78,16 @@
       <article class="vignette">
         <img src="<%= img.url%>" alt="film image"  class="admin-home-img" loading="lazy"/>
         <input type="hidden" value="<%= img.url %>" name="imgId">
+        <button class="form__btn delBtn" type="button">DELETE</button>
         <div class="vignette-footer">
-          <button class="form__btn delBtn" type="button">DELETE</button>
-          <div>
+          
             <% if (img.phoneV) { %>
-              <i class="fa-solid fa-mobile-screen-button" ></i>
+              <i class="fa-solid phone-vignette fa-mobile-screen-button" ></i>
             <% } %>
             <% if (img.phoneVOnly) { %>
               <span class=" txt-sm "> only</span>
             <% } %>
-          </div>
+          
         </div>
        
        
