@@ -33,7 +33,7 @@
 
               <div class="image-container">
                 <div class="image-workspace">
-                  <img class="cropper-img" src="" alt="">
+                  <img class="cropper-img" src="" alt="image to crop">
                 </div>
               </div>
               <div class="preview-container">
@@ -50,6 +50,20 @@
           <input type="hidden" value="" name="cropY">
           <input type="hidden" value="" name="cropWidth">
           <input type="hidden" value="" name="cropHeight">
+          <fieldset class="fieldset">
+            <legend class="txt-misc radio-txt txt-smaller" >For smatphone and tablet only?</legend>
+            <div>
+              <label class="txt-misc txt-smaller radio-txt"  for="all-device">All devices 💻 📱</label>
+              <input class="radio-btn" checked type="radio" name="deviceOption" value="all-device" id="all-device">
+            </div>
+            <div>
+              <label class="txt-misc txt-smaller radio-txt" for="phone-only">Phone/tablet only 📱</label>
+              <input class="radio-btn" type="radio"  name="deviceOption" value="phone-only" id="phone-only">
+            
+
+            </div>
+          
+          </fieldset>
           <button type="submit" class="form__element form__btn">ADD</button>
       </div>
 
@@ -62,12 +76,21 @@
     <section class="cont blur-none">
       <% if(imgs.length > 0) { %> <% for (let img of imgs) { %>
       <article class="vignette">
-        <img src="<%= img.url%>" alt="film image" width="1920" height="1080" class="admin-home-img" loading="lazy"/>
+        <img src="<%= img.url%>" alt="film image"  class="admin-home-img" loading="lazy"/>
         <input type="hidden" value="<%= img.url %>" name="imgId">
         <button class="form__btn delBtn" type="button">DELETE</button>
-        <% if (img.phoneV) { %>
-          <i class="fa-solid fa-mobile-screen-button" ></i>
-        <% } %>
+        <div class="vignette-footer">
+          
+            <% if (img.phoneV) { %>
+              <i class="fa-solid phone-vignette fa-mobile-screen-button" ></i>
+            <% } %>
+            <% if (img.phoneVOnly) { %>
+              <span class=" txt-sm "> only</span>
+            <% } %>
+          
+        </div>
+       
+       
       </article>
       <% } %>
       <% } else { %> <h3 class="h3">No image uploaded yet !</h3> <% } %>

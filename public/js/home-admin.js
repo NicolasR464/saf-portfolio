@@ -7,6 +7,7 @@ const modalWindow = document.querySelector(".modal-container");
 const contVignettes = document.querySelector(".cont");
 const closeBtn = document.querySelector(".close-modal-btn");
 const cropBtn = document.querySelector(".crop-btn");
+const radioBtns = document.querySelector(".fieldset");
 let url;
 let file;
 let options;
@@ -31,24 +32,25 @@ image.onchange = () => {
   }
 
   //
-  options = {
-    aspectRatio: 9 / 16,
-    dragMode: "move",
-    preview: ".img-preview",
-    viewMode: 2,
-    background: false,
-    crop(event) {
-      cropX = Math.floor(event.detail.x);
-      cropY = Math.floor(event.detail.y);
-      cropWidth = Math.floor(event.detail.width);
-      cropHeight = Math.floor(event.detail.height);
-    },
-  };
 };
 phoneBtn.addEventListener("click", () => {
   if (url) {
     modalWindow.classList.add("modal-active");
     contVignettes.classList.add("blurred");
+
+    options = {
+      aspectRatio: 9 / 16,
+      dragMode: "move",
+      preview: ".img-preview",
+      viewMode: 2,
+      background: false,
+      crop(event) {
+        cropX = Math.floor(event.detail.x);
+        cropY = Math.floor(event.detail.y);
+        cropWidth = Math.floor(event.detail.width);
+        cropHeight = Math.floor(event.detail.height);
+      },
+    };
     cropper = new Cropper(image_workspace, options);
   }
 });
@@ -64,6 +66,9 @@ cropBtn.addEventListener("click", () => {
   document.querySelector("[name=cropY]").value = cropY;
   document.querySelector("[name=cropWidth]").value = cropWidth;
   document.querySelector("[name=cropHeight]").value = cropHeight;
+
+  //If crop done open radio buttons - phone only option
+  radioBtns.style.display = "flex";
 });
 
 const delBtn = document.querySelectorAll(".delBtn");

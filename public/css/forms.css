@@ -177,7 +177,7 @@ button:focus {
     -webkit-filter 300ms ease 200ms;
 }
 .modal-active {
-  max-height: 100vh;
+  max-height: 90vh;
   position: fixed;
   z-index: 1;
   -webkit-filter: blur(0);
@@ -197,6 +197,7 @@ button:focus {
 .cropper-img {
   display: block;
   max-width: 100%;
+  max-height: 400px;
 }
 .cropper-canvas {
   max-width: 100%;

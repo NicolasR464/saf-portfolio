@@ -49,32 +49,65 @@ exports.getHomeConfig = (req, res, next) => {
   cloudinary.api
     .resources({
       type: "upload",
+      tags: true,
       prefix: "saf_portfolio/index",
       max_results: 500,
       context: true,
     })
     .then((imgs) => {
       imgs.resources.forEach((img) => {
-        // console.log(img.context);
+        console.log(img);
+        console.log(img.context);
       });
 
       let URLs = [];
 
       imgs.resources.forEach((img) => {
-        let phoneV;
-        img.context != undefined ? (phoneV = true) : (phoneV = false);
-        URLs.push({
-          url: cloudinary.url(img.public_id, {
-            secure: true,
-            transformation: {
-              aspect_ratio: "16:9",
-              crop: "fill",
-              fetch_format: "auto",
-              quality: "auto",
-            },
-          }),
-          phoneV: phoneV,
-        });
+        let phoneV = false;
+        let phoneVOnly = false;
+        // img.tags[0] = "phone-option-only";
+        // console.log(img.tags[0]);
+        // img.tags[0] === "phone-option-only" ? (phoneVOnly = true) : phoneVOnly;
+        // img.context != undefined ? (phoneV = true) : (phoneV = false);
+
+        if (img.context) {
+          phoneV = true;
+          if (img.tags.includes("phone-option-only")) {
+            phoneVOnly = true;
+
+            URLs.push({
+              url: cloudinary.url(img.public_id, {
+                secure: true,
+                transformation: {
+                  crop: "crop",
+                  fetch_format: "auto",
+                  quality: "auto",
+                  height: img.context.custom.cropHeight,
+                  width: img.context.custom.cropWidth,
+                  x: img.context.custom.cropX,
+                  y: img.context.custom.cropY,
+                },
+              }),
+              phoneV: phoneV,
+              phoneVOnly: phoneVOnly,
+            });
+          }
+        }
+        if (!img.tags.includes("phone-option-only")) {
+          URLs.push({
+            url: cloudinary.url(img.public_id, {
+              secure: true,
+              transformation: {
+                aspect_ratio: "16:9",
+                crop: "fill",
+                fetch_format: "auto",
+                quality: "auto",
+              },
+            }),
+            phoneV: phoneV,
+            phoneVOnly: phoneVOnly,
+          });
+        }
       });
 
       res.render("admin/home-config", {
@@ -95,6 +128,7 @@ exports.postHomeConfig = (req, res, next) => {
   const cropY = req.body.cropY;
   const cropWidth = req.body.cropWidth;
   const cropHeight = req.body.cropHeight;
+  const deviceOption = req.body.deviceOption;
 
   const fileType = req.file.mimetype;
 
@@ -105,8 +139,9 @@ exports.postHomeConfig = (req, res, next) => {
 
   //
   if (cropX) {
-    // console.log("phone");
-    tags = "phone-option";
+    deviceOption == "all-device"
+      ? (tags = "phone-option-only")
+      : (tags = ["phone-option", "phone-option-only"]);
 
     metadata = {
       cropX: cropX,
@@ -118,6 +153,7 @@ exports.postHomeConfig = (req, res, next) => {
 
   imgHandler(req, folder, file, tags, metadata)
     .then((info) => {
+      console.log(info);
       req.flash("valid", "new home page image uploaded 🔥");
       res.status(201).redirect("/admin/home-config");
     })
