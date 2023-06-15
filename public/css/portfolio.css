@@ -196,6 +196,7 @@
 .cursor {
   cursor: pointer;
 }
+z
 
 /* Next & previous 
 s */
@@ -542,41 +543,39 @@ s */
   .swiper-button-next,
   .swiper-pagination {
     -webkit-tap-highlight-color: rgb(0, 0, 0);
-    color: #fffcf4;
     margin: 1em;
     position: relative;
     padding: 0 3em;
     outline: 0;
     overflow: hidden;
     background-color: #000000;
-    text-shadow: 0 0 0.5em 0.1em #fffcf4;
     z-index: 6;
   }
   .swiper-pagination {
     margin: 1em 0;
     z-index: -1;
   }
-
+  /* 
   div.swiper-button-prev:focus-within,
   div.swiper-button-next:focus-within {
-    color: 0 0 0.5em 0.1em #fffcf4;
+    color: 0 0 0.5em 0.1em #fff4f4;
   }
   swiper-button-prev:after,
   swiper-button-next:after {
-    box-shadow: 0 0 0.5em 0.1em #fffcf4;
+    box-shadow: 0 0 0.5em 0.1em #00ff37;
   }
   @keyframes tap {
     0%,
     50% {
-      color: #fffcf4;
-      text-shadow: 0 0 0.5em 0.1em #fffcf4;
+      color: #ff0a0a;
+      text-shadow: 0 0 0.5em 0.1em #9eff20;
     }
 
     100% {
-      color: #fffcf4 83;
-      text-shadow: 0 0 0em 0em #fffcf4;
+      color: #ffbb00 83;
+      text-shadow: 0 0 0em 0em #14ffef;
     }
-  }
+  } */
 
   .swiper-pagination-horizontal {
     margin-left: 0;
@@ -584,7 +583,7 @@ s */
 
   span.swiper-pagination-bullet {
     transition: all 0.5s ease-in-out;
-    background: #fffcf4;
+    background: #fff4f4;
     box-shadow: 0 0 0.4rem 0.1em #fffcf4;
   }
   span.swiper-pagination-bullet-active {
@@ -628,21 +627,8 @@ s */
 
   /* arrow replace*/
 
-  .swiper-button-next {
-    background-image: url(/icons/newarrow/arrow-right.svg);
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    background-position: center;
-  }
-
   .swiper-button-next::after {
     display: none;
-  }
-  .swiper-button-prev {
-    background-image: url(../icons/newarrow/arrow-left.svg);
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    background-position: center;
   }
 
   .swiper-button-prev::after {
