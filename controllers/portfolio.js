@@ -11,6 +11,8 @@ exports.getIndex = (req, res, next) => {
   const device = req.device.type;
   let URLs = [];
 
+  console.log(device);
+
   if (device == "desktop") {
     cloudinary.api
       .resources({
