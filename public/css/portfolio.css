@@ -412,7 +412,7 @@ s */
     margin: 0 auto;
     z-index: 2;
     transform: translate(95%, 95%);
-    opacity: 0;
+    opacity: 1;
   }
   #video-placeholder {
     width: 100%;

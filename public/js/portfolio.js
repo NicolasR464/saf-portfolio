@@ -471,14 +471,31 @@ const loadVid = () => {
         let vidId = img.getAttribute("data-id");
         //LOAD video
 
+        console.log(vidId);
+
         try {
           player.cueVideoById(vidId);
         } catch (err) {
+          console.log("YT cueVideoById error...");
           console.log(err);
         }
 
         //  YT API EVENT
+
+        player.addEventListener("onReady", (e) => {
+          console.log("PLAYER YT READY 🚀");
+          console.log(e);
+          try {
+            player.cueVideoById(vidId);
+          } catch (err) {
+            console.log("YT cueVideoById+onReady error...");
+            console.log(err);
+          }
+        });
+
         player.addEventListener("onStateChange", (e) => {
+          console.log("PLAYER YT STATECHANGE");
+          console.log(e);
           if (e.data === 3) {
             loadIcon.classList.add("active");
             playBtn.style.opacity = "0";

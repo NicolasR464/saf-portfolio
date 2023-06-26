@@ -425,6 +425,9 @@ exports.postPortfolioConfig = (req, res, next) => {
       .then((info) => {
         const idExists = info.data.pageInfo.totalResults;
 
+        // console.log("restriction YT ↴");
+        // console.log(info.data.items[0].contentDetails.regionRestriction);
+
         if (idExists == 1) {
           info.data.items[0].contentDetails.contentRating.ytRating ==
           "ytAgeRestricted"
