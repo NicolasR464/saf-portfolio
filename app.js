@@ -97,7 +97,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("🚀");
+    console.log("http://localhost:" + process.env.PORT, " 🚀");
     app.listen(process.env.PORT || 5500);
   })
   .catch((err) => {

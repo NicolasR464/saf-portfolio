@@ -437,7 +437,7 @@ const loadVid = () => {
             .loadVideo(`https://vimeo.com/${vidId}?h=${hash}`)
             .then((info) => console.log("hash!"))
             .catch((err) => {
-              errMsg.innerHTML = "video not found!";
+              // errMsg.innerHTML = "video not found!";
               playBtn.style.opacity = "0";
             });
         });
@@ -507,11 +507,11 @@ const loadVid = () => {
         });
         player.addEventListener("onError", (e) => {
           console.log(e);
-          if (e.data === 150 || e.data === 101) {
-            errMsg.innerHTML = "";
-          } else {
-            errMsg.innerHTML = "video not found!";
-          }
+          // if (e.data === 150 || e.data === 101) {
+          //   errMsg.innerHTML = "";
+          // } else {
+          //   errMsg.innerHTML = "video not found!";
+          // }
           //remove play btn
           playBtn.style.opacity = "0";
         });

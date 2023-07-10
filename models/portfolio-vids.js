@@ -25,6 +25,7 @@ const portfolioVid = new Schema({
   number: { type: Number },
   isPublicRated: { type: Boolean },
   isEmbeddable: { type: Boolean },
+  regionRestricted: { type: Object },
 });
 
 module.exports = mongoose.model("PortfolioVid", portfolioVid);

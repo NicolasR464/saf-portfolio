@@ -9,6 +9,8 @@ const axios = require("axios");
 const sgMail = require("@sendgrid/mail");
 const crypto = require("crypto");
 const { log } = require("console");
+const { getName } = require("country-list");
+
 require("dotenv").config();
 // require("dotenv/config");
 const cloudinary = require("cloudinary").v2;
@@ -320,6 +322,7 @@ exports.postPortfolioConfig = (req, res, next) => {
   const videoPlr = new VideoPlr(videoUrl);
   let extractId = videoPlr.idExtractor();
   const vidPlr = videoPlr.type;
+  let isRestricted = undefined;
 
   //JPEG CHECK
   const fileType = req.file.mimetype;
@@ -360,6 +363,7 @@ exports.postPortfolioConfig = (req, res, next) => {
               number: number,
               isPublicRated: isPublicRated,
               isEmbeddable: isEmbeddable,
+              regionRestricted: isRestricted.blocked || undefined,
             });
             videoNew
               .save()
@@ -376,6 +380,23 @@ exports.postPortfolioConfig = (req, res, next) => {
                   req.flash(
                     "error",
                     "The owner of this video didn't set it up to be embeddable ❌"
+                  );
+                }
+
+                if (video.regionRestricted) {
+                  let countries = "";
+                  video.regionRestricted.forEach((country, i) => {
+                    countries +=
+                      i == video.regionRestricted.length - 1
+                        ? " and " + getName(country)
+                        : i === 0
+                        ? getName(country)
+                        : ", " + getName(country);
+                  });
+
+                  req.flash(
+                    "error",
+                    "This video is set up to be blocked in " + countries
                   );
                 }
 
@@ -425,8 +446,9 @@ exports.postPortfolioConfig = (req, res, next) => {
       .then((info) => {
         const idExists = info.data.pageInfo.totalResults;
 
-        // console.log("restriction YT ↴");
-        // console.log(info.data.items[0].contentDetails.regionRestriction);
+        console.log("restriction YT ↴");
+        console.log(info.data.items[0].contentDetails.regionRestriction);
+        isRestricted = info.data.items[0].contentDetails.regionRestriction;
 
         if (idExists == 1) {
           info.data.items[0].contentDetails.contentRating.ytRating ==
