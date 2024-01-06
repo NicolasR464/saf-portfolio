@@ -327,8 +327,6 @@ exports.postPortfolioConfig = (req, res) => {
   //JPEG CHECK
   const fileType = req.file.mimetype;
 
-  console.log("🔥 postPortfolioConfig");
-
   if (fileType != "image/jpeg") {
     req.flash("error", "This file is not a jpeg, please try another.");
     return res.redirect("/admin/portfolio-config");
@@ -339,24 +337,10 @@ exports.postPortfolioConfig = (req, res) => {
     PortfolioVid.find({ category: videoCategory })
       .count()
       .then((num) => {
-        console.log("✨");
-        console.log(num);
         number = num;
         order = num;
       })
       .then(() => {
-        //
-        //
-
-        // imgHandler(req, folder, file, tags, metadata)
-
-        console.log(req);
-        console.log(videoFolder);
-        console.log(videoCategory);
-        console.log(videoImage);
-        console.log(tags);
-        console.log(metadata);
-
         imgHandler(
           `${videoFolder}/${videoCategory}`,
           videoImage,
