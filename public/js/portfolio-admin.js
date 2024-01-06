@@ -24,7 +24,6 @@ const delPortVid = (btn) => {
 if (delBtns) {
   delBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      console.log("del click");
       delPortVid(btn);
     });
   });

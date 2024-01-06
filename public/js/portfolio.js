@@ -471,8 +471,6 @@ const loadVid = () => {
         let vidId = img.getAttribute("data-id");
         //LOAD video
 
-        console.log(vidId);
-
         try {
           player.cueVideoById(vidId);
         } catch (err) {
@@ -483,8 +481,6 @@ const loadVid = () => {
         //  YT API EVENT
 
         player.addEventListener("onReady", (e) => {
-          console.log("PLAYER YT READY 🚀");
-          console.log(e);
           try {
             player.cueVideoById(vidId);
           } catch (err) {
@@ -494,8 +490,6 @@ const loadVid = () => {
         });
 
         player.addEventListener("onStateChange", (e) => {
-          console.log("PLAYER YT STATECHANGE");
-          console.log(e);
           if (e.data === 3) {
             loadIcon.classList.add("active");
             playBtn.style.opacity = "0";
@@ -507,11 +501,7 @@ const loadVid = () => {
         });
         player.addEventListener("onError", (e) => {
           console.log(e);
-          // if (e.data === 150 || e.data === 101) {
-          //   errMsg.innerHTML = "";
-          // } else {
-          //   errMsg.innerHTML = "video not found!";
-          // }
+
           //remove play btn
           playBtn.style.opacity = "0";
         });

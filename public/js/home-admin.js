@@ -88,9 +88,6 @@ const deleteHomeImg = (btn) => {
       productElement.parentNode.removeChild(productElement);
       return result.json();
     })
-    .then((data) => {
-      console.log(data);
-    })
     .catch((err) => {
       console.log(err);
     });

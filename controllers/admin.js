@@ -30,7 +30,7 @@ let tags = null;
 let buttonTxt;
 //
 
-exports.getHomeConfig = (req, res, next) => {
+exports.getHomeConfig = (req, res) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
@@ -58,8 +58,8 @@ exports.getHomeConfig = (req, res, next) => {
     })
     .then((imgs) => {
       imgs.resources.forEach((img) => {
-        console.log(img);
-        console.log(img.context);
+        // console.log(img);
+        // console.log(img.context);
       });
 
       let URLs = [];
@@ -123,7 +123,7 @@ exports.getHomeConfig = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postHomeConfig = (req, res, next) => {
+exports.postHomeConfig = (req, res) => {
   const folder = req.body.folder;
   const file = req.file.buffer;
   const cropX = req.body.cropX;
@@ -153,9 +153,9 @@ exports.postHomeConfig = (req, res, next) => {
     };
   }
 
-  imgHandler(req, folder, file, tags, metadata)
+  imgHandler(folder, file, tags, metadata)
     .then((info) => {
-      console.log(info);
+      // console.log(info);
       req.flash("valid", "new home page image uploaded 🔥");
       res.status(201).redirect("/admin/home-config");
     })
@@ -185,7 +185,7 @@ exports.deleteHomeImg = (req, res, next) => {
 
 //About
 
-exports.getAboutConfig = (req, res, next) => {
+exports.getAboutConfig = (req, res) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
@@ -215,7 +215,7 @@ exports.getAboutConfig = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
-exports.postAboutConfig = (req, res, next) => {
+exports.postAboutConfig = (req, res) => {
   const folder = req.body.folder;
   const bioUpdate = req.body.bio;
   let imgUpdate = undefined;
@@ -253,7 +253,7 @@ exports.postAboutConfig = (req, res, next) => {
             .catch((err) => console.log(err));
         }
 
-        imgHandler(req, folder, imgUpdate, tags, metadata)
+        imgHandler(folder, imgUpdate, tags, metadata)
           .then((newImg) => {
             content.image.url = newImg.secure_url;
             content.image.public_id = newImg.public_id;
@@ -276,7 +276,7 @@ exports.postAboutConfig = (req, res, next) => {
 };
 
 // Portfolio
-exports.getPortfolioConfig = (req, res, next) => {
+exports.getPortfolioConfig = (req, res) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/admin/login");
   }
@@ -309,7 +309,7 @@ exports.getPortfolioConfig = (req, res, next) => {
     });
 };
 
-exports.postPortfolioConfig = (req, res, next) => {
+exports.postPortfolioConfig = (req, res) => {
   const videoTitle = req.body.title.trim(); // string
   const videoUrl = req.body.vidId.trim(); // int || string
   const videoFolder = req.body.folder;
@@ -322,10 +322,12 @@ exports.postPortfolioConfig = (req, res, next) => {
   const videoPlr = new VideoPlr(videoUrl);
   let extractId = videoPlr.idExtractor();
   const vidPlr = videoPlr.type;
-  let isRestricted = undefined;
+  let isRestricted = {};
 
   //JPEG CHECK
   const fileType = req.file.mimetype;
+
+  console.log("🔥 postPortfolioConfig");
 
   if (fileType != "image/jpeg") {
     req.flash("error", "This file is not a jpeg, please try another.");
@@ -337,13 +339,25 @@ exports.postPortfolioConfig = (req, res, next) => {
     PortfolioVid.find({ category: videoCategory })
       .count()
       .then((num) => {
+        console.log("✨");
+        console.log(num);
         number = num;
         order = num;
       })
       .then(() => {
         //
+        //
+
+        // imgHandler(req, folder, file, tags, metadata)
+
+        console.log(req);
+        console.log(videoFolder);
+        console.log(videoCategory);
+        console.log(videoImage);
+        console.log(tags);
+        console.log(metadata);
+
         imgHandler(
-          req,
           `${videoFolder}/${videoCategory}`,
           videoImage,
           tags,
@@ -363,7 +377,9 @@ exports.postPortfolioConfig = (req, res, next) => {
               number: number,
               isPublicRated: isPublicRated,
               isEmbeddable: isEmbeddable,
-              regionRestricted: isRestricted.blocked || undefined,
+              regionRestricted: isRestricted?.blocked
+                ? isRestricted?.blocked
+                : "",
             });
             videoNew
               .save()
@@ -412,12 +428,13 @@ exports.postPortfolioConfig = (req, res, next) => {
               });
           })
           .catch((err) => {
+            console.log("💥");
             console.log({ err });
             req.flash(
               "error",
               "This image couln't be uploaded, please try again or another."
             );
-            res.redirect("/admin/home-config");
+            res.redirect("/admin/portfolio-config");
           });
       })
       .catch((err) => {
@@ -446,8 +463,8 @@ exports.postPortfolioConfig = (req, res, next) => {
       .then((info) => {
         const idExists = info.data.pageInfo.totalResults;
 
-        console.log("restriction YT ↴");
-        console.log(info.data.items[0].contentDetails.regionRestriction);
+        // console.log("restriction YT ↴");
+        // console.log(info.data.items[0].contentDetails.regionRestriction);
         isRestricted = info.data.items[0].contentDetails.regionRestriction;
 
         if (idExists == 1) {
@@ -488,7 +505,7 @@ exports.postPortfolioConfig = (req, res, next) => {
         method: "GET",
         path: `videos/${idCheck}?fields=uri,name,content_rating,privacy`,
       },
-      function (error, body, status_code, headers) {
+      function (error, body) {
         if (error) {
           console.log(error);
           errorHandling();
@@ -538,7 +555,7 @@ exports.deletePortfolioVid = (req, res, next) => {
                   });
               });
             });
-          console.log({ update });
+          // console.log({ update });
         });
 
       cloudinary.uploader
@@ -552,7 +569,7 @@ exports.deletePortfolioVid = (req, res, next) => {
     });
 };
 
-exports.updatePortfolioVid = (req, res, next) => {
+exports.updatePortfolioVid = (req, res) => {
   const newOrder = req.params.newOrder;
   const category = newOrder.split("-")[0];
 
@@ -576,7 +593,7 @@ exports.updatePortfolioVid = (req, res, next) => {
 };
 
 //LOGIN
-exports.getlogin = (req, res, next) => {
+exports.getlogin = (req, res) => {
   if (req.session.isLoggedIn) {
     return res.redirect("/admin/portfolio-config");
   }
@@ -615,11 +632,20 @@ exports.getlogin = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postlogin = (req, res, next) => {
+exports.postlogin = (req, res) => {
   const logValid = undefined;
   const email = req.body.email.trim();
   const password = req.body.password.trim();
   const errors = validationResult(req);
+
+  // console.log("post login 🔥");
+  // console.log({ password });
+
+  // console.log({ email });
+  // console.log(process.env.DEV_EMAIL);
+
+  if (email !== process.env.SAF_EMAIL || email !== process.env.DEV_EMAIL)
+    res.redirect("/admin/login");
 
   if (!errors.isEmpty()) {
     let errorMsg;
@@ -635,11 +661,11 @@ exports.postlogin = (req, res, next) => {
     });
   }
 
-  SafInfo.find({ email })
+  SafInfo.findOne({ email })
     .then((info) => {
       if (info) {
         bcrypt
-          .compare(password, info[0].password)
+          .compare(password, info.password)
           .then((doMatch) => {
             if (doMatch) {
               req.session.isLoggedIn = true;
@@ -660,7 +686,7 @@ exports.postlogin = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postLogout = (req, res, next) => {
+exports.postLogout = (req, res) => {
   req.session.destroy(() => {
     res.redirect("/admin/login");
   });
@@ -668,12 +694,14 @@ exports.postLogout = (req, res, next) => {
 
 //PWD RESET
 let randomHash;
-exports.getForgotPwd = (req, res, next) => {
+exports.getForgotPwd = (req, res) => {
   res.render("admin/pwdforgot", {
     pageTitle: "Email sent",
     actionPrompt: "emailPrompt",
   });
   req.session.destroy();
+
+  // console.log(req);
 
   //random hash
   const buf = crypto.randomBytes(20);
@@ -701,7 +729,6 @@ exports.getForgotPwd = (req, res, next) => {
     .send(msg)
     .then(() => {
       console.log("Email sent");
-      // res.redirect("/contact");
     })
     .catch((error) => {
       console.error(error);
@@ -709,7 +736,7 @@ exports.getForgotPwd = (req, res, next) => {
     });
 };
 
-exports.pwdreset = (req, res, next) => {
+exports.pwdreset = (req, res) => {
   //
   let errorMsg = req.flash("error");
 
@@ -735,13 +762,12 @@ exports.pwdreset = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      // res.redirect("/admin/login");
     });
 };
 
-exports.postPwdreset = (req, res, next) => {
+exports.postPwdreset = (req, res) => {
   const validationErrs = validationResult(req);
-  console.log(validationErrs);
+  // console.log(validationErrs);
 
   const token = req.params.token;
   const pwd = req.body.password;

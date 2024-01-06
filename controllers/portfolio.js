@@ -6,12 +6,12 @@ const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 //
 
-exports.getIndex = (req, res, next) => {
+exports.getIndex = (req, res) => {
   const isLogged = req.session.isLoggedIn;
   const device = req.device.type;
   let URLs = [];
 
-  console.log(device);
+  // console.log(device);
 
   if (device == "desktop") {
     cloudinary.api
@@ -61,11 +61,8 @@ exports.getIndex = (req, res, next) => {
         tags: true,
       })
       .then((imgs) => {
-        console.log({ imgs });
-        console.log(imgs.resources);
         const index = Math.floor(Math.random() * imgs.resources.length);
         const singleImg = imgs.resources[index];
-        console.log(singleImg);
 
         //image 9:16
         URLs.push(
@@ -109,7 +106,7 @@ exports.getIndex = (req, res, next) => {
   }
 };
 
-exports.getAbout = (req, res, next) => {
+exports.getAbout = (req, res) => {
   const isLogged = req.session.isLoggedIn;
 
   AboutInfo.findOne()
@@ -126,7 +123,7 @@ exports.getAbout = (req, res, next) => {
     });
 };
 
-exports.getPortfolio = (req, res, next) => {
+exports.getPortfolio = (req, res) => {
   const isLogged = req.session.isLoggedIn;
   PortfolioInfo.find()
     .sort({ order: 1 })
@@ -154,7 +151,7 @@ exports.getPortfolio = (req, res, next) => {
 };
 
 //contact
-exports.getContact = (req, res, next) => {
+exports.getContact = (req, res) => {
   let errorMsg = req.flash("error");
   if (errorMsg.length > 0) {
     errorMsg[0];
@@ -169,7 +166,7 @@ exports.getContact = (req, res, next) => {
   });
 };
 
-exports.postContact = (req, res, next) => {
+exports.postContact = (req, res) => {
   const email = req.body.email;
   const subject = req.body.subject;
   const message = req.body.message;
