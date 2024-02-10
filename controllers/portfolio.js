@@ -11,7 +11,7 @@ exports.getIndex = (req, res) => {
   const device = req.device.type;
   let URLs = [];
 
-  // console.log(device);
+  console.log({ device });
 
   if (device == "desktop") {
     cloudinary.api
@@ -56,13 +56,18 @@ exports.getIndex = (req, res) => {
   } else if (device == "phone" || device == "tablet") {
     cloudinary.api
       .resources_by_tag("phone-option", {
+        prefix: "saf_portfolio/index",
         context: true,
         max_results: 50,
         tags: true,
       })
       .then((imgs) => {
-        const index = Math.floor(Math.random() * imgs.resources.length);
-        const singleImg = imgs.resources[index];
+        const filteredImgs = imgs.resources.filter(
+          (img) => !img.folder.startsWith("saf_portfolio/portfolio")
+        );
+
+        const index = Math.floor(Math.random() * filteredImgs.resources.length);
+        const singleImg = filteredImgs.resources[index];
 
         //image 9:16
         URLs.push(
