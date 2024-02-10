@@ -56,7 +56,6 @@ exports.getIndex = (req, res) => {
   } else if (device == "phone" || device == "tablet") {
     cloudinary.api
       .resources_by_tag("phone-option", {
-        prefix: "saf_portfolio/index",
         context: true,
         max_results: 50,
         tags: true,
