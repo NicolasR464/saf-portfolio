@@ -13,7 +13,7 @@ exports.getIndex = (req, res) => {
 
   console.log({ device });
 
-  if (device == "desktop") {
+  if (device === "desktop") {
     cloudinary.api
       .resources({
         type: "upload",
@@ -53,7 +53,7 @@ exports.getIndex = (req, res) => {
       });
 
     ///////
-  } else if (device == "phone" || device == "tablet") {
+  } else if (device === "phone" || device === "tablet") {
     cloudinary.api
       .resources_by_tag("phone-option", {
         context: true,
