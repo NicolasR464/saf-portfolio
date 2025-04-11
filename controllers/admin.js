@@ -633,6 +633,7 @@ exports.postlogin = (req, res) => {
 
   if (!errors.isEmpty()) {
     let errorMsg;
+
     errors.array().length > 1
       ? (errorMsg = errors.array()[0].msg + " " + errors.array()[1].msg)
       : (errorMsg = errors.array()[0].msg);
@@ -647,10 +648,12 @@ exports.postlogin = (req, res) => {
 
   SafInfo.findOne({ email })
     .then((info) => {
+      console.log(info);
       if (info) {
         bcrypt
           .compare(password, info.password)
           .then((doMatch) => {
+            console.log({ doMatch });
             if (doMatch) {
               req.session.isLoggedIn = true;
               req.session.save(() => {
