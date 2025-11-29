@@ -229,6 +229,7 @@ h1 a i {
     font-size: 0.9rem;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.72);
+    text-align: center;
 }
 
 .reconstruction-actions {
